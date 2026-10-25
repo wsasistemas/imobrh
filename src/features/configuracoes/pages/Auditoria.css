@@ -1,0 +1,91 @@
+.audit {
+  overflow: hidden;
+}
+
+.audit__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 16px;
+}
+
+.audit__filters .field {
+  min-width: 170px;
+}
+
+.audit__clear {
+  margin-left: auto;
+}
+
+.audit__nowrap {
+  white-space: nowrap;
+}
+
+.audit__strong {
+  font-weight: 600;
+}
+
+.audit__muted {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---------- Antes / depois ---------- */
+
+.audit-diff {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.audit-diff__block {
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--table-head);
+}
+
+.audit-diff__title {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.audit-diff dl {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 13px;
+}
+
+.audit-diff dl div {
+  display: flex;
+  gap: 6px;
+}
+
+.audit-diff dt {
+  color: var(--muted);
+}
+
+.audit-diff dd {
+  margin: 0;
+  color: var(--ink);
+  word-break: break-word;
+}
+
+.audit-diff__empty {
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .audit-diff {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,0 +1,64 @@
+/* ---------- Cartões de rádio ---------- */
+
+.radio-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radio-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  text-align: left;
+  color: var(--ink);
+}
+
+.radio-card:hover {
+  border-color: var(--muted);
+}
+
+.radio-card[data-state="checked"] {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+}
+
+.radio-card strong {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 14px;
+}
+
+.radio-card span span {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.radio-card__dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  flex-shrink: 0;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.radio-card[data-state="checked"] .radio-card__dot {
+  border-color: var(--brand);
+}
+
+.radio-card__dot-fill {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--brand);
+}

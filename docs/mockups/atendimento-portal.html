@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Imobdesk</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Adaptado de Vs_PipedriveMKT/docs/mockups/atendimento-implementacao.html (05/10/2026):
+     sem Pipedrive, sem empreendimento/campanha, sem robô. Canal Zenvia, entrada orgânica. */
+  :root {
+    --brand: #d6293b; --brand-hover: #a91d2c; --brand-soft: #fdecee;
+    --ink: #17181c; --muted: #6b7280; --line: #e9eaee; --page: #f5f6f8; --surface: #fff; --table-head: #fafafa;
+    --sidebar: #17181c; --sidebar-hover: #232429; --sidebar-text: #9a9ba3;
+    --success-bg: #e8f6ed; --success-fg: #166534; --neutral-bg: #f1f1f3; --neutral-fg: #52525b;
+    --warning-bg: #fff1e3; --warning-fg: #c2410c; --danger-bg: #fdecee; --danger-fg: #b91c1c;
+    --info-bg: #e8effd; --info-fg: #1d4ed8; --violet-bg: #f3e8ff; --violet-fg: #7e22ce;
+    --unread-bg: #eef4ff; --wa-bg: #efeae2; --wa-me: #ffffff; --wa-at: #ffe9ec;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { font-family: Inter, system-ui, sans-serif; font-size: 14px; color: var(--ink); background: var(--page); }
+  button { font: inherit; }
+  svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+  .faixa { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 6px 16px; background: #fff7e0; border-bottom: 1px solid #f5e1a4; font-size: 12.5px; color: #7a5b00; }
+  .faixa b { color: #5c4500; }
+
+  .app { display: flex; height: calc(100% - 31px); }
+  .sidebar { width: 252px; flex: none; display: flex; flex-direction: column; background: var(--sidebar); color: var(--sidebar-text); padding: 18px 12px; overflow: auto; }
+  .sidebar__label { margin: 4px 12px 10px; font-size: 11px; font-weight: 700; letter-spacing: .08em; }
+  .item, .sub { width: 100%; display: flex; align-items: center; gap: 9px; border: 0; border-radius: 8px; background: none; color: var(--sidebar-text); cursor: pointer; text-align: left; }
+  .item { padding: 10px; margin-bottom: 2px; font-size: 14px; }
+  .item:hover, .sub:hover { background: var(--sidebar-hover); color: #fff; }
+  .item.on { background: var(--brand); color: #fff; }
+  .item .seta { margin-left: auto; }
+  .subs { margin: 2px 0 6px; }
+  .sub { padding: 9px 10px 9px 32px; font-size: 13.5px; }
+  .sub.on { background: var(--brand); color: #fff; }
+  .novo { margin-left: auto; padding: 1px 6px; border-radius: 999px; background: #ffd75e; color: #3a2a00; font-size: 10px; font-weight: 800; }
+  .sidebar__fim { margin-top: auto; border-top: 1px solid #2a2b31; padding-top: 10px; }
+
+  .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .topbar { height: 64px; flex: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 24px; background: var(--surface); border-bottom: 1px solid var(--line); }
+  .marca { display: flex; align-items: center; gap: 16px; }
+  .logo { display: flex; align-items: center; gap: 4px; font-size: 26px; font-weight: 600; letter-spacing: -.02em; }
+  .logo i { width: 30px; height: 30px; border: 5px solid var(--brand); border-radius: 50%; }
+  .app-nome { font-size: 15px; font-weight: 800; letter-spacing: .02em; }
+  .usuario { display: flex; align-items: center; gap: 12px; }
+  .usuario .cx { display: flex; align-items: center; gap: 10px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 10px; font-size: 13px; }
+  .usuario .cx small { display: block; color: var(--muted); font-size: 11.5px; }
+  .conteudo { flex: 1; overflow: auto; padding: 22px 32px 40px; }
+  .bread { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+  .bread b { color: var(--ink); font-weight: 600; }
+  .ph h1 { margin: 0 0 4px; font-size: 22px; }
+  .ph p { margin: 0 0 18px; color: var(--muted); }
+  .secoes { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .secao { display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink); font-weight: 600; cursor: pointer; }
+  .secao.on { border-color: var(--brand); background: var(--brand-soft); color: var(--brand-hover); }
+  .secao .qtd { padding: 0 6px; border-radius: 999px; background: var(--brand); color: #fff; font-size: 11px; font-weight: 800; }
+  .tela { display: none; }
+  .tela.on { display: block; }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 1px 2px rgba(23,24,28,.05); }
+  .btn { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .btn:hover { border-color: #cfd2d8; }
+  .btn-p { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .btn-p:hover { background: var(--brand-hover); }
+  .btn-sm { height: 30px; padding: 0 10px; font-size: 12.5px; }
+  .btn-perigo { color: var(--danger-fg); border-color: #f3c3c8; }
+  .input { width: 100%; height: 36px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; font: inherit; color: var(--ink); background: var(--surface); }
+  textarea.input { height: 120px; padding: 10px; resize: vertical; line-height: 1.5; }
+  .lbl { display: block; font-size: 12.5px; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
+  .ajuda { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .selo { display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 8px; border-radius: 999px; font-size: 11.5px; font-weight: 700; white-space: nowrap; }
+  .selo::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .s-fila { background: var(--warning-bg); color: var(--warning-fg); }
+  .s-at { background: var(--danger-bg); color: var(--danger-fg); }
+  .s-outro { background: var(--violet-bg); color: var(--violet-fg); }
+  .s-inat { background: var(--neutral-bg); color: var(--neutral-fg); }
+  .s-ok { background: var(--success-bg); color: var(--success-fg); }
+  .s-info { background: var(--info-bg); color: var(--info-fg); }
+  code { background: var(--neutral-bg); padding: 1px 5px; border-radius: 4px; font-size: 12.5px; }
+  .sw { display: inline-block; width: 40px; height: 22px; border-radius: 999px; background: var(--success-fg); position: relative; cursor: pointer; vertical-align: middle; border: 0; }
+  .sw::after { content: ""; position: absolute; top: 3px; left: 21px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: left .15s; }
+  .sw.off { background: #cfd2d8; }
+  .sw.off::after { left: 3px; }
+  .notice { display: block; padding: 10px 12px; border-radius: 10px; font-size: 13px; line-height: 1.45; }
+  .notice.warn { background: var(--warning-bg); color: #7c2d12; }
+  .notice.info { background: var(--info-bg); color: #1e3a8a; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .sec { padding: 18px; }
+  .sec h3 { margin: 0 0 4px; font-size: 16px; }
+  .sec > p { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+
+  /* ---------- Central ---------- */
+  .central { display: grid; grid-template-columns: 330px minmax(0, 1fr) 300px; height: calc(100vh - 290px); min-height: 600px; overflow: hidden; }
+  .lista { border-right: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; }
+  .lista .topo-l { padding: 10px; border-bottom: 1px solid var(--line); display: grid; gap: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { height: 28px; padding: 0 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-size: 12.5px; font-weight: 600; cursor: pointer; }
+  .chip.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .convs { overflow: auto; flex: 1; }
+  .conv { display: grid; grid-template-columns: 38px 1fr auto; gap: 3px 10px; padding: 11px 12px; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .conv:hover { background: var(--page); }
+  .conv.nova { background: var(--unread-bg); }
+  .conv.nova .nome { font-weight: 800; }
+  .conv.on { background: var(--brand-soft); box-shadow: inset 3px 0 0 var(--brand); }
+  .av { grid-row: span 2; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--brand-soft); color: var(--brand-hover); font-weight: 800; font-size: 13px; flex: none; }
+  .conv .nome { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .conv .hora { font-size: 11.5px; color: var(--muted); text-align: right; }
+  .conv .prev { font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .vazio { padding: 30px 16px; text-align: center; color: var(--muted); font-size: 13px; }
+
+  .chat { display: flex; flex-direction: column; min-height: 0; background: var(--wa-bg); }
+  .chat-head { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 10px 14px; background: var(--surface); border-bottom: 1px solid var(--line); }
+  .chat-head .quem { flex: 1; min-width: 180px; }
+  .chat-head .quem b { display: block; }
+  .chat-head .quem span { font-size: 12px; color: var(--muted); }
+  .msgs { flex: 1; overflow: auto; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .bal { max-width: 74%; padding: 8px 10px; border-radius: 10px; background: var(--wa-me); box-shadow: 0 1px 1px rgba(0,0,0,.06); line-height: 1.45; white-space: pre-line; }
+  .bal small { display: block; text-align: right; font-size: 10.5px; color: var(--muted); margin-top: 2px; white-space: normal; }
+  .bal.at { align-self: flex-end; background: var(--wa-at); }
+  .bal.auto { align-self: flex-end; background: #f1f1f3; }
+  .bal .autor { font-size: 11px; font-weight: 800; color: var(--danger-fg); margin-bottom: 2px; white-space: normal; }
+  .bal.auto .autor { color: var(--neutral-fg); }
+  .ev { align-self: center; max-width: 92%; padding: 4px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 600; text-align: center; background: #f1f1f3; border: 1px solid #e2e2e6; color: var(--neutral-fg); }
+  .faixa-modo { padding: 8px 14px; font-size: 12.5px; display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--line); }
+  .faixa-modo.at { background: var(--wa-at); color: var(--danger-fg); }
+  .faixa-modo.fila { background: var(--warning-bg); color: var(--warning-fg); }
+  .faixa-modo.fim { background: var(--success-bg); color: var(--success-fg); }
+  .faixa-modo.outro { background: var(--violet-bg); color: var(--violet-fg); }
+  .compor { display: flex; gap: 8px; align-items: center; padding: 10px; background: var(--surface); border-top: 1px solid var(--line); }
+  .compor .input { flex: 1; }
+  .compor.bloq { opacity: .55; }
+
+  .lado { border-left: 1px solid var(--line); overflow: auto; padding: 14px; background: var(--surface); }
+  .lado h4 { margin: 16px 0 6px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .lado h4:first-child { margin-top: 0; }
+  .kv { display: grid; grid-template-columns: 112px 1fr; gap: 5px 8px; margin: 0; font-size: 13px; }
+  .kv dt { color: var(--muted); }
+  .kv dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+  .acoes { display: grid; gap: 6px; }
+  .acoes .btn { justify-content: flex-start; }
+  .nota { width: 100%; height: 70px; }
+
+  .barra-central { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; margin-bottom: 12px; }
+  .visoes { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface); }
+  .visoes button { height: 36px; padding: 0 14px; border: 0; background: none; font-weight: 600; cursor: pointer; }
+  .visoes button.on { background: var(--ink); color: #fff; }
+  .kb { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(250px, 1fr); gap: 12px; overflow-x: auto; padding-bottom: 8px; }
+  .kb-col { background: #eceef2; border-radius: 12px; padding: 8px; min-height: 420px; display: flex; flex-direction: column; gap: 8px; }
+  .kb-col h4 { margin: 4px 6px 2px; font-size: 13.5px; display: flex; justify-content: space-between; }
+  .kb-col h4 small { color: var(--muted); font-weight: 600; }
+  .kb-card { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--warning-fg); border-radius: 8px; padding: 9px 10px; cursor: pointer; display: grid; gap: 3px; }
+  .kb-card:hover { border-color: var(--brand); }
+  .kb-card.at { border-left-color: var(--danger-fg); }
+  .kb-card.outro { border-left-color: var(--violet-fg); }
+  .kb-card.fim { border-left-color: var(--success-fg); }
+  .kb-card.nova { background: var(--unread-bg); }
+  .kb-card b { font-size: 13.5px; }
+  .kb-card span.p { font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .kb-card .rod { display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: var(--muted); }
+
+  /* ---------- Fila ---------- */
+  .pessoa { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; margin-bottom: 8px; }
+  .pessoa .av { grid-row: auto; }
+  .pessoa b { display: block; }
+  .pessoa small { color: var(--muted); }
+  .pessoa .dir { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .horas td { padding: 7px 6px; border-bottom: 1px solid var(--line); font-size: 13px; }
+  .horas .input { height: 32px; width: 92px; }
+  .regra { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .regra:last-child { border-bottom: 0; }
+  .num { display: grid; place-items: center; min-width: 26px; height: 26px; border-radius: 50%; background: var(--info-bg); color: var(--info-fg); font-weight: 800; font-size: 12px; }
+  .regra b { display: block; }
+  .regra span { color: var(--muted); font-size: 13px; }
+  .inl { display: inline-flex; align-items: center; gap: 6px; }
+  .inl .input { width: 70px; height: 30px; }
+
+  /* ---------- Zenvia ---------- */
+  .passos { display: grid; gap: 10px; }
+  .passo { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border: 1px solid var(--line); border-radius: 10px; }
+  .passo .num.ok { background: var(--success-bg); color: var(--success-fg); }
+  .passo .num.pend { background: var(--warning-bg); color: var(--warning-fg); }
+  .passo b { display: block; }
+  .passo span { color: var(--muted); font-size: 13px; }
+  .passo .dir { margin-left: auto; }
+
+  /* ---------- Monitor (visão do gestor) ---------- */
+  .mon-topo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; margin-bottom: 16px; }
+  .mon-card { overflow: hidden; }
+  .mon-head { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  .mon-head h3 { margin: 0; font-size: 15px; flex: 1; }
+  .mon-head select { width: auto; height: 32px; }
+  .ic-btn { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); cursor: pointer; }
+  .kpi-l { display: grid; grid-template-columns: 1fr auto 70px; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  .kpi-l:last-child { border-bottom: 0; }
+  .kpi-l b { display: block; font-size: 14px; }
+  .kpi-l span { color: var(--muted); font-size: 12.5px; }
+  .kpi-l .v { font-size: 26px; font-weight: 700; text-align: right; }
+  .kpi-l .d { font-size: 12px; font-weight: 800; text-align: right; }
+  .d.up { color: var(--success-fg); } .d.down { color: var(--danger-fg); } .d.eq { color: var(--muted); }
+  .tab { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .tab th, .tab td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .tab th { font-size: 12px; color: var(--muted); background: var(--table-head); font-weight: 600; }
+  .tab td.c, .tab th.c { text-align: center; }
+  .tab td.n, .tab th.n { text-align: right; }
+  .tab tr.alerta td { background: #fff6f6; }
+  .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; background: #cfd2d8; }
+  .dot.on { background: #22c55e; } .dot.off { background: #ef4444; } .dot.pausa { background: #f59e0b; }
+  .mon-sec { margin-bottom: 16px; }
+  .mon-sec .mon-head small { color: var(--muted); font-weight: 600; }
+  .espera { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .espera.alta { color: var(--danger-fg); }
+  .lnk { border: 0; background: none; padding: 0; color: var(--info-fg); font-weight: 600; cursor: pointer; }
+  .lnk:hover { text-decoration: underline; }
+  .sep { color: var(--muted); margin: 0 4px; }
+  .scroll-x { overflow-x: auto; }
+  .legenda { display: flex; gap: 14px; padding: 8px 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); }
+  .legenda span { display: inline-flex; align-items: center; gap: 5px; }
+  /* Gaveta "Visualizar" */
+  .veu { position: fixed; inset: 0; background: rgba(23,24,28,.45); display: none; z-index: 20; }
+  .veu.on { display: block; }
+  .gaveta { position: fixed; top: 0; right: 0; bottom: 0; width: min(520px, 100%); background: var(--surface); display: flex; flex-direction: column; z-index: 21; transform: translateX(100%); transition: transform .2s; }
+  .gaveta.on { transform: none; }
+  .gaveta .chat { flex: 1; }
+  .gaveta-rod { display: flex; gap: 8px; justify-content: flex-end; padding: 10px 14px; border-top: 1px solid var(--line); }
+
+  @media (max-width: 1250px) {
+    .central { grid-template-columns: 300px minmax(0, 1fr); }
+    .lado { display: none; }
+    .mon-topo { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 860px) {
+    .sidebar { display: none; }
+    .conteudo { padding: 16px; }
+    .central { grid-template-columns: 1fr; height: auto; }
+    .lista { max-height: 300px; border-right: 0; border-bottom: 1px solid var(--line); }
+    .chat { height: 560px; }
+    .grid2 { grid-template-columns: 1fr; }
+    .usuario .cx { display: none; }
+  }
+  /* ---------- Setores (adendo 06/10/2026) ---------- */
+  .faixa select { height: 26px; border: 1px solid #e5c76b; border-radius: 6px; background: #fffdf5; font: inherit; font-weight: 700; color: #5c4500; }
+  .setor-chip { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); font-weight: 600; }
+  .setor-chip small { color: var(--muted); font-weight: 600; }
+  .barra-central select.input, .barra-sec select.input { width: 240px; }
+  .barra-sec { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; margin-bottom: 14px; }
+  .tag-setor { display: inline-block; padding: 1px 7px; border-radius: 6px; background: var(--neutral-bg); color: var(--neutral-fg); font-size: 11px; font-weight: 800; }
+  .setores { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 16px; }
+  .setores tr { cursor: pointer; }
+  .setores tr.on td { background: var(--brand-soft); }
+  .nums { display: grid; gap: 6px; }
+  .nums div { display: flex; gap: 8px; align-items: center; }
+  .grupo-ag td { background: var(--table-head); font-weight: 800; font-size: 12px; color: var(--muted); }
+  .bloq-perfil { padding: 40px 16px; text-align: center; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="faixa"><b>Mockup para aprovação · Imobdesk.</b> Sem Pipedrive, sem robô, entrada orgânica. <b>Adendo:</b> vários números, cada um de um setor; equipe, gestão, horários e fila separados por setor; sem transferência entre setores.
+  <span style="margin-left:auto">Ver como: <select id="perfil"><option value="atendente">Ana Lima · atendente do Financeiro</option><option value="gestor">Marcos Prado · gestor do Financeiro</option><option value="geral" selected>Wagner · supervisão geral</option></select></span></div>
+<div class="app">
+  <nav class="sidebar" aria-label="Menu principal">
+    <div class="sidebar__label">MENU PRINCIPAL</div>
+    <button class="item"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Página Inicial</button>
+    <button class="item on" data-grupo="atendimento"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Gestão de Atendimento<span class="novo">NOVO</span></button>
+    <div class="subs">
+      <button class="sub on" data-tela="central">Central de atendimento</button>
+      <button class="sub" data-tela="fila" data-perm="fila">Fila e horários</button>
+      <button class="sub" data-tela="setores" data-perm="setores">Setores e números</button>
+    </div>
+    <button class="item" data-tela="zenvia" data-perm="zenvia" id="itemConfig"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>Configurações<svg class="seta" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+    <div class="sidebar__fim">
+      <button class="item">Recolher menu</button><button class="item">Alterar senha</button><button class="item">Sair</button>
+    </div>
+  </nav>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="marca"><span class="logo"><i></i>imobdesk</span><span class="app-nome">PORTAL ATENDIMENTO</span></div>
+      <div class="usuario"><span class="cx"><span>👤</span><span><b id="uNome"></b><small id="uPapel"></small></span></span><span>🔔</span></div>
+    </header>
+
+    <div class="conteudo">
+      <div class="bread" id="bread">🏠 Início / <b>Gestão de Atendimento</b></div>
+      <div class="ph" id="ph"><h1>Gestão de Atendimento</h1><p></p></div>
+      <div class="secoes" id="secoes">
+        <button class="secao on" data-tela="central">💬 Central de atendimento <span class="qtd" id="qtdFila">0</span></button>
+        <button class="secao" data-tela="fila" data-perm="fila">👥 Fila e horários</button>
+        <button class="secao" data-tela="setores" data-perm="setores">🏢 Setores e números</button>
+      </div>
+
+      <!-- ======================= CENTRAL ======================= -->
+      <section class="tela on" id="t-central">
+        <div class="barra-central">
+          <div class="visoes" role="group" aria-label="Visão"><button class="on" data-v="lista">☰ Lista</button><button data-v="kanban">▦ Kanban por situação</button><button data-v="monitor" data-perm="monitor">📊 Monitor</button></div>
+          <span id="setorCentral"></span>
+          <span class="ajuda" id="monInfo" style="display:none"></span>
+        </div>
+        <div id="vKanban" style="display:none"><div class="kb" id="kb"></div></div>
+
+        <div id="vMonitor" style="display:none">
+          <div class="mon-topo">
+            <div class="card mon-card">
+              <div class="mon-head"><h3>Principais indicadores</h3>
+                <select class="input" id="mPeriodo"><option value="hoje">Hoje</option><option value="semana">Esta semana</option><option value="mes" selected>Este mês</option></select>
+                <button class="ic-btn" title="Atualizar">↻</button></div>
+              <div id="mKpis"></div>
+            </div>
+            <div class="card mon-card">
+              <div class="mon-head"><h3>Acompanhamento de atendentes</h3><button class="ic-btn" title="Atualizar">↻</button></div>
+              <div class="scroll-x"><table class="tab">
+                <thead><tr><th>Atendente</th><th class="c">Online</th><th class="c">Disponível</th><th class="n">Em atendimento</th><th class="n">Atendidas hoje</th><th class="n">Tempo médio</th></tr></thead>
+                <tbody id="mAgentes"></tbody>
+              </table></div>
+              <div class="legenda"><span><i class="dot on"></i>Sim</span><span><i class="dot pausa"></i>Pausa</span><span><i class="dot off"></i>Não</span><span>Online = Central aberta. Disponível = Apto, sem pausa e abaixo do limite de conversas do setor.</span></div>
+            </div>
+          </div>
+          <div class="card mon-sec">
+            <div class="mon-head"><h3>Conversas aguardando atendimento <small id="mQtdFila"></small></h3></div>
+            <div class="scroll-x"><table class="tab">
+              <thead><tr><th>Posição</th><th>Ticket</th><th class="col-setor">Setor</th><th>Cliente</th><th>Telefone</th><th>Número</th><th>Última mensagem</th><th>Entrou na fila</th><th>Tempo de espera</th><th>Ações</th></tr></thead>
+              <tbody id="mFila"></tbody>
+            </table></div>
+          </div>
+          <div class="card mon-sec">
+            <div class="mon-head"><h3>Conversas em atendimento <small id="mQtdAt"></small></h3></div>
+            <div class="scroll-x"><table class="tab">
+              <thead><tr><th>Ticket</th><th class="col-setor">Setor</th><th>Cliente</th><th>Telefone</th><th>Atendente</th><th>Início</th><th>Duração</th><th>Cliente esperando há</th><th>Ações</th></tr></thead>
+              <tbody id="mAt"></tbody>
+            </table></div>
+          </div>
+        </div>
+
+        <div class="veu" id="gVeu"></div>
+        <aside class="gaveta" id="gaveta" aria-label="Visualizar conversa">
+          <div class="chat">
+            <div class="chat-head"><span class="av" id="gAv" style="grid-row:auto"></span><div class="quem"><b id="gNome"></b><span id="gSub"></span></div><span class="selo" id="gSelo"></span><button class="ic-btn" id="gFechar" title="Fechar">✕</button></div>
+            <div class="msgs" id="gMsgs"></div>
+            <div class="faixa-modo fila">👁 Só leitura. Para responder, use "Atender".</div>
+          </div>
+          <div class="gaveta-rod"><button class="btn" id="gTransf">🔀 Transferir (mesmo setor)</button><button class="btn btn-p" id="gAtender">Atender</button></div>
+        </aside>
+
+        <div class="card" id="vLista">
+          <div class="central">
+            <aside class="lista">
+              <div class="topo-l">
+                <input class="input" id="busca" placeholder="Buscar nome ou telefone">
+                <div class="chips" id="chips">
+                  <button class="chip on" data-f="todas">Todas</button>
+                  <button class="chip" data-f="fila">Na fila</button>
+                  <button class="chip" data-f="at">Comigo</button>
+                  <button class="chip" data-f="outro">Com outro atendente</button>
+                  <button class="chip" data-f="fim">Encerradas</button>
+                </div>
+              </div>
+              <div class="convs" id="convs"></div>
+            </aside>
+            <section class="chat">
+              <div class="chat-head">
+                <span class="av" id="cAv" style="grid-row:auto"></span>
+                <div class="quem"><b id="cNome"></b><span id="cSub"></span></div>
+                <span class="selo" id="cSelo"></span>
+                <button class="btn btn-p" id="cBtn">Assumir conversa</button>
+              </div>
+              <div class="msgs" id="cMsgs"></div>
+              <div class="faixa-modo" id="cFaixa"></div>
+              <div class="compor" id="cCompor"><button class="btn btn-sm" title="Anexar arquivo">📎</button><input class="input" id="cTexto" placeholder="Escreva uma mensagem…"><button class="btn btn-p btn-sm" id="cEnviar">Enviar</button></div>
+            </section>
+            <aside class="lado" id="cLado"></aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= FILA E HORÁRIOS (por setor) ======================= -->
+      <section class="tela" id="t-fila">
+        <div class="barra-sec" id="filaSetor"></div>
+        <div class="grid2">
+          <div class="card sec">
+            <h3>Equipe do setor</h3>
+            <p>Recebe a fila do setor por rodízio entre os aptos e online. Cada atendente pertence a um setor só.</p>
+            <div id="fEquipe"></div>
+            <div style="margin-top:6px"><button class="btn btn-sm">+ Adicionar atendente</button></div>
+            <p class="ajuda">Atendente vê a fila do setor e as próprias conversas. O gestor do setor vê tudo do setor, inclusive o Monitor.</p>
+            <h3 style="margin-top:22px">Horário de atendimento</h3>
+            <p>Fora do horário, o cliente recebe o aviso do setor e a conversa espera na fila.</p>
+            <table class="horas" style="width:100%;border-collapse:collapse" id="fHoras"></table>
+          </div>
+          <div class="card sec">
+            <h3>Mensagens automáticas do setor</h3>
+            <p>Saem pelo número em que o cliente escreveu.</p>
+            <span class="lbl">Boas-vindas</span><textarea class="input" style="height:64px" id="fBoas"></textarea>
+            <span class="lbl" style="margin-top:12px">Fora do horário</span><textarea class="input" style="height:64px" id="fFora"></textarea>
+            <span class="lbl" style="margin-top:12px">Encerramento</span><textarea class="input" style="height:56px" id="fEnc"></textarea>
+            <h3 style="margin-top:22px">Regras da fila do setor</h3>
+            <div class="regra"><span class="num">1</span><div><b>Limite por atendente</b><span>Até <span class="inl"><input class="input" value="5"></span> conversas ao mesmo tempo. Acima disso, fica "não disponível".</span></div></div>
+            <div class="regra"><span class="num">2</span><div><b>Atendente sem responder</b><span>Depois de <span class="inl"><input class="input" value="30"> min</span>, a conversa volta para a fila do setor.</span></div></div>
+            <div class="regra"><span class="num">3</span><div><b>Cliente sem responder</b><span>Depois de <span class="inl"><input class="input" value="23"> h</span>, a conversa é encerrada com a mensagem de encerramento.</span></div></div>
+            <div class="regra"><span class="num">4</span><div><b>Alertas do Monitor</b><span>Fila acima de <span class="inl"><input class="input" value="15"> min</span> · cliente esperando resposta acima de <span class="inl"><input class="input" value="5"> min</span>.</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= SETORES E NÚMEROS ======================= -->
+      <section class="tela" id="t-setores">
+        <div class="setores">
+          <div class="card">
+            <div class="mon-head"><h3>Setores</h3><button class="btn btn-sm btn-p">+ Novo setor</button></div>
+            <div class="scroll-x"><table class="tab"><thead><tr><th>Setor</th><th>Números WhatsApp</th><th>Gestor</th><th class="n">Atendentes</th><th>Situação</th></tr></thead><tbody id="sLista"></tbody></table></div>
+          </div>
+          <div class="card form" id="sForm" style="padding:18px;display:grid;gap:12px;align-content:start"></div>
+        </div>
+        <div class="notice info" style="margin-top:16px">Cada número pertence a <b>um setor só</b>. A mensagem que chega num número entra na fila do setor dele, e a resposta sai pelo mesmo número. Não há transferência entre setores. O número precisa estar na conta Zenvia configurada em Configurações › Integrações.</div>
+      </section>
+
+      <!-- ======================= ZENVIA (Configurações) ======================= -->
+      <section class="tela" id="t-zenvia">
+        <div class="grid2">
+          <div class="card sec">
+            <h3>Conta Zenvia WhatsApp</h3>
+            <p>Uma conta (um token) para todos os números. Só o super admin vê esta tela.</p>
+            <div class="passos">
+              <div class="passo"><span class="num ok">✓</span><div><b>Token da API</b><span>Guardado no cofre do Supabase (nunca no navegador). Conta: Exemplo.</span></div><span class="dir selo s-ok">Válido</span></div>
+              <div class="passo"><span class="num pend">!</span><div><b>Webhook de mensagens (MESSAGE)</b><span>Um só para todos os números: …/functions/v1/imobdesk-zenvia-webhook. O setor sai do número de destino.</span></div><button class="dir btn btn-sm btn-p">Criar assinatura</button></div>
+              <div class="passo"><span class="num pend">!</span><div><b>Webhook de status (MESSAGE_STATUS)</b><span>Sem ele, uma mensagem recusada pela Zenvia fica invisível.</span></div><button class="dir btn btn-sm btn-p">Criar assinatura</button></div>
+            </div>
+            <h3 style="margin-top:18px">Números cadastrados nos setores</h3>
+            <table class="tab" style="margin-top:6px"><thead><tr><th>Número</th><th>Setor</th><th>Na conta do token?</th></tr></thead><tbody id="zNums"></tbody></table>
+            <div style="margin-top:12px;display:flex;gap:8px"><button class="btn">↻ Testar conexão e números</button><button class="btn">🔑 Trocar token</button></div>
+          </div>
+          <div class="card sec">
+            <h3>Atendimento</h3>
+            <p>Liga e desliga as respostas automáticas em todos os números.</p>
+            <div class="regra"><span class="num">💬</span><div><b>Atendimento ligado <button class="sw off" aria-label="Atendimento ligado" style="margin-left:8px"></button></b><span>Desligado: as mensagens são gravadas e entram na fila, mas nada é respondido automaticamente.</span></div></div>
+            <div class="regra"><span class="num">🔒</span><div><b>Trava de piloto <button class="sw" aria-label="Trava de piloto" style="margin-left:8px"></button></b><span>Só os telefones abaixo recebem resposta automática. Use na homologação.</span></div></div>
+            <textarea class="input" style="height:70px">+55 21 97357-3360</textarea>
+            <h3 style="margin-top:16px">Teste de envio</h3>
+            <div style="display:flex;gap:8px"><select class="input" id="zDe" style="max-width:220px"></select><input class="input" value="+55 21 97357-3360"><button class="btn">Enviar teste</button></div>
+            <p class="ajuda">Confirmado só quando a Zenvia devolve "entregue": ela responde "ok" mesmo quando vai descartar a mensagem.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ Dados ============ */
+const SETORES = [
+  { id: "fin", nome: "Financeiro", numeros: ["+55 21 99999-0002"], gestor: "Marcos Prado", ativo: true, horas: [["Segunda a sexta", "08:00", "18:00"], ["Sábado", null, null]],
+    boas: "Olá! Você falou com o Financeiro da empresa. Em instantes alguém da equipe vai te atender. 🙂", fora: "Recebemos sua mensagem! O Financeiro atende de segunda a sexta, das 8h às 18h.", enc: "Atendimento do Financeiro encerrado. Se precisar, é só mandar nova mensagem." },
+  { id: "rel", nome: "Relacionamento com o cliente", numeros: ["+55 21 99999-0003", "+55 21 99999-0005"], gestor: "Paula Nunes", ativo: true, horas: [["Segunda a sexta", "08:00", "20:00"], ["Sábado", "09:00", "13:00"]],
+    boas: "Olá! Aqui é o Relacionamento com o Cliente Exemplo. Já já falamos com você. 🙂", fora: "Recebemos sua mensagem! Atendemos de segunda a sexta, das 8h às 20h, e sábado das 9h às 13h.", enc: "Atendimento encerrado. Obrigado por falar com a empresa!" },
+  { id: "pos", nome: "Assistência técnica", numeros: ["+55 21 99999-0004"], gestor: "Renato Lopes", ativo: true, horas: [["Segunda a sexta", "08:00", "17:00"], ["Sábado", null, null]],
+    boas: "Olá! Assistência técnica Exemplo. Conte o que aconteceu e, se puder, envie fotos. 🙂", fora: "Recebemos sua mensagem! A Assistência técnica atende de segunda a sexta, das 8h às 17h.", enc: "Chamado encerrado. Qualquer coisa, é só escrever de novo." },
+];
+const AGENTES = [
+  { nome: "Ana Lima", setor: "fin", online: "on", disp: "on", hoje: 9, medio: "11 min" },
+  { nome: "Bruno Rocha", setor: "fin", online: "on", disp: "on", hoje: 7, medio: "14 min" },
+  { nome: "Carla Mendes", setor: "fin", online: "off", disp: "off", hoje: 0, medio: "—" },
+  { nome: "Fernanda Dias", setor: "rel", online: "on", disp: "pausa", hoje: 5, medio: "9 min" },
+  { nome: "Gustavo Reis", setor: "rel", online: "on", disp: "on", hoje: 3, medio: "12 min" },
+  { nome: "Helena Costa", setor: "pos", online: "on", disp: "on", hoje: 4, medio: "18 min" },
+];
+const PERFIS = {
+  atendente: { nome: "Ana Lima", papel: "Atendente · Financeiro", setor: "fin", perms: [] },
+  gestor: { nome: "Marcos Prado", papel: "Gestor · Financeiro", setor: "fin", perms: ["fila", "monitor"] },
+  geral: { nome: "Wagner Antunes", papel: "Supervisão geral", setor: null, perms: ["fila", "monitor", "setores", "zenvia"] },
+};
+const setorDe = (id) => SETORES.find((s) => s.id === id);
+const AGORA = Date.now();
+const haMin = (m) => AGORA - m * 60000;
+const L = (t, h) => `<div class="bal">${t}<small>${h}</small></div>`;
+const A = (t, h, quem) => `<div class="bal at"><div class="autor">${quem} · Atendente</div>${t}<small>${h} ✓✓</small></div>`;
+const AUTO = (t, h) => `<div class="bal auto"><div class="autor">Mensagem automática</div>${t}<small>${h} ✓✓</small></div>`;
+const EV = (t) => `<div class="ev">${t}</div>`;
+const CONVS = [
+  { id: 1, setor: "fin", numero: "+55 21 99999-0002", ini: "MS", nome: "Mariana Souza", fone: "+55 21 98123-4455", hora: "19:38", prev: "Preciso da 2ª via do boleto", modo: "fila", nova: true, desde: "hoje", conversas: 1, ticket: 10241, filaEm: haMin(19.3),
+    msgs: [EV("Hoje"), L("Boa noite", "19:36"), AUTO(SETORES[0].boas, "19:36"), L("Preciso da 2ª via do boleto", "19:38"), EV("Entrou na fila do Financeiro")] },
+  { id: 2, setor: "fin", numero: "+55 21 99999-0002", ini: "+5", nome: "+55 21 98877-1122", fone: "+55 21 98877-1122", hora: "19:20", prev: "Posso pagar com PIX?", modo: "fila", nova: true, desde: "hoje", conversas: 1, ticket: 10242, filaEm: haMin(13.7),
+    msgs: [EV("Hoje"), L("Posso pagar com PIX?", "19:20"), AUTO(SETORES[0].boas, "19:20"), EV("Entrou na fila do Financeiro")] },
+  { id: 3, setor: "fin", numero: "+55 21 99999-0002", ini: "RA", nome: "Ricardo Alves", fone: "+55 21 99777-1010", hora: "19:15", prev: "Ana: Te envio agora", modo: "at", atendente: "Ana Lima", nova: false, desde: "12/09/2026", conversas: 3, ticket: 10236, inicioEm: haMin(25.4), cliEsperaEm: null,
+    msgs: [EV("Hoje"), L("Quero o extrato das parcelas", "18:58"), AUTO(SETORES[0].boas, "18:58"), EV("Ana Lima assumiu a conversa"), A("Oi Ricardo, aqui é a Ana! Vou gerar para você.", "19:05", "Ana"), L("Obrigado!", "19:07"), A("Te envio agora", "19:15", "Ana")] },
+  { id: 4, setor: "fin", numero: "+55 21 99999-0002", ini: "JC", nome: "João Castro", fone: "+55 21 98444-2020", hora: "18:50", prev: "Certo, aguardo seu retorno", modo: "at", atendente: "Bruno Rocha", nova: false, desde: "hoje", conversas: 1, ticket: 10238, inicioEm: haMin(19.9), cliEsperaEm: haMin(6.2),
+    msgs: [EV("Hoje"), L("Boa tarde, preciso renegociar", "18:30"), EV("Bruno Rocha assumiu a conversa"), A("Boa tarde, João! Vamos ver as opções.", "18:35", "Bruno"), L("Certo, aguardo seu retorno", "18:50")] },
+  { id: 5, setor: "rel", numero: "+55 21 99999-0003", ini: "SB", nome: "Silvia Barata", fone: "+55 21 99123-0099", hora: "19:42", prev: "Quero remarcar minha visita", modo: "fila", nova: true, desde: "hoje", conversas: 4, ticket: 10243, filaEm: haMin(5.5),
+    msgs: [EV("Hoje"), L("Boa noite! Quero remarcar minha visita", "19:42"), AUTO(SETORES[1].boas, "19:42"), EV("Entrou na fila do Relacionamento com o cliente")] },
+  { id: 6, setor: "rel", numero: "+55 21 99999-0005", ini: "LF", nome: "Letícia Figueiredo", fone: "+55 21 98555-7788", hora: "19:30", prev: "Gustavo: Já encaminhei seu pedido", modo: "at", atendente: "Gustavo Reis", nova: false, desde: "02/08/2026", conversas: 2, ticket: 10239, inicioEm: haMin(16.6), cliEsperaEm: null,
+    msgs: [EV("Hoje"), L("Oi, preciso de uma declaração", "19:12"), EV("Gustavo Reis assumiu a conversa"), A("Oi Letícia! Qual declaração?", "19:14", "Gustavo"), L("De quitação", "19:20"), A("Já encaminhei seu pedido", "19:30", "Gustavo")] },
+  { id: 7, setor: "pos", numero: "+55 21 99999-0004", ini: "PH", nome: "Paulo Henrique", fone: "+55 21 97357-3360", hora: "19:10", prev: "[foto] Infiltração no banheiro", modo: "fila", nova: true, desde: "05/10/2026", conversas: 2, ticket: 10240, filaEm: haMin(28.1),
+    msgs: [EV("Hoje"), L("Infiltração no banheiro do apto 302", "19:09"), L("📷 foto.jpg", "19:10"), AUTO(SETORES[2].boas, "19:09"), EV("Entrou na fila da Assistência técnica")] },
+  { id: 8, setor: "fin", numero: "+55 21 99999-0002", ini: "CP", nome: "Cláudia Pires", fone: "+55 21 99001-2233", hora: "ontem", prev: "Atendimento encerrado", modo: "fim", nova: false, desde: "01/06/2026", conversas: 5, ticket: 10199,
+    msgs: [EV("Ontem"), L("Recebi o boleto, obrigada", "10:02"), A("Por nada, Cláudia!", "10:05", "Ana"), AUTO(SETORES[0].enc, "10:07"), EV("Ana Lima encerrou a conversa")] },
+];
+const KPIS = {
+  hoje: [[42, 38, 4, 3, "6 min", "12 min"], [-8.7, -5.0, 33.3, 0, -14.3, 9.1]],
+  semana: [[198, 181, 17, 11, "7 min", "13 min"], [4.2, 3.4, 13.3, -21.4, -12.5, 8.3]],
+  mes: [[225, 211, 14, 0, "8 min", "13 min"], [-30.12, -31.72, 7.69, 0, 14.3, -7.1]],
+};
+const KPI_DEF = [
+  ["Conversas atendidas", "Atendimentos encerrados no período", false],
+  ["Resolvidas no 1º atendimento", "Encerradas sem transferência e sem o cliente voltar em 24 h", false],
+  ["Não resolvidas no 1º atendimento", "Transferidas, devolvidas à fila ou reabertas em 24 h", true],
+  ["Recebidas fora do horário", "Entraram com o setor fechado ou sem atendente online", true],
+  ["Tempo médio de espera", "Da entrada na fila até alguém assumir", true],
+  ["Tempo médio de atendimento", "De assumir até encerrar", true],
+];
+
+/* ============ Perfil (Ver como) ============ */
+let perfil = PERFIS.geral, setorFiltro = "", setorEdit = "fin", setorFila = "fin";
+const pode = (p) => perfil.perms.includes(p);
+const setoresVisiveis = () => (perfil.setor ? [perfil.setor] : SETORES.map((s) => s.id));
+function aplicarPerfil() {
+  perfil = PERFIS[document.getElementById("perfil").value];
+  document.getElementById("uNome").textContent = perfil.nome;
+  document.getElementById("uPapel").textContent = perfil.papel;
+  document.querySelectorAll("[data-perm]").forEach((el) => { el.style.display = pode(el.dataset.perm) ? "" : "none"; });
+  setorFiltro = ""; setorFila = perfil.setor ?? "fin";
+  const sc = document.getElementById("setorCentral");
+  sc.innerHTML = perfil.setor
+    ? `<span class="setor-chip">🏢 ${setorDe(perfil.setor).nome} <small>· ${setorDe(perfil.setor).numeros.join(", ")}</small></span>`
+    : `<select class="input" id="fSetor"><option value="">Todos os setores</option>${SETORES.map((s) => `<option value="${s.id}">${s.nome}</option>`).join("")}</select>`;
+  document.getElementById("fSetor")?.addEventListener("change", (e) => { setorFiltro = e.target.value; render(); });
+  document.querySelectorAll(".col-setor").forEach((el) => { el.style.display = perfil.setor ? "none" : ""; });
+  const atual_ = document.querySelector(".tela.on")?.id.replace("t-", "");
+  if (atual_ && atual_ !== "central" && !pode(atual_)) irPara("central");
+  if (!pode("monitor") && document.getElementById("vMonitor").style.display !== "none") trocaVisao("lista");
+  atual = (visiveis()[0] ?? CONVS[0]).id;
+  render(); renderFila(); renderSetores(); renderZenvia();
+}
+document.getElementById("perfil").addEventListener("change", aplicarPerfil);
+
+/* ============ Navegação ============ */
+const TITULOS = {
+  central: ["Gestão de Atendimento", "Conversas do WhatsApp (Zenvia) atendidas pela equipe de cada setor.", "Gestão de Atendimento"],
+  fila: ["Gestão de Atendimento", "Equipe, horários, mensagens automáticas e regras da fila de cada setor.", "Gestão de Atendimento"],
+  setores: ["Gestão de Atendimento", "Setores, os números de WhatsApp de cada um, gestor e equipe.", "Gestão de Atendimento"],
+  zenvia: ["Zenvia WhatsApp", "Integrações › Zenvia WhatsApp", "Configurações / Integrações"],
+};
+function irPara(t) {
+  document.querySelectorAll(".tela").forEach((s) => s.classList.toggle("on", s.id === "t-" + t));
+  document.querySelectorAll(".secao").forEach((b) => b.classList.toggle("on", b.dataset.tela === t));
+  document.querySelectorAll(".sub").forEach((b) => b.classList.toggle("on", b.dataset.tela === t));
+  const cfg = t === "zenvia";
+  document.querySelector('[data-grupo="atendimento"]').classList.toggle("on", !cfg);
+  document.getElementById("itemConfig").classList.toggle("on", cfg);
+  document.getElementById("secoes").style.display = cfg ? "none" : "flex";
+  const [h, p, b] = TITULOS[t];
+  document.getElementById("ph").innerHTML = `<h1>${h}</h1><p>${p}</p>`;
+  document.getElementById("bread").innerHTML = `🏠 Início / <b>${b}</b>`;
+}
+document.querySelectorAll("[data-tela]").forEach((b) => b.addEventListener("click", () => irPara(b.dataset.tela)));
+
+/* ============ Central ============ */
+const MODO = {
+  fila: ["s-fila", "Na fila", "fila", "⏳ Aguardando atendente do setor. Assuma para responder."],
+  at: ["s-at", "Com você", "at", "👤 Você está atendendo. Ao encerrar, o cliente recebe a mensagem de encerramento do setor."],
+  outro: ["s-outro", "Com outro atendente", "outro", "👥 Outro atendente do setor está com esta conversa. O gestor pode transferir dentro do setor."],
+  fim: ["s-ok", "Encerrada", "fim", "✓ Conversa encerrada. Se o cliente escrever de novo, ela volta para a fila do setor."],
+};
+const modoVisto = (c) => (c.modo === "at" ? (c.atendente === perfil.nome ? "at" : "outro") : c.modo);
+const rotulo = (c) => ({ fila: "Na fila", at: "Comigo", outro: c.atendente, fim: "Encerrada" })[modoVisto(c)];
+let filtro = "todas", atual = 1;
+function visiveis() {
+  const q = document.getElementById("busca").value.trim().toLowerCase();
+  const sv = setoresVisiveis();
+  return CONVS.filter((c) => sv.includes(c.setor) && (!setorFiltro || c.setor === setorFiltro))
+    // atendente: fila do setor + as próprias (encerradas também)
+    .filter((c) => !(perfil === PERFIS.atendente && c.modo === "at" && c.atendente !== perfil.nome))
+    .filter((c) => (filtro === "todas" || modoVisto(c) === filtro) && (!q || `${c.nome} ${c.fone}`.toLowerCase().includes(q)));
+}
+function renderLista() {
+  const lista = visiveis();
+  document.getElementById("convs").innerHTML = lista.length ? lista.map((c) =>
+    `<div class="conv ${c.nova ? "nova" : ""} ${c.id === atual ? "on" : ""}" data-id="${c.id}"><span class="av">${c.ini}</span><span class="nome">${c.nome}</span><span class="hora">${c.hora}</span><span class="prev">${perfil.setor ? "" : `<span class="tag-setor">${setorDe(c.setor).nome}</span> `}${c.prev}</span><span><span class="selo ${MODO[modoVisto(c)][0]}">${rotulo(c)}</span></span></div>`
+  ).join("") : `<div class="vazio">Nenhuma conversa neste filtro.</div>`;
+  document.querySelectorAll(".conv").forEach((el) => el.addEventListener("click", () => { atual = Number(el.dataset.id); CONVS.find((x) => x.id === atual).nova = false; render(); }));
+  document.getElementById("qtdFila").textContent = CONVS.filter((c) => c.modo === "fila" && setoresVisiveis().includes(c.setor)).length;
+}
+function renderChat() {
+  const c = CONVS.find((x) => x.id === atual) ?? visiveis()[0];
+  if (!c) return;
+  const m = modoVisto(c); const [cls, txt, faixa, aviso] = MODO[m];
+  document.getElementById("cAv").textContent = c.ini;
+  document.getElementById("cNome").textContent = c.nome;
+  document.getElementById("cSub").textContent = `${c.fone} → ${c.numero} · ${setorDe(c.setor).nome}`;
+  const selo = document.getElementById("cSelo"); selo.className = "selo " + cls; selo.textContent = m === "outro" ? `Com ${c.atendente}` : txt;
+  const btn = document.getElementById("cBtn");
+  const gestor = pode("monitor");
+  btn.textContent = m === "at" ? "Devolver à fila" : m === "outro" ? "Transferir para mim" : "Assumir conversa";
+  btn.className = "btn " + (m === "at" ? "" : "btn-p");
+  btn.style.display = m === "fim" || (m === "outro" && !gestor) ? "none" : "";
+  const msgs = document.getElementById("cMsgs"); msgs.innerHTML = c.msgs.join(""); msgs.scrollTop = msgs.scrollHeight;
+  const f = document.getElementById("cFaixa"); f.className = "faixa-modo " + faixa; f.textContent = aviso;
+  document.getElementById("cCompor").classList.toggle("bloq", m === "outro" || m === "fim");
+  document.getElementById("cLado").innerHTML = `
+    <h4>Contato</h4>
+    <dl class="kv"><dt>Nome</dt><dd>${c.nome}</dd><dt>Telefone</dt><dd>${c.fone}</dd><dt>Canal</dt><dd><span class="selo s-info">WhatsApp · orgânico</span></dd>
+    <dt>Cliente desde</dt><dd>${c.desde}</dd><dt>Conversas</dt><dd>${c.conversas}</dd></dl>
+    <h4>Atendimento</h4>
+    <dl class="kv"><dt>Setor</dt><dd>${setorDe(c.setor).nome}</dd><dt>Número</dt><dd>${c.numero}</dd><dt>Situação</dt><dd><span class="selo ${cls}">${m === "outro" ? c.atendente : txt}</span></dd><dt>Atendente</dt><dd>${c.atendente ?? "—"}</dd><dt>Ticket</dt><dd>#${c.ticket}</dd></dl>
+    <h4>Nota interna</h4>
+    <textarea class="input nota" placeholder="Visível só para a equipe do setor"></textarea>
+    <h4>Ações</h4><div class="acoes">
+      <button class="btn btn-sm">✏️ Editar nome do contato</button>
+      ${gestor ? '<button class="btn btn-sm">🔀 Transferir (mesmo setor)…</button>' : ""}
+      <button class="btn btn-sm btn-perigo">✓ Encerrar conversa</button></div>`;
+}
+function renderKanban() {
+  const cols = [["fila", "Na fila"], ["at", "Comigo"], ["outro", "Com outros atendentes"], ["fim", "Encerradas hoje"]];
+  const lista = visiveis();
+  document.getElementById("kb").innerHTML = cols.map(([m, titulo]) => {
+    const cards = lista.filter((c) => modoVisto(c) === m);
+    return `<section class="kb-col"><h4>${titulo} <small>${cards.length}</small></h4>
+      ${cards.map((c) => `<div class="kb-card ${m} ${c.nova ? "nova" : ""}" data-id="${c.id}"><b>${c.nome}</b><span class="p">${c.prev}</span><div class="rod"><span class="selo ${MODO[m][0]}">${rotulo(c)}</span><span>${perfil.setor ? c.hora : setorDe(c.setor).nome}</span></div></div>`).join("") || '<div class="vazio">Nenhuma conversa.</div>'}</section>`;
+  }).join("");
+  document.querySelectorAll(".kb-card").forEach((el) => el.addEventListener("click", () => { atual = Number(el.dataset.id); CONVS.find((x) => x.id === atual).nova = false; trocaVisao("lista"); }));
+}
+
+/* ============ Monitor ============ */
+const fmtDur = (ms) => { const s = Math.max(0, Math.floor(ms / 1000)); const m = Math.floor(s / 60); const h = Math.floor(m / 60); return h ? `${h}h ${m % 60}min` : `${m}min ${String(s % 60).padStart(2, "0")}s`; };
+const fmtHora = (t) => new Date(t).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+function renderMonitor() {
+  const sv = setoresVisiveis().filter((s) => !setorFiltro || s === setorFiltro);
+  const fator = sv.length / SETORES.length;
+  const [v, d] = KPIS[document.getElementById("mPeriodo").value];
+  document.getElementById("mKpis").innerHTML = KPI_DEF.map(([t, s, menorMelhor], i) => {
+    const x = d[i]; const bom = menorMelhor ? x < 0 : x > 0;
+    const val = typeof v[i] === "number" ? Math.round(v[i] * fator) : v[i];
+    return `<div class="kpi-l"><div><b>${t}</b><span>${s}</span></div><div class="v">${val}</div><div class="d ${x === 0 ? "eq" : bom ? "up" : "down"}">${x > 0 ? "+" : ""}${x.toFixed(2).replace(".", ",")}%</div></div>`;
+  }).join("");
+  const emAt = (nome) => CONVS.filter((c) => c.atendente === nome && c.modo === "at").length;
+  document.getElementById("mAgentes").innerHTML = sv.map((sid) => {
+    const linhas = AGENTES.filter((a) => a.setor === sid).map((a) => `<tr><td>${a.nome}</td><td class="c"><i class="dot ${a.online}"></i></td><td class="c"><i class="dot ${a.disp}"></i></td><td class="n">${emAt(a.nome)}</td><td class="n">${a.hoje}</td><td class="n">${a.medio}</td></tr>`).join("");
+    return (sv.length > 1 ? `<tr class="grupo-ag"><td colspan="6">${setorDe(sid).nome} · gestor ${setorDe(sid).gestor}</td></tr>` : "") + linhas;
+  }).join("");
+  const colSetor = (c) => (perfil.setor ? "" : `<td class="col-setor"><span class="tag-setor">${setorDe(c.setor).nome}</span></td>`);
+  const fila = CONVS.filter((c) => c.modo === "fila" && sv.includes(c.setor)).sort((a, b) => a.filaEm - b.filaEm);
+  document.getElementById("mQtdFila").textContent = `· ${fila.length}`;
+  document.getElementById("mFila").innerHTML = fila.length ? fila.map((c, i) => {
+    const esp = Date.now() - c.filaEm;
+    return `<tr class="${esp > 15 * 60000 ? "alerta" : ""}"><td>${i + 1}º</td><td>#${c.ticket}</td>${colSetor(c)}<td><b>${c.nome}</b></td><td>${c.fone}</td><td>${c.numero}</td><td>${c.prev}</td><td>${fmtHora(c.filaEm)}</td>
+      <td><span class="espera ${esp > 15 * 60000 ? "alta" : ""}" data-desde="${c.filaEm}">${fmtDur(esp)}</span></td>
+      <td><button class="lnk" data-ver="${c.id}">Visualizar</button><span class="sep">|</span><button class="lnk" data-atender="${c.id}">Atender</button></td></tr>`;
+  }).join("") : `<tr><td colspan="10" class="vazio">Ninguém aguardando. 🎉</td></tr>`;
+  const at = CONVS.filter((c) => c.modo === "at" && sv.includes(c.setor));
+  document.getElementById("mQtdAt").textContent = `· ${at.length}`;
+  document.getElementById("mAt").innerHTML = at.map((c) => `<tr><td>#${c.ticket}</td>${colSetor(c)}<td><b>${c.nome}</b></td><td>${c.fone}</td><td>${c.atendente}</td><td>${fmtHora(c.inicioEm)}</td>
+    <td><span class="espera" data-desde="${c.inicioEm}">${fmtDur(Date.now() - c.inicioEm)}</span></td>
+    <td>${c.cliEsperaEm ? `<span class="espera ${Date.now() - c.cliEsperaEm > 5 * 60000 ? "alta" : ""}" data-desde="${c.cliEsperaEm}">${fmtDur(Date.now() - c.cliEsperaEm)}</span>` : "—"}</td>
+    <td><button class="lnk" data-ver="${c.id}">Visualizar</button><span class="sep">|</span><button class="lnk" data-transf="${c.id}">Transferir</button></td></tr>`).join("");
+  document.querySelectorAll(".col-setor").forEach((el) => { el.style.display = perfil.setor ? "none" : ""; });
+}
+setInterval(() => document.querySelectorAll(".espera[data-desde]").forEach((el) => { el.textContent = fmtDur(Date.now() - Number(el.dataset.desde)); }), 1000);
+let verId = null;
+function abrirGaveta(id) {
+  verId = id; const c = CONVS.find((x) => x.id === id);
+  document.getElementById("gAv").textContent = c.ini; document.getElementById("gNome").textContent = c.nome;
+  document.getElementById("gSub").textContent = `${c.fone} · ${setorDe(c.setor).nome} · ticket #${c.ticket}`;
+  const s = document.getElementById("gSelo"); s.className = "selo " + MODO[modoVisto(c)][0]; s.textContent = rotulo(c);
+  const m = document.getElementById("gMsgs"); m.innerHTML = c.msgs.join(""); setTimeout(() => { m.scrollTop = m.scrollHeight; });
+  document.getElementById("gAtender").style.display = c.modo === "fila" ? "" : "none";
+  document.getElementById("gaveta").classList.add("on"); document.getElementById("gVeu").classList.add("on");
+}
+function fecharGaveta() { document.getElementById("gaveta").classList.remove("on"); document.getElementById("gVeu").classList.remove("on"); }
+function atender(id) {
+  const c = CONVS.find((x) => x.id === id);
+  Object.assign(c, { modo: "at", atendente: perfil.nome, inicioEm: Date.now(), cliEsperaEm: Date.now(), nova: false });
+  c.msgs.push(EV(`${perfil.nome} assumiu a conversa pelo Monitor`));
+  atual = id; fecharGaveta(); trocaVisao("lista");
+}
+const avisoTransf = (id) => { const c = CONVS.find((x) => x.id === id); alert(`Escolha entre os atendentes online do setor ${setorDe(c.setor).nome}. Não há transferência para outro setor.`); };
+document.getElementById("vMonitor").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.ver) abrirGaveta(Number(b.dataset.ver));
+  if (b.dataset.atender) atender(Number(b.dataset.atender));
+  if (b.dataset.transf) avisoTransf(Number(b.dataset.transf));
+});
+document.getElementById("mPeriodo").addEventListener("change", renderMonitor);
+document.getElementById("gFechar").addEventListener("click", fecharGaveta);
+document.getElementById("gVeu").addEventListener("click", fecharGaveta);
+document.getElementById("gAtender").addEventListener("click", () => atender(verId));
+document.getElementById("gTransf").addEventListener("click", () => avisoTransf(verId));
+
+function trocaVisao(v) {
+  document.querySelectorAll(".visoes button").forEach((b) => b.classList.toggle("on", b.dataset.v === v));
+  document.getElementById("vKanban").style.display = v === "kanban" ? "" : "none";
+  document.getElementById("vLista").style.display = v === "lista" ? "" : "none";
+  document.getElementById("vMonitor").style.display = v === "monitor" ? "" : "none";
+  const info = document.getElementById("monInfo");
+  info.style.display = v === "monitor" ? "" : "none";
+  info.textContent = perfil.setor ? "Monitor do seu setor. Atualiza sozinho (Realtime)." : "Supervisão geral: todos os setores (filtre pelo seletor). Atualiza sozinho (Realtime).";
+  render();
+}
+document.querySelectorAll(".visoes button").forEach((b) => b.addEventListener("click", () => trocaVisao(b.dataset.v)));
+function render() { renderLista(); renderChat(); renderKanban(); renderMonitor(); }
+document.getElementById("chips").addEventListener("click", (e) => {
+  const b = e.target.closest(".chip"); if (!b) return; filtro = b.dataset.f;
+  document.querySelectorAll(".chip").forEach((x) => x.classList.toggle("on", x === b)); render();
+});
+document.getElementById("busca").addEventListener("input", render);
+document.getElementById("cBtn").addEventListener("click", () => {
+  const c = CONVS.find((x) => x.id === atual); const m = modoVisto(c);
+  if (m === "at") { Object.assign(c, { modo: "fila", atendente: null, filaEm: Date.now() }); c.msgs.push(EV(`${perfil.nome} devolveu a conversa à fila`)); }
+  else { c.msgs.push(EV(m === "outro" ? `Conversa transferida de ${c.atendente} para ${perfil.nome}` : `${perfil.nome} assumiu a conversa`)); Object.assign(c, { modo: "at", atendente: perfil.nome, inicioEm: c.inicioEm ?? Date.now() }); }
+  render();
+});
+document.getElementById("cEnviar").addEventListener("click", () => {
+  const t = document.getElementById("cTexto"); if (!t.value.trim()) return;
+  const c = CONVS.find((x) => x.id === atual); const m = modoVisto(c);
+  if (m === "outro" || m === "fim") return;
+  if (m === "fila") { Object.assign(c, { modo: "at", atendente: perfil.nome, inicioEm: Date.now() }); c.msgs.push(EV(`${perfil.nome} assumiu ao responder`)); }
+  c.msgs.push(A(t.value.trim(), "agora", perfil.nome.split(" ")[0])); c.prev = "Você: " + t.value.trim(); t.value = ""; render();
+});
+document.getElementById("cTexto").addEventListener("keydown", (e) => { if (e.key === "Enter") document.getElementById("cEnviar").click(); });
+
+/* ============ Fila e horários (por setor) ============ */
+function renderFila() {
+  const s = setorDe(setorFila);
+  document.getElementById("filaSetor").innerHTML = perfil.setor
+    ? `<span class="setor-chip">🏢 ${s.nome} <small>· ${s.numeros.join(", ")}</small></span>`
+    : `<div><span class="lbl">Setor</span><select class="input" id="fsSel">${SETORES.map((x) => `<option value="${x.id}" ${x.id === setorFila ? "selected" : ""}>${x.nome}</option>`).join("")}</select></div><span class="ajuda">Tudo nesta tela vale só para o setor escolhido.</span>`;
+  document.getElementById("fsSel")?.addEventListener("change", (e) => { setorFila = e.target.value; renderFila(); });
+  document.getElementById("fEquipe").innerHTML = `<div class="pessoa"><span class="av">👔</span><div><b>${s.gestor}</b><small>Gestor do setor · vê o Monitor e configura esta tela</small></div></div>` +
+    AGENTES.filter((a) => a.setor === s.id).map((a) => `<div class="pessoa"><span class="av">${a.nome.split(" ").map((p) => p[0]).join("")}</span><div><b>${a.nome}</b><small>${a.nome.toLowerCase().replace(" ", ".").normalize("NFD").replace(/[̀-ͯ]/g, "")}@exemplo.com.br · ${a.hoje} hoje</small></div><div class="dir"><span class="selo ${a.online === "on" ? "s-ok" : "s-inat"}">${a.online === "on" ? "Online" : "Offline"}</span><button class="sw ${a.disp === "off" && a.online === "off" ? "off" : ""}" aria-label="Apto"></button>Apto</div></div>`).join("");
+  document.getElementById("fHoras").innerHTML = s.horas.map(([d, a, f]) => `<tr><td>${d}</td>${a ? `<td><input class="input" value="${a}"></td><td>às</td><td><input class="input" value="${f}"></td>` : `<td colspan="3"><span class="selo s-inat">Fechado</span></td>`}</tr>`).join("") + `<tr><td>Domingo e feriados</td><td colspan="3"><span class="selo s-inat">Fechado</span></td></tr>`;
+  document.getElementById("fBoas").value = s.boas; document.getElementById("fFora").value = s.fora; document.getElementById("fEnc").value = s.enc;
+}
+
+/* ============ Setores e números ============ */
+function renderSetores() {
+  document.getElementById("sLista").innerHTML = SETORES.map((s) => `<tr class="${s.id === setorEdit ? "on" : ""}" data-s="${s.id}"><td><b>${s.nome}</b></td><td>${s.numeros.join("<br>")}</td><td>${s.gestor}</td><td class="n">${AGENTES.filter((a) => a.setor === s.id).length}</td><td><span class="selo ${s.ativo ? "s-ok" : "s-inat"}">${s.ativo ? "Ativo" : "Inativo"}</span></td></tr>`).join("");
+  document.querySelectorAll("#sLista tr").forEach((tr) => tr.addEventListener("click", () => { setorEdit = tr.dataset.s; renderSetores(); }));
+  const s = setorDe(setorEdit);
+  document.getElementById("sForm").innerHTML = `
+    <h3 style="margin:0">${s.nome}</h3>
+    <div><span class="lbl">Nome do setor</span><input class="input" value="${s.nome}"></div>
+    <div><span class="lbl">Números WhatsApp (da conta Zenvia)</span><div class="nums">${s.numeros.map((n) => `<div><input class="input" value="${n}"><span class="selo s-ok">Na conta</span><button class="btn btn-sm btn-perigo" title="Remover">✕</button></div>`).join("")}</div>
+      <button class="btn btn-sm" style="margin-top:6px">+ Adicionar número</button><p class="ajuda">Um número não pode estar em dois setores. Ao salvar, o sistema confere se ele está na conta do token.</p></div>
+    <div><span class="lbl">Gestor do setor</span><select class="input"><option>${s.gestor}</option><option>Outro usuário do portal…</option></select></div>
+    <div><span class="lbl">Equipe</span><div class="ajuda" style="margin:0">${AGENTES.filter((a) => a.setor === s.id).map((a) => a.nome).join(", ") || "Nenhum atendente"} · gerencie em Fila e horários.</div></div>
+    <div><button class="sw ${s.ativo ? "" : "off"}" aria-label="Ativo"></button> <b>Setor ativo</b><p class="ajuda">Inativo: o número continua gravando as mensagens, mas nada é respondido e a fila não distribui.</p></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px"><button class="btn">Cancelar</button><button class="btn btn-p">Salvar</button></div>`;
+}
+
+/* ============ Zenvia ============ */
+function renderZenvia() {
+  const nums = SETORES.flatMap((s) => s.numeros.map((n) => [n, s.nome]));
+  document.getElementById("zNums").innerHTML = nums.map(([n, s]) => `<tr><td>${n}</td><td>${s}</td><td><span class="selo s-ok">Sim</span></td></tr>`).join("");
+  document.getElementById("zDe").innerHTML = nums.map(([n, s]) => `<option>${n} · ${s}</option>`).join("");
+}
+
+aplicarPerfil();
+irPara("central");
+</script>
+</body>
+</html>

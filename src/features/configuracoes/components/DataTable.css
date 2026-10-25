@@ -1,0 +1,70 @@
+.data-table__wrap {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  transition: opacity 0.15s ease;
+}
+
+.data-table--fetching {
+  opacity: 0.6;
+}
+
+.data-table th {
+  height: 40px;
+  padding: 0 16px;
+  background: var(--table-head);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.data-table td {
+  height: 60px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table td.data-table__state {
+  height: auto;
+  padding: 0;
+}
+
+/* ---------- Linhas expansíveis ---------- */
+
+.data-table .data-table__toggle-cell {
+  width: 48px;
+  padding-right: 0;
+}
+
+.data-table__chevron {
+  transition: transform 0.15s ease;
+}
+
+.data-table__chevron--open {
+  transform: rotate(90deg);
+}
+
+.data-table__row--open td {
+  border-bottom-color: transparent;
+}
+
+.data-table__detail td {
+  height: auto;
+  padding: 0 16px 16px 64px;
+  background: var(--surface);
+}

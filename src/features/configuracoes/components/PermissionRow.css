@@ -1,0 +1,53 @@
+.permission-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 60px;
+  padding: 10px 20px;
+  border-top: 1px solid var(--line);
+}
+
+/* Seção ou ação dentro de um item: recuo por nível e trilho à esquerda. */
+.permission-row--nested {
+  min-height: 52px;
+  padding-left: calc(20px + var(--permission-depth, 1) * 28px);
+  background-image: linear-gradient(var(--line), var(--line));
+  background-repeat: no-repeat;
+  background-size: 2px 100%;
+  background-position: calc(28px + (var(--permission-depth, 1) - 1) * 28px) 0;
+}
+
+.permission-row--changed {
+  background: var(--warning-bg);
+}
+
+.permission-row__icon {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+.permission-row__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.permission-row__label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.permission-row__id {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.permission-row__badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}

@@ -1,0 +1,331 @@
+/* ---------- Navegação entre seções (E-mail, TOTVS RM, Sincronização) ---------- */
+
+.section-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.section-nav__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.section-nav__link:hover {
+  color: var(--ink);
+  border-color: var(--brand);
+}
+
+.section-nav__link--active {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+/* ---------- TOTVS RM ---------- */
+
+.totvs__credentials {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.totvs__docs {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.totvs-test {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.totvs-test__header {
+  display: flex;
+  gap: 12px;
+  color: var(--brand);
+}
+
+.totvs-test__header h2 {
+  margin: 0 0 2px;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.totvs-test__header p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.totvs-test__body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.totvs-test__proposal {
+  flex: 1 1 260px;
+}
+
+.totvs-test__button {
+  margin-top: 26px;
+}
+
+.totvs-test__blocked,
+.totvs-test__last {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.totvs-test__result {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.totvs-test__result svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* URL chamada no teste de conexão (mesmo visual de .query-test__url, da aba Consultas SQL). */
+.totvs-test__url {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--table-head);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.totvs-test__url code {
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.totvs-test__result--ok {
+  background: var(--success-bg);
+  color: var(--success-fg);
+}
+
+.totvs-test__result--fail {
+  background: var(--danger-bg);
+  color: var(--danger-fg);
+}
+
+@media (max-width: 640px) {
+  .totvs__credentials {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .totvs-test__button {
+    margin-top: 0;
+    width: 100%;
+  }
+}
+
+/* ---------- Seções E-mail e TOTVS RM ---------- */
+
+.integrations {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 20px;
+  align-items: start;
+}
+
+.integrations__main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---------- Card da integração ---------- */
+
+.integration-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.integration-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+.integration-card__title {
+  flex: 1;
+  min-width: 0;
+}
+
+.integration-card__title h2 {
+  margin: 0 0 2px;
+  font-size: 16px;
+}
+
+.integration-card__title p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.integration-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+.integration-card__switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.integration-card__switch label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+}
+
+.integration-card__switch label span {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.integration-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--line);
+  background: var(--table-head);
+  border-radius: 0 0 12px 12px;
+}
+
+.integration-card__test {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.integration-card__ok {
+  color: var(--success-fg);
+}
+
+.integration-card__fail {
+  color: var(--danger-fg);
+}
+
+.integration-card__actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ---------- Histórico ---------- */
+
+.integration-history {
+  padding: 18px 20px;
+}
+
+.integration-history .section-title {
+  margin: 0 0 14px;
+}
+
+.integration-history__loading {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.integration-history__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.integration-history__list li {
+  display: flex;
+  gap: 10px;
+}
+
+.integration-history__dot {
+  width: 8px;
+  height: 8px;
+  margin-top: 6px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--brand);
+}
+
+.integration-history__list p {
+  margin: 0 0 2px;
+  font-size: 13.5px;
+}
+
+.integration-history__list span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.integration-history__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.integration-history__link:hover {
+  gap: 9px;
+}
+
+@media (max-width: 1100px) {
+  .integrations {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

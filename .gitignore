@@ -1,0 +1,38 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+dist-demo
+*.local
+
+# Environment / credentials
+.env
+.env.*
+!.env.example
+!.env.demo
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Supabase CLI e configurações locais do Claude Code (podem conter chaves)
+supabase/.temp/
+.claude/settings.local.json
+
+# Gerado pelo deno check local
+deno.lock

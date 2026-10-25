@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm -v)",
+      "Bash(npm create *)",
+      "Bash(npx create-vite@latest --help)",
+      "Bash(npx create-vite@latest .tmp-scaffold --template react-ts --no-interactive)",
+      "Bash(npm install *)",
+      "Bash(rm -f src/assets/vite.svg)",
+      "Bash(rmdir src/assets)",
+      "Bash(npx tsc *)",
+      "Bash(timeout 30 bash -c 'until curl -sf http://localhost:5173 >/dev/null; do sleep 1; done')",
+      "Read(//tmp/**)",
+      "Bash(chromium-cli --session app)",
+      "Bash(npx --yes playwright --version)",
+      "Bash(npx playwright *)",
+      "Bash(node \"C:\\\\Users\\\\NATHAN~1.SAN\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-nathan-santos-Downloads-ProjetoModelo\\\\ca8b35bd-de85-41bb-ae6b-80e420992d8b\\\\scratchpad\\\\screenshot.mjs\" \"C:\\\\Users\\\\NATHAN~1.SAN\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-nathan-santos-Downloads-ProjetoModelo\\\\ca8b35bd-de85-41bb-ae6b-80e420992d8b\\\\scratchpad\\\\screenshot.png\")",
+      "Bash(node .tmp-screenshot.mjs \"C:\\\\Users\\\\NATHAN~1.SAN\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-nathan-santos-Downloads-ProjetoModelo\\\\ca8b35bd-de85-41bb-ae6b-80e420992d8b\\\\scratchpad\\\\screenshot.png\")",
+      "Bash(node .tmp-screenshot2.mjs \"C:\\\\Users\\\\NATHAN~1.SAN\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-nathan-santos-Downloads-ProjetoModelo\\\\ca8b35bd-de85-41bb-ae6b-80e420992d8b\\\\scratchpad\\\\screenshot2.png\")",
+      "Bash(lsof -ti:5173 -sTCP:LISTEN)",
+      "Bash(xargs -r kill)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill //PID 13992 //F)",
+      "Bash(npm uninstall *)"
+    ]
+  }
+}

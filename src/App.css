@@ -1,0 +1,89 @@
+.app-shell {
+  /* A janela não rola: só o .app-main (e o menu) rolam por dentro. */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.app-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Link de acessibilidade: aparece só quando recebe foco pelo teclado. */
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+.app-main:focus {
+  outline: none;
+}
+
+/* Os blocos da página não encolhem para caber na tela: quem rola é o .app-main.
+   Sem isso, um card com overflow: hidden (ex.: a lista de Usuários) era espremido na altura
+   disponível e cortava as linhas e a paginação (só 5 dos 9 usuários apareciam). */
+.app-main > * {
+  flex-shrink: 0;
+}
+
+.app-main {
+  /* Âncora dos elementos absolutos da página (ex.: .visually-hidden). Sem ela, eles se
+     posicionavam pelo documento e o esticavam, deixando uma faixa em branco ao rolar. */
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 24px 32px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-title {
+  margin: 4px 0 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 960px) {
+  .module-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .app-main {
+    padding: 16px 16px 32px;
+  }
+
+  .module-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

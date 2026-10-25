@@ -1,0 +1,75 @@
+/* Painel lateral (Sheet) de 540px usado pelos formulários de usuário e de perfil. */
+
+.sheet {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  width: min(540px, 100vw);
+  background: var(--surface);
+  box-shadow: -16px 0 40px -16px rgba(24, 24, 27, 0.35);
+}
+
+.sheet__form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sheet__title {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.sheet__description {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.sheet__body {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+}
+
+.sheet__fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.sheet__notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--page);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.sheet__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--line);
+}
+

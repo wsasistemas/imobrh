@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Colunas das Visões</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--brand:#d6293b;--brand-soft:#fdecee;--ink:#17181c;--muted:#6b7280;--line:#e9eaee;--input-border:#8d939e;--page:#f5f6f8;--surface:#fff;--neutral-bg:#f1f2f5;--ok:#166534;--ok-bg:#e8f6ed;--warn:#92400e;--warn-bg:#fef3c7}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,"Segoe UI",sans-serif;font-size:14px;color:var(--ink);background:#dfe1e6}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+.note{max-width:1400px;margin:16px auto 0;padding:10px 14px;background:#fff8d6;border:1px solid #f1df8a;border-radius:8px;font-size:13px}
+.note ol{margin:6px 0 0;padding-left:20px}
+.abas{max-width:1400px;margin:12px auto 0;display:flex;gap:6px;flex-wrap:wrap}
+.abas button{border:1px solid #c9ccd3;background:#fff;border-radius:20px;padding:6px 14px;font-weight:600;font-size:13px}
+.abas button[aria-selected=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tela{max-width:1400px;margin:14px auto 40px;background:var(--page);border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.15);padding:18px 22px;position:relative;overflow:hidden}
+.secnav{display:flex;gap:6px;margin-bottom:14px}
+.secnav span{border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 12px;font-weight:600;font-size:12px;color:var(--muted)}
+.secnav span.on{border-color:var(--brand);color:var(--brand);background:var(--brand-soft)}
+.barra{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.sel{height:38px;border:1px solid var(--input-border);border-radius:8px;background:#fff;padding:0 10px;display:flex;align-items:center;gap:8px;font-weight:600}
+.sel small{color:var(--muted);font-weight:400}
+.busca{height:38px;width:280px;border:1px solid var(--input-border);border-radius:8px;padding:0 10px;background:#fff;color:var(--muted);display:flex;align-items:center}
+.cont{font-size:12px;color:var(--muted)}
+.dir{margin-left:auto;display:flex;gap:8px}
+.bt{height:38px;border:1px solid var(--line);background:#fff;border-radius:8px;padding:0 12px;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:6px}
+.bt.p{background:var(--brand);border-color:var(--brand);color:#fff}
+.bt.out{border-color:var(--input-border)}
+.tag{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:var(--neutral-bg);color:#3f3f46}
+.tag.v{background:var(--brand-soft);color:var(--brand)}
+.tag.ok{background:var(--ok-bg);color:var(--ok)}
+.tag.w{background:var(--warn-bg);color:var(--warn)}
+.call{position:absolute;background:#2563eb;color:#fff;font-size:11px;font-weight:700;border-radius:99px;width:22px;height:22px;display:grid;place-items:center;box-shadow:0 0 0 3px #bfdbfe}
+.legenda{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px;margin-top:14px;font-size:12px}
+.legenda div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.legenda b{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:99px;background:#2563eb;color:#fff;font-size:10px;margin-right:6px}
+
+/* Kanban */
+.board{display:flex;gap:12px;align-items:stretch;overflow-x:auto;padding-bottom:6px}
+.col{flex:0 0 250px;display:flex;flex-direction:column;gap:8px;padding:10px;min-height:430px;border-radius:12px;background:var(--neutral-bg);border:1px solid var(--input-border);position:relative}
+.col__h{display:flex;align-items:center;gap:6px;font-weight:700;font-size:13px}
+.col__h .n{margin-left:auto;padding:1px 8px;border-radius:20px;background:#fff;font-size:11px;color:var(--muted)}
+.ico{width:26px;height:26px;border:0;background:none;border-radius:6px;display:grid;place-items:center;color:var(--muted)}
+.ico:hover{background:#fff}
+.col__sub{font-size:11px;color:var(--muted)}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 11px;font-size:12px}
+.card b{display:block;font-size:13px;margin:3px 0}
+.card .l{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}
+.ren{display:flex;gap:4px;align-items:center;flex:1}
+.ren input{flex:1;min-width:0;height:30px;border:1.5px solid var(--brand);border-radius:6px;padding:0 8px;font-weight:700;font-size:13px;background:#fff}
+.ren small{font-size:10px;color:var(--muted)}
+.menu{position:absolute;right:8px;top:40px;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.12);padding:4px;z-index:3;width:190px}
+.menu div{padding:7px 10px;border-radius:6px;font-size:13px}
+.menu div:hover{background:var(--neutral-bg)}
+.menu .d{color:var(--brand)}
+.nova{flex:0 0 200px;border:2px dashed var(--input-border);border-radius:12px;display:flex;align-items:flex-start;justify-content:center;padding-top:14px;color:var(--muted);font-weight:600;background:transparent;min-height:430px}
+.nova:hover{border-color:var(--brand);color:var(--brand)}
+.salvo{position:absolute;right:22px;bottom:18px;background:#17181c;color:#fff;border-radius:8px;padding:9px 14px;font-size:13px}
+
+/* diálogo */
+.veu{position:absolute;inset:0;background:rgba(23,24,28,.45);display:grid;place-items:center;z-index:5}
+.dlg{background:#fff;border-radius:12px;width:520px;max-width:94%;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.dlg h3{margin:0 0 4px;font-size:17px}
+.dlg p{margin:0 0 14px;color:var(--muted);font-size:13px}
+.campo{display:grid;gap:6px;margin-bottom:12px}
+.campo label{font-size:12px;font-weight:600}
+.campo input:not([type=checkbox]){height:38px;border:1px solid var(--input-border);border-radius:8px;padding:0 10px}
+.chk{display:grid;gap:6px;max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px}
+.chk label{display:flex;gap:8px;align-items:center;font-size:13px;padding:4px 6px;border-radius:6px}
+.chk label:hover{background:var(--neutral-bg)}
+.chk small{margin-left:auto;color:var(--muted);font-size:11px}
+.acoes{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+
+/* Lista */
+.tabw{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding:9px 10px;border-bottom:1px solid var(--line);background:#fafafa;cursor:pointer}
+th:hover{color:var(--ink)}
+th .ord{color:var(--brand)}
+td{padding:9px 10px;border-bottom:1px solid var(--line)}
+td .num{font-family:ui-monospace,Consolas,monospace;color:var(--muted);font-size:11px}
+td a{color:var(--ink);font-weight:600;text-decoration:none}
+.vz{color:#b6b9c2}
+.painel{position:absolute;right:22px;top:118px;width:340px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 16px 40px rgba(0,0,0,.18);padding:14px;z-index:4}
+.painel h4{margin:0 0 2px;font-size:15px}
+.painel p{margin:0 0 10px;color:var(--muted);font-size:12px}
+.painel .bsc{width:100%;height:34px;border:1px solid var(--input-border);border-radius:8px;padding:0 10px;margin-bottom:10px}
+.grp{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:10px 0 4px}
+.it{display:flex;align-items:center;gap:8px;padding:6px 6px;border-radius:6px;font-size:13px}
+.it:hover{background:var(--neutral-bg)}
+.it .alca{color:#b6b9c2;cursor:grab;letter-spacing:-2px}
+.it small{margin-left:auto;color:var(--muted);font-size:11px}
+.it.fixo{color:var(--muted)}
+.rod{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="note">
+  <b>Mockup para aprovação — Colunas das Visões (10/10/2026).</b> Plano aprovado: <code>docs/PLANO-visoes-colunas.md</code>. Decisões:
+  <ol>
+    <li>Adicionar, renomear, mover e remover coluna do Kanban <b>direto no quadro</b>, só para Admin e Super admin; vale para todos da visão.</li>
+    <li>Coluna nova pede <b>nome e status</b> (coluna = conjunto de status).</li>
+    <li>Colunas da Lista são <b>da visão</b> (Admin escolhe e ordena); cada pessoa ordena clicando no cabeçalho, sem salvar.</li>
+    <li>Campos adicionais, inclusive internos, viram coluna (a lista é só da equipe).</li>
+  </ol>
+</div>
+<div class="abas" role="tablist">
+  <button role="tab" aria-selected="true" data-t="k1">1 · Kanban: renomear e menu</button>
+  <button role="tab" aria-selected="false" data-t="k2">2 · Kanban: + Coluna</button>
+  <button role="tab" aria-selected="false" data-t="l1">3 · Lista com campos do ticket</button>
+  <button role="tab" aria-selected="false" data-t="l2">4 · Lista: botão Colunas</button>
+</div>
+
+<!-- KANBAN 1 -->
+<section id="k1" class="tela">
+  <div class="secnav"><span>Visão geral</span><span class="on">Tickets</span><span>Status</span><span>Gerencial</span></div>
+  <div class="barra">
+    <span class="sel"><small>Visão:</small> TI · Fila de chamados (Kanban) ▾</span>
+    <span class="busca">Buscar nº, assunto ou solicitante.</span>
+    <span class="cont">10 tickets nesta visão</span>
+    <div class="dir"><span class="bt out">⚙ Configurar visões</span></div>
+  </div>
+  <div class="board">
+    <div class="col">
+      <div class="col__h">A Fazer <button class="ico" title="Renomear">✏️</button><span class="n">3</span><button class="ico" title="Mais">⋯</button></div>
+      <div class="col__sub">Novo</div>
+      <div class="card"><div class="l"><span>#1052</span><span class="tag w">vence hoje</span></div><b>PVI dá erro ao salvar a nota</b>Vinicius Carvalho</div>
+      <div class="card"><div class="l"><span>#1050</span><span class="tag ok">no prazo</span></div><b>Sem acesso à VPN</b>Ana Ribeiro</div>
+    </div>
+    <div class="col">
+      <div class="col__h"><span class="ren"><input value="Aguardando o cliente" aria-label="Nome da coluna"><button class="ico" title="Salvar">✔</button><button class="ico" title="Cancelar">✕</button></span></div>
+      <div class="col__sub">Aguardando › Retorno do cliente &nbsp;·&nbsp; <small style="color:var(--muted)">Enter salva · Esc cancela</small></div>
+      <div class="card"><div class="l"><span>#1031</span><span class="tag">pausado</span></div><b>VPN cai toda hora</b>Bruno Lima</div>
+      <span class="call" style="left:440px;top:118px">1</span>
+    </div>
+    <div class="col">
+      <div class="col__h">Em atendimento <button class="ico">✏️</button><span class="n">4</span><button class="ico" style="background:#fff">⋯</button></div>
+      <div class="col__sub">Em atendimento · Aguardando › Pendência vistoria · Aguardando › Fornecedor</div>
+      <div class="card"><div class="l"><span>#1043</span><span class="tag ok">no prazo</span></div><b>Impressora do 2º andar</b>Carla Souza</div>
+      <div class="menu">
+        <div>✏️ Renomear</div>
+        <div>⚙ Escolher status…</div>
+        <div>← Mover para a esquerda</div>
+        <div>→ Mover para a direita</div>
+        <div class="d">🗑 Remover coluna…</div>
+      </div>
+      <span class="call" style="left:216px;top:46px">2</span>
+    </div>
+    <div class="col">
+      <div class="col__h">Pré-fechamento <button class="ico">✏️</button><span class="n">0</span><button class="ico">⋯</button></div>
+      <div class="col__sub">Aguardando › Pré-fechamento</div>
+    </div>
+    <button class="nova">＋ Coluna</button>
+  </div>
+  <div class="salvo">✔ Coluna renomeada · salvo para todos que usam esta visão</div>
+  <div class="legenda">
+    <div><b>1</b>Clique no ✏️ (ou duas vezes no nome): o título vira campo. Enter salva, Esc cancela. Só Admin e Super admin veem o ✏️ e o ⋯.</div>
+    <div><b>2</b>Menu ⋯ da coluna: renomear, escolher status, mover e remover. Remover devolve os status para "sem coluna" (pede confirmação; os tickets não mudam).</div>
+    <div>O agente vê o quadro igual a hoje, sem ✏️, ⋯ e "+ Coluna".</div>
+  </div>
+</section>
+
+<!-- KANBAN 2 -->
+<section id="k2" class="tela" hidden>
+  <div class="secnav"><span>Visão geral</span><span class="on">Tickets</span><span>Status</span><span>Gerencial</span></div>
+  <div class="barra">
+    <span class="sel"><small>Visão:</small> TI · Fila de chamados (Kanban) ▾</span>
+    <span class="busca">Buscar nº, assunto ou solicitante.</span>
+  </div>
+  <div class="board">
+    <div class="col"><div class="col__h">A Fazer <span class="n">3</span></div><div class="col__sub">Novo</div></div>
+    <div class="col"><div class="col__h">Aguardando o cliente <span class="n">1</span></div></div>
+    <div class="col"><div class="col__h">Em atendimento <span class="n">4</span></div></div>
+    <button class="nova" style="border-color:var(--brand);color:var(--brand)">＋ Coluna</button>
+  </div>
+  <div class="veu">
+    <div class="dlg" role="dialog" aria-label="Nova coluna">
+      <h3>Nova coluna</h3>
+      <p>Uma coluna do Kanban junta tickets por status. Escolha o nome e quais status entram nela.</p>
+      <div class="campo"><label>Nome da coluna</label><input value="Aguardando fornecedor"></div>
+      <div class="campo"><label>Status desta coluna</label>
+        <div class="chk">
+          <label><input type="checkbox"> Resolvido <small>sem coluna</small></label>
+          <label><input type="checkbox"> Fechado <small>sem coluna</small></label>
+          <label><input type="checkbox" checked> Aguardando › Fornecedor <small class="tag w" style="margin-left:auto">sai de "Em atendimento"</small></label>
+          <label><input type="checkbox"> Aguardando › Cotação <small>sem coluna</small></label>
+          <label><input type="checkbox"> Aguardando › Aprovação do gestor <small>sem coluna</small></label>
+          <label><input type="checkbox"> Reaberto <small>em "Reabertura"</small></label>
+        </div>
+      </div>
+      <label style="font-size:13px;display:flex;gap:8px;align-items:center"><input type="checkbox" checked> Colocar depois de "Em atendimento"</label>
+      <div class="acoes"><span class="bt">Cancelar</span><span class="bt p">Criar coluna</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- LISTA 1 -->
+<section id="l1" class="tela" hidden>
+  <div class="secnav"><span>Visão geral</span><span class="on">Tickets</span><span>Status</span><span>Gerencial</span></div>
+  <div class="barra">
+    <span class="sel"><small>Visão:</small> TI · Todos os abertos (Lista) ▾</span>
+    <span class="busca">Buscar nº, assunto ou solicitante.</span>
+    <span class="cont">57 tickets nesta visão</span>
+    <div class="dir"><span class="bt out">▥ Colunas</span><span class="bt out">⚙ Configurar visões</span></div>
+  </div>
+  <div class="tabw">
+    <table>
+      <thead><tr>
+        <th>Ticket</th><th>Solicitante</th><th>Status</th><th>Responsável</th><th>Categoria</th><th>Urgência</th><th>Departamento</th>
+        <th>1ª resposta</th><th>Prazo de solução <span class="ord">▲</span></th><th>Forma de atendimento</th><th><span class="tag v" style="font-size:10px">campo</span> Obra</th><th><span class="tag v" style="font-size:10px">campo</span> Patrimônio</th><th>Atualizado</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><span class="num">#1052</span><br><a href="#">PVI dá erro ao salvar a nota</a></td><td>Vinicius Carvalho</td><td><span class="tag">Novo</span></td><td><span class="tag w">Não atribuído</span></td><td>Problema</td><td>Alta</td><td>TI</td><td class="vz">—</td><td><span class="tag w">hoje 11:30</span></td><td>App do solicitante</td><td>Sede</td><td class="vz">—</td><td>há 5 min</td></tr>
+        <tr><td><span class="num">#1043</span><br><a href="#">Impressora do 2º andar não imprime</a></td><td>Carla Souza</td><td><span class="tag">Em atendimento</span></td><td>Você</td><td>Incidente</td><td>Normal</td><td>TI</td><td>08:51</td><td><span class="tag ok">amanhã 17:00</span></td><td>WhatsApp</td><td>Sede</td><td>IMP-0231</td><td>há 1 h</td></tr>
+        <tr><td><span class="num">#1031</span><br><a href="#">VPN cai toda hora</a></td><td>Bruno Lima</td><td><span class="tag">Aguardando</span></td><td>Ana Ribeiro</td><td>Problema</td><td>Normal</td><td>TI</td><td>07/10 14:02</td><td><span class="tag">pausado</span></td><td>E-mail</td><td>Obra Barra</td><td class="vz">—</td><td>ontem</td></tr>
+        <tr><td><span class="num">#1012</span><br><a href="#">Liberar acesso ao Sienge</a></td><td>Diego Pimentel</td><td><span class="tag">Novo</span></td><td><span class="tag w">Não atribuído</span></td><td>Solicitação</td><td>Baixa</td><td>TI</td><td class="vz">—</td><td><span class="tag ok">13/10 12:00</span></td><td>Portal</td><td>Obra Recreio</td><td class="vz">—</td><td>06/10</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="legenda">
+    <div>Novas colunas padrão: categoria, urgência, departamento, tags, recebido em, contato, criado por, atualizado em, 1ª resposta, prazo de resposta, prazo de solução, encerrado em, forma de atendimento.</div>
+    <div>Campos adicionais (marcados "usar em visões" no cadastro) aparecem com o selo <span class="tag v">campo</span> e formatados pelo tipo (data, sim/não, lista, usuário). Vazio = "—".</div>
+    <div>Clicar no cabeçalho ordena (▲▼) só para você, sem salvar a visão.</div>
+  </div>
+</section>
+
+<!-- LISTA 2 -->
+<section id="l2" class="tela" style="min-height:900px" hidden>
+  <div class="secnav"><span>Visão geral</span><span class="on">Tickets</span><span>Status</span><span>Gerencial</span></div>
+  <div class="barra">
+    <span class="sel"><small>Visão:</small> TI · Todos os abertos (Lista) ▾</span>
+    <span class="busca">Buscar nº, assunto ou solicitante.</span>
+    <span class="cont">57 tickets nesta visão</span>
+    <div class="dir"><span class="bt out" style="border-color:var(--brand);color:var(--brand)">▥ Colunas</span><span class="bt out">⚙ Configurar visões</span></div>
+  </div>
+  <div class="tabw" style="opacity:.55">
+    <table><thead><tr><th>Ticket</th><th>Solicitante</th><th>Status</th><th>Responsável</th><th>Categoria</th><th>Urgência</th><th>Prazo de solução</th><th>Obra</th></tr></thead>
+    <tbody><tr><td>#1052 PVI dá erro…</td><td>Vinicius</td><td>Novo</td><td>—</td><td>Problema</td><td>Alta</td><td>hoje 11:30</td><td>Sede</td></tr><tr><td>#1043 Impressora…</td><td>Carla</td><td>Em atendimento</td><td>Você</td><td>Incidente</td><td>Normal</td><td>amanhã</td><td>Sede</td></tr></tbody></table>
+  </div>
+  <div class="painel" role="dialog" aria-label="Colunas da lista">
+    <h4>Colunas da lista</h4>
+    <p>Marque e arraste para ordenar. Vale para todos que usam esta visão.</p>
+    <input class="bsc" placeholder="Buscar campo…">
+    <div class="grp">Na lista (ordem)</div>
+    <div class="it fixo">🔒 Nº e assunto <small>fixa</small></div>
+    <div class="it"><span class="alca">⋮⋮</span><input type="checkbox" checked> Solicitante</div>
+    <div class="it"><span class="alca">⋮⋮</span><input type="checkbox" checked> Status</div>
+    <div class="it"><span class="alca">⋮⋮</span><input type="checkbox" checked> Responsável</div>
+    <div class="it" style="background:var(--brand-soft)"><span class="alca">⋮⋮</span><input type="checkbox" checked> Categoria <small>arrastando…</small></div>
+    <div class="it"><span class="alca">⋮⋮</span><input type="checkbox" checked> Urgência</div>
+    <div class="it"><span class="alca">⋮⋮</span><input type="checkbox" checked> Prazo de solução</div>
+    <div class="it"><span class="alca">⋮⋮</span><input type="checkbox" checked> Obra <small class="tag v">campo</small></div>
+    <div class="grp">Campos do ticket</div>
+    <div class="it"><input type="checkbox"> Departamento</div>
+    <div class="it"><input type="checkbox"> Tags</div>
+    <div class="it"><input type="checkbox"> 1ª resposta</div>
+    <div class="it"><input type="checkbox"> Atualizado em</div>
+    <div class="grp">Campos adicionais</div>
+    <div class="it"><input type="checkbox"> Patrimônio <small class="tag v">campo</small></div>
+    <div class="it"><input type="checkbox"> Centro de custo <small class="tag v">interno</small></div>
+    <div class="rod"><span class="bt">Restaurar padrão</span><span class="bt p">Salvar</span></div>
+  </div>
+</section>
+
+<script>
+const abas=document.querySelectorAll('.abas [role=tab]');
+function ver(id){document.querySelectorAll('section.tela').forEach(s=>s.hidden=s.id!==id);abas.forEach(a=>a.setAttribute('aria-selected',a.dataset.t===id));}
+abas.forEach(a=>a.addEventListener('click',()=>ver(a.dataset.t)));
+if(/^#(k1|k2|l1|l2)$/.test(location.hash))ver(location.hash.slice(1));
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.breadcrumb__separator {
+  margin-right: 6px;
+  color: var(--color-text-muted);
+}
+
+.breadcrumb__link:hover {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+.breadcrumb__current {
+  color: var(--color-text);
+  font-weight: 600;
+}

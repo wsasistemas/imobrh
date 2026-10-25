@@ -1,0 +1,137 @@
+/* Pop-up "Sem permissão nessa aplicação": chama a atenção sem assustar. */
+
+.access-denied__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(24, 24, 27, 0.55);
+  backdrop-filter: blur(4px);
+  animation: access-denied-fade 0.2s ease-out both;
+}
+
+.access-denied {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 61;
+  width: min(420px, calc(100vw - 32px));
+  padding: 32px 28px 24px;
+  text-align: center;
+  background: var(--surface);
+  border-top: 4px solid var(--brand);
+  border-radius: 16px;
+  box-shadow: 0 30px 60px -20px rgba(24, 24, 27, 0.45);
+  transform: translate(-50%, -50%);
+  animation:
+    access-denied-in 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.25) both,
+    access-denied-shake 0.45s ease-in-out 0.35s both;
+}
+
+.access-denied:focus {
+  outline: none;
+}
+
+.access-denied__icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+.access-denied__icon svg {
+  position: relative;
+  z-index: 1;
+}
+
+.access-denied__pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--brand);
+  opacity: 0;
+  animation: access-denied-pulse 2s ease-out infinite;
+}
+
+.access-denied__pulse--late {
+  animation-delay: 1s;
+}
+
+.access-denied__title {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.access-denied__message {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.access-denied__email {
+  display: inline-block;
+  margin: 12px 0 0;
+  padding: 3px 10px;
+  font-size: 12.5px;
+  color: var(--muted);
+  background: var(--page);
+  border-radius: 99px;
+}
+
+.access-denied__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+@keyframes access-denied-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes access-denied-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%) scale(0.92);
+  }
+}
+
+@keyframes access-denied-shake {
+  20%,
+  60% {
+    transform: translate(calc(-50% - 6px), -50%);
+  }
+  40%,
+  80% {
+    transform: translate(calc(-50% + 6px), -50%);
+  }
+}
+
+@keyframes access-denied-pulse {
+  from {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .access-denied,
+  .access-denied__overlay,
+  .access-denied__pulse {
+    animation: none;
+  }
+}

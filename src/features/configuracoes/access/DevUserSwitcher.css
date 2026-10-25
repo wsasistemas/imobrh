@@ -1,0 +1,29 @@
+.dev-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 4px 0 8px;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.dev-switcher select {
+  height: 28px;
+  padding: 0 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+}
+
+/* Topo estreito: o seletor de teste não cabe ao lado do logo e da caixa do usuário. */
+@media (max-width: 900px) {
+  .dev-switcher {
+    display: none;
+  }
+}

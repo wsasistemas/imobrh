@@ -1,0 +1,158 @@
+/* Cards da página inicial: fundo claro, quadro do ícone na cor suave, borda da marca no hover. */
+
+.module-card {
+  --accent: var(--brand);
+  --accent-soft: var(--brand-soft);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 200px;
+  padding: 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  animation: module-card-in 0.45s ease-out both;
+}
+
+.module-card--info { --accent: var(--info-fg); --accent-soft: var(--info-bg); }
+.module-card--success { --accent: var(--success-fg); --accent-soft: var(--success-bg); }
+.module-card--warning { --accent: var(--warning-fg); --accent-soft: var(--warning-bg); }
+
+.module-card:hover,
+.module-card:focus-within,
+.module-card--highlighted {
+  border-color: var(--accent);
+  box-shadow: 0 6px 18px -8px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.module-card:hover,
+.module-card:focus-within {
+  transform: translateY(-1px);
+}
+
+.module-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.module-card h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* O card inteiro é clicável: a camada do link cobre o card. */
+.module-card__stretched {
+  color: inherit;
+  text-decoration: none;
+}
+
+.module-card__stretched::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.module-card__stretched:focus-visible {
+  outline: none;
+}
+
+.module-card:has(.module-card__stretched:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.module-card > p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* Atalhos ficam acima da camada do link. */
+.module-card__shortcuts {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.module-card__shortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: var(--page);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.module-card__shortcut:hover,
+.module-card__shortcut:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  outline: none;
+}
+
+.module-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 18px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  transition: gap 0.15s ease;
+}
+
+.module-card:hover .module-card__cta,
+.module-card:focus-within .module-card__cta {
+  gap: 9px;
+}
+
+@keyframes module-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .module-card,
+  .module-card__cta {
+    animation: none;
+    transition: none;
+  }
+
+  .module-card:hover,
+  .module-card:focus-within {
+    transform: none;
+  }
+}

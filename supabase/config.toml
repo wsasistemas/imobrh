@@ -1,0 +1,62 @@
+# Configuração local do Supabase CLI do Imobdesk (WSA Sistemas).
+#
+# ATENÇÃO: o projeto remoto (ikvjaowvpvxojvcfwnct) é COMPARTILHADO com os outros sistemas da WSA.
+# Nunca rode `supabase config push` nem `supabase db push` a partir daqui: sobrescreveria Auth/API de todos.
+# As migrations vão pelo SQL Editor. Este arquivo existe só para o deploy das Edge Functions, com o token
+# da conta WSA só na janela do terminal:
+#   $env:SUPABASE_ACCESS_TOKEN = "<token da conta WSA>"
+#   npx supabase functions deploy <nome> --project-ref ikvjaowvpvxojvcfwnct --use-api
+project_id = "wsa-imobdesk"
+
+[functions.imobdesk-usuarios]
+# Exige JWT válido; a função ainda confere o usuário e a permissão (a chave anon também é um JWT).
+verify_jwt = true
+
+[functions.imobdesk-integracao-teste]
+verify_jwt = true
+
+[functions.imobdesk-totvs]
+verify_jwt = true
+
+[functions.imobdesk-zenvia]
+verify_jwt = true
+
+# Chamado pela Zenvia (sem JWT): a função confere o cabeçalho x-atendimento-chave (chave no Vault).
+[functions.imobdesk-zenvia-webhook]
+verify_jwt = false
+
+[functions.imobdesk-email]
+verify_jwt = true
+
+# Security Gateway do login: chamado ANTES de existir sessão, então sem JWT. A função valida
+# origem, payload, limites e bloqueio antes de chamar o Supabase Auth (docs/SEGURANCA-LOGIN.md).
+[functions.imobdesk-auth]
+verify_jwt = false
+
+# Leitura das caixas e envio das respostas (Etapa 4): quem chama é o pg_cron, com x-atendimento-chave (chave no Vault).
+# Um usuário logado da supervisão geral também pode chamar ("Ler agora"); a função confere o token.
+[functions.imobdesk-email-sync]
+verify_jwt = false
+
+# Triagem por IA (pg_cron, 1 min) com x-atendimento-chave; a supervisão geral logada também pode chamar.
+[functions.imobdesk-ia]
+verify_jwt = false
+
+# Retorno do "Autorizar com Gmail": quem chama é o Google (sem JWT); a segurança é o state de uso único.
+[functions.imobdesk-google-oauth]
+verify_jwt = false
+
+# WhatsApp (Zenvia + OpenWA): ciclo do pg_cron (x-atendimento-chave) e "enviar agora"/administração do OpenWA
+# por pessoa logada (a função confere o token e a permissão).
+[functions.imobdesk-whatsapp]
+verify_jwt = false
+
+# Chamado pelo OpenWA (sem JWT): a função confere a assinatura X-OpenWA-Signature (segredo no Vault).
+[functions.imobdesk-openwa-webhook]
+verify_jwt = false
+
+
+
+# Solicitações Financeiras: envio da fila de e-mail (pg_cron, 5 min) com x-atendimento-chave (chave no Vault).
+[functions.imobdesk-sf-email]
+verify_jwt = false

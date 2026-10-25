@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mockup · App do solicitante</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Tokens copiados do Superapp (Portal do Cliente "Seu Imóvel"): src/styles.css + components/portal/*.tsx */
+:root{
+  --pg-1:#1a1f3a;--pg-2:#131831;--pg-3:#0a0e1f;             /* bg-portal-gradient 160deg */
+  --vidro:rgba(255,255,255,.05);--vidro-h:rgba(255,255,255,.10);--borda:rgba(255,255,255,.10);
+  --txt:rgba(255,255,255,.90);--txt-2:rgba(255,255,255,.70);--txt-3:rgba(255,255,255,.55);
+  --ouro:#fcd34d;--ouro-b:rgba(252,211,77,.30);--ouro-bg1:rgba(252,211,77,.12);--ouro-bg2:rgba(245,158,11,.05);
+  --ok:#34d399;--info:#7dd3fc;--aviso:#fbbf24;--perigo:#fb7185;
+  /* portal (admin) */
+  --brand:#d6293b;--brand-soft:#fdecee;--ink:#17181c;--muted:#6b7280;--line:#e9eaee;--input-border:#8d939e;--page:#f5f6f8;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,-apple-system,"Segoe UI",sans-serif;font-size:14px;color:var(--ink);background:#dfe1e6}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--ouro);outline-offset:2px}
+[hidden]{display:none!important}
+.note{max-width:1500px;margin:16px auto 0;padding:10px 14px;background:#fff8d6;border:1px solid #f1df8a;border-radius:8px;font-size:13px}
+.note ol{margin:6px 0 0;padding-left:20px}
+.abas{max-width:1500px;margin:12px auto 0;display:flex;gap:6px;flex-wrap:wrap}
+.abas button{border:1px solid #c9ccd3;background:#fff;border-radius:20px;padding:6px 14px;font-weight:600;font-size:13px}
+.abas button[aria-selected=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.palco{max-width:1500px;margin:16px auto 40px;display:flex;gap:28px;flex-wrap:wrap;justify-content:center}
+.legenda{width:390px;text-align:center;font-size:12px;color:#52525b;margin-top:8px}
+
+/* ---------------- celular (app do solicitante) ---------------- */
+.cel{width:390px;height:820px;border-radius:44px;border:10px solid #0d0f17;box-shadow:0 20px 60px rgba(0,0,0,.35);overflow:hidden;position:relative;
+  background:linear-gradient(160deg,var(--pg-1) 0%,var(--pg-2) 40%,var(--pg-3) 100%);color:#fff}
+.cel__rolo{height:100%;overflow-y:auto;scrollbar-width:none}
+.simula{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 12px;font-size:11px;background:rgba(245,158,11,.95);color:#451a03;border-bottom:1px solid #b45309}
+.simula b{display:block}
+.simula button{border:0;background:rgba(69,26,3,.12);border-radius:6px;padding:3px 8px;font-size:11px;font-weight:600}
+.hdr{display:flex;justify-content:space-between;align-items:center;padding:22px 20px 14px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo i{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;border:1px solid var(--ouro-b);
+  background:linear-gradient(135deg,rgba(252,211,77,.25),rgba(245,158,11,.10));box-shadow:0 0 20px -8px rgba(252,211,77,.4);font-style:normal}
+.logo span{font-size:20px;letter-spacing:-.02em}.logo span b{font-weight:700}.logo span em{font-style:normal;font-weight:300;color:rgba(255,255,255,.85)}
+.pilula{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:99px;background:var(--vidro);border:1px solid var(--borda);font-size:12px;color:var(--txt);font-weight:500;white-space:nowrap}
+.bv{padding:4px 20px 14px}.bv h1{margin:0;font-size:24px;font-weight:700}.bv p{margin:4px 0 0;color:var(--txt-2);font-size:14px}
+.hero{margin:0 20px 18px;aspect-ratio:16/10;border-radius:16px;overflow:hidden;position:relative;border:1px solid var(--borda);box-shadow:0 20px 25px -5px rgba(0,0,0,.4);
+  background:radial-gradient(120% 90% at 80% 10%,#3b4a8a 0%,#1f2752 45%,#11152c 100%)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8),rgba(0,0,0,.2) 50%,transparent)}
+.hero__arte{position:absolute;right:18px;top:18px;font-size:64px;opacity:.9}
+.hero__txt{position:absolute;left:0;right:0;bottom:0;padding:16px;z-index:1}
+.hero__txt small{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--txt-2)}
+.hero__txt h2{margin:4px 0 2px;font-size:18px;font-weight:600}
+.hero__txt p{margin:0;font-size:12px;color:rgba(255,255,255,.8)}
+.hero__mais{margin-top:10px;display:inline-flex;gap:4px;align-items:center;height:30px;padding:0 12px;border-radius:99px;background:rgba(0,0,0,.35);border:1px solid var(--borda);font-size:12px;font-weight:600}
+.pontos{position:absolute;right:16px;bottom:18px;z-index:1;display:flex;gap:5px}.pontos i{width:6px;height:6px;border-radius:9px;background:rgba(255,255,255,.4)}.pontos i.on{width:20px;background:#fff}
+.grade{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:0 20px 28px}
+.tile{aspect-ratio:1;border-radius:16px;border:1px solid var(--borda);background:var(--vidro);backdrop-filter:blur(4px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px;position:relative;transition:.15s}
+.tile:hover{background:var(--vidro-h);border-color:rgba(255,255,255,.2)}
+.tile svg{width:28px;height:28px;stroke:rgba(255,255,255,.9);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tile span{font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;text-align:center;color:rgba(255,255,255,.85);line-height:1.2}
+.tile--ouro{border-color:var(--ouro-b);background:linear-gradient(135deg,var(--ouro-bg1),var(--ouro-bg2))}
+.tile--ouro svg{stroke:var(--ouro);width:34px;height:34px;stroke-width:1.4}
+.tile--ouro span{font-size:12px;font-weight:600;color:var(--txt)}
+.tile small{font-size:10px;color:var(--txt-3)}
+.badge{position:absolute;right:8px;top:8px;min-width:20px;height:20px;padding:0 6px;border-radius:99px;background:var(--brand);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
+.wa svg{stroke:#4ade80}
+
+/* subpáginas do app */
+.sub{display:flex;align-items:center;gap:10px;padding:18px 20px 10px}
+.voltar{width:36px;height:36px;border-radius:99px;background:var(--vidro);border:1px solid var(--borda);display:grid;place-items:center;font-size:16px}
+.sub h2{margin:0;font-size:18px}.sub p{margin:0;font-size:12px;color:var(--txt-3)}
+.sec{padding:0 20px 14px}
+.rot{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-3);margin:12px 0 6px}
+.campo{width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);padding:11px 12px;color:#fff;font-size:14px}
+.campo::placeholder{color:rgba(255,255,255,.45)}
+textarea.campo{min-height:96px;resize:none}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--borda);background:var(--vidro);border-radius:99px;padding:6px 11px;font-size:12px;color:var(--txt)}
+.chip.on{border-color:var(--ouro-b);background:var(--ouro-bg1);color:var(--ouro)}
+.sugestao{margin-top:8px;border-radius:12px;border:1px solid rgba(125,211,252,.3);background:rgba(125,211,252,.08);padding:10px 12px;font-size:12px;color:#e0f2fe}
+.sugestao b{color:var(--info)}
+.anexo{display:flex;gap:10px;align-items:center;border:1px dashed rgba(255,255,255,.3);border-radius:12px;padding:12px;font-size:13px;color:var(--txt-2)}
+.miniatura{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#334155,#1e293b);display:grid;place-items:center;font-size:20px;border:1px solid var(--borda)}
+.btn-ouro{width:100%;height:48px;border:0;border-radius:14px;background:linear-gradient(135deg,#fcd34d,#f59e0b);color:#3b2600;font-weight:700;font-size:15px;box-shadow:0 10px 24px -10px rgba(245,158,11,.7)}
+.btn-vidro{width:100%;height:44px;border-radius:14px;border:1px solid var(--borda);background:var(--vidro);color:#fff;font-weight:600}
+.lista{display:grid;gap:10px;padding:0 20px 24px}
+.card{border-radius:16px;border:1px solid var(--borda);background:var(--vidro);padding:12px 14px}
+.card__l1{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--txt-3)}
+.card h3{margin:6px 0 4px;font-size:15px;font-weight:600}
+.card p{margin:0;font-size:12px;color:var(--txt-2)}
+.st{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.st::before{content:"";width:6px;height:6px;border-radius:9px;background:currentColor}
+.st-novo{color:var(--info);background:rgba(125,211,252,.12)}.st-and{color:var(--aviso);background:rgba(251,191,36,.12)}.st-ok{color:var(--ok);background:rgba(52,211,153,.12)}
+.filtros{display:flex;gap:6px;padding:0 20px 12px;overflow-x:auto}
+.tl{padding:0 20px 12px;display:grid;gap:10px}
+.msg{max-width:85%;border-radius:14px;padding:9px 12px;font-size:13px;line-height:1.4}
+.msg small{display:block;font-size:10px;color:var(--txt-3);margin-top:4px}
+.msg--eu{justify-self:end;background:rgba(252,211,77,.14);border:1px solid var(--ouro-b)}
+.msg--ti{background:var(--vidro);border:1px solid var(--borda)}
+.msg--ti b{font-size:11px;color:var(--info);display:block;margin-bottom:2px}
+.evt{justify-self:center;font-size:11px;color:var(--txt-3);background:rgba(255,255,255,.04);border-radius:99px;padding:3px 10px}
+.resolvido{margin:4px 20px 14px;border-radius:16px;border:1px solid rgba(52,211,153,.35);background:rgba(52,211,153,.08);padding:12px 14px}
+.resolvido p{margin:0 0 10px;font-size:13px}
+.resolvido .dois{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.responder{position:sticky;bottom:0;display:flex;gap:8px;padding:10px 14px 14px;background:linear-gradient(to top,var(--pg-3) 70%,transparent)}
+.responder .campo{border-radius:99px}
+.redondo{width:44px;height:44px;flex:none;border-radius:99px;border:1px solid var(--borda);background:var(--vidro);display:grid;place-items:center;font-size:16px}
+.redondo.ouro{background:linear-gradient(135deg,#fcd34d,#f59e0b);border:0;color:#3b2600;font-weight:700}
+/* escolha de departamento, identificação e abrir chamado */
+.ident{margin:0 20px 16px;border-radius:16px;border:1px solid var(--borda);background:var(--vidro);padding:12px 14px;display:flex;gap:12px;align-items:center}
+.ident .av{width:44px;height:44px;flex:none;border-radius:99px;display:grid;place-items:center;font-weight:700;color:#3b2600;background:linear-gradient(135deg,#fcd34d,#f59e0b)}
+.ident b{display:block;font-size:14px}.ident span{display:block;font-size:12px;color:var(--txt-2)}
+.ident em{font-style:normal;font-size:10px;color:var(--ok);letter-spacing:.04em}
+.deptos{display:grid;gap:12px;padding:0 20px 24px}
+.depto{display:flex;gap:14px;align-items:center;border-radius:18px;border:1px solid var(--borda);background:var(--vidro);padding:16px;text-align:left;color:#fff;width:100%}
+.depto:hover,.depto.on{border-color:var(--ouro-b);background:linear-gradient(135deg,var(--ouro-bg1),var(--ouro-bg2))}
+.depto i{width:56px;height:56px;flex:none;border-radius:16px;display:grid;place-items:center;font-size:26px;font-style:normal;background:rgba(255,255,255,.06);border:1px solid var(--borda)}
+.depto b{display:block;font-size:17px}.depto small{display:block;font-size:12px;color:var(--txt-2);margin-top:2px}
+.depto .seta{margin-left:auto;font-size:18px;color:var(--txt-3)}
+.btn-abrir{margin:0 20px 18px;width:calc(100% - 40px);height:58px;border:0;border-radius:16px;background:linear-gradient(135deg,#fcd34d,#f59e0b);color:#3b2600;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 12px 28px -12px rgba(245,158,11,.8)}
+.btn-abrir svg{width:24px;height:24px;stroke:#3b2600;fill:none;stroke-width:2.2}
+.ro{display:grid;gap:4px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);padding:10px 12px;font-size:13px}
+.ro div{display:flex;justify-content:space-between;gap:8px}.ro span{color:var(--txt-3)}
+.menu-serv{border-radius:12px;border:1px solid var(--ouro-b);background:rgba(10,14,31,.6);overflow:hidden}
+.menu-serv .trilha{padding:10px 12px;font-size:12px;color:var(--ouro);border-bottom:1px solid var(--borda);display:flex;justify-content:space-between}
+.menu-serv .op{display:flex;justify-content:space-between;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.06);font-size:14px}
+.menu-serv .op:last-child{border-bottom:0}.menu-serv .op span{color:var(--txt-3)}
+.menu-serv .op.on{background:var(--ouro-bg1);color:var(--ouro);font-weight:600}
+.anexar{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.anexar button{height:64px;border-radius:12px;border:1px dashed rgba(255,255,255,.3);background:rgba(255,255,255,.04);color:#fff;font-size:13px;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.anexar button em{font-style:normal;font-size:20px}
+.anexos{display:flex;gap:8px;margin-top:8px}
+.anexos .miniatura{position:relative}.anexos .miniatura b{position:absolute;right:-5px;top:-5px;width:18px;height:18px;border-radius:99px;background:var(--brand);font-size:11px;display:grid;place-items:center}
+.login{display:flex;flex-direction:column;justify-content:center;min-height:100%;padding:30px 26px}
+.login h1{font-size:26px;margin:22px 0 4px}.login p{color:var(--txt-2);margin:0 0 22px;font-size:14px}
+.login .campo{margin-bottom:10px}
+.login small{display:block;text-align:center;color:var(--txt-3);margin-top:14px;font-size:12px}
+
+/* ---------------- admin (portal) ---------------- */
+.adm{width:1100px;max-width:100%;background:var(--page);border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.18);overflow:hidden;color:var(--ink)}
+.adm__top{height:56px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 20px;gap:12px;font-weight:600}
+.adm__top i{width:26px;height:26px;border-radius:50%;border:5px solid var(--brand)}
+.adm main{padding:20px 26px 30px}
+.crumb{font-size:12px;color:var(--muted)}.adm h1{margin:6px 0 2px;font-size:22px}.desc{margin:0 0 14px;color:var(--muted);font-size:13px}
+.secnav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.secnav span{border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 12px;font-weight:600;font-size:12px;color:var(--muted)}
+.secnav span.on{border-color:var(--brand);color:var(--brand);background:var(--brand-soft)}
+.g2{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px}
+.box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px}
+.box h2{margin:0 0 4px;font-size:15px}.box > p{margin:0 0 12px;color:var(--muted);font-size:12px}
+.linha{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.inp{height:38px;border:1px solid var(--input-border);border-radius:8px;padding:0 10px;background:#fff;flex:1;min-width:0}
+.bt{height:38px;border:1px solid var(--line);background:#fff;border-radius:8px;padding:0 12px;font-weight:600;font-size:13px}
+.bt.p{background:var(--brand);border-color:var(--brand);color:#fff}
+.qr{width:120px;height:120px;border-radius:10px;background:repeating-conic-gradient(#17181c 0 25%,#fff 0 50%) 0 0/16px 16px;border:6px solid #fff;outline:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line);background:#fafafa}
+td{padding:9px 10px;border-bottom:1px solid var(--line)}
+.tag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:600}
+.tag.ok{background:#e8f6ed;color:#166534}.tag.off{background:#f1f1f3;color:#52525b}.tag.info{background:#e8effd;color:#1d4ed8}
+.sw{width:36px;height:20px;border-radius:99px;background:var(--brand);position:relative;display:inline-block;vertical-align:middle}
+.sw::after{content:"";position:absolute;right:2px;top:2px;width:16px;height:16px;border-radius:99px;background:#fff}
+.sw.off{background:#d4d4d8}.sw.off::after{right:auto;left:2px}
+.aviso-adm{padding:10px 12px;border-radius:9px;background:#e8effd;color:#1d4ed8;font-size:12px;border:1px solid #c7d7fb;margin-top:12px}
+@media (max-width:820px){.g2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="note">
+  <b>Mockup para aprovação — App do solicitante (09/10/2026).</b> Visual copiado do app "Seu Imóvel" do Superapp (mesmo gradiente azul-marinho, quadrados de vidro, destaque dourado),
+  refeito em CSS puro (o Imobdesk não usa Tailwind). Decisões do Wagner:
+  <ol>
+    <li>Nome: <b>App do solicitante</b> (submenu em Administração para configurar/simular; o app em tela própria <code>/app</code>, pensada para celular).</li>
+    <li>Acesso: <b>qualquer @exemplo.com.br</b> entra com o login seguro do portal e ganha automaticamente o perfil <b>Solicitante</b>, que só vê o app.</li>
+    <li>Quadrados: Abrir chamado · Meus chamados · Avisos da TI · Soluções/Dúvidas · Falar no WhatsApp · Meu perfil.</li>
+    <li><b>Novo:</b> ao entrar, a pessoa escolhe o departamento (<b>TI · Administração · CFTV</b>); nome, e-mail e telefone corporativo já vêm do login; botão grande <b>ABRIR CHAMADO</b> com tipo de serviço, descrição e anexar arquivo/foto.</li>
+  </ol>
+</div>
+
+<div class="abas" role="tablist" aria-label="Telas">
+  <button role="tab" aria-selected="true" data-t="t0" style="margin-left:0">1 · Escolher departamento</button>
+  <button role="tab" aria-selected="false" data-t="t1">2 · Início do departamento</button>
+  <button role="tab" aria-selected="false" data-t="t2">3 · Abrir chamado</button>
+  <button role="tab" aria-selected="false" data-t="t3">4 · Meus chamados e detalhe</button>
+  <button role="tab" aria-selected="false" data-t="t4">5 · Avisos, Soluções, Perfil, Login</button>
+  <button role="tab" aria-selected="false" data-t="t5">6 · Administração › App do solicitante</button>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-mais" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></symbol>
+  <symbol id="i-lista" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+  <symbol id="i-mega" viewBox="0 0 24 24"><path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16 9a3 3 0 0 1 0 6M19 6a7 7 0 0 1 0 12"/></symbol>
+  <symbol id="i-luz" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.6.6 1 1.4 1 2.5h6c0-1.1.4-1.9 1-2.5A6 6 0 0 0 12 3z"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 1a4 4 0 0 1-2-2l1-1-1-2z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="i-sair" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></symbol>
+</svg>
+
+<!-- ============ 0 · ESCOLHER DEPARTAMENTO ============ -->
+<section id="t0" class="palco">
+  <div>
+    <div class="cel"><div class="cel__rolo">
+      <div class="hdr">
+        <div class="logo"><i>🎫</i><span><em>Imob</em><b>DESK</b></span></div>
+        <span class="pilula"><svg width="15" height="15" style="stroke:#fff;fill:none;stroke-width:2"><use href="#i-sair"/></svg>Sair</span>
+      </div>
+      <div class="bv"><h1>Olá, Vinicius 👋</h1><p>Com qual departamento você precisa falar?</p></div>
+      <div class="ident">
+        <span class="av">VC</span>
+        <div><b>Vinicius Jose De Almeida Carvalho</b><span>vinicius.carvalho@exemplo.com.br</span><span>📱 (21) 99645-3552 · corporativo</span><em>✓ IDENTIFICADO PELO SEU LOGIN</em></div>
+      </div>
+      <div class="deptos">
+        <button class="depto"><i>💻</i><div><b>TI</b><small>Sistemas, acesso e senha, e-mail, internet, impressora, equipamentos</small></div><span class="seta">›</span></button>
+        <button class="depto"><i>🏢</i><div><b>Administração</b><small>Manutenção predial, compras, copa, malote, veículos</small></div><span class="seta">›</span></button>
+        <button class="depto"><i>📹</i><div><b>CFTV</b><small>Câmeras, gravações, imagens de ocorrências, portaria</small></div><span class="seta">›</span></button>
+      </div>
+      <p style="text-align:center;font-size:12px;color:var(--txt-3);margin:0 20px 24px">Você pode trocar de departamento a qualquer momento no topo do app.</p>
+    </div></div>
+    <p class="legenda">Primeira tela depois do login. Nome, e-mail e telefone corporativo vêm do cadastro (Pessoas/Usuários) pelo e-mail @exemplo.com.br, sem digitar nada. Os departamentos são os <b>Setores</b> já cadastrados no sistema (TI, Administração, CFTV) que estiverem ligados para o app.</p>
+  </div>
+</section>
+
+<!-- ============ 1 · INÍCIO ============ -->
+<section id="t1" class="palco" hidden>
+  <div>
+    <div class="cel"><div class="cel__rolo">
+      <div class="hdr">
+        <div class="logo"><i>🎫</i><span><em>Imob</em><b>DESK</b></span></div>
+        <div style="display:flex;gap:6px"><span class="pilula" style="border-color:var(--ouro-b);color:var(--ouro)">💻 TI ▾</span><span class="pilula"><svg width="15" height="15" style="stroke:#fff;fill:none;stroke-width:2"><use href="#i-sair"/></svg>Sair</span></div>
+      </div>
+      <div class="bv"><h1>Olá, Vinicius</h1><p>Departamento de TI · como podemos ajudar?</p></div>
+      <button class="btn-abrir"><svg viewBox="0 0 24 24"><use href="#i-mais"/></svg>ABRIR CHAMADO</button>
+      <div class="hero">
+        <div class="hero__arte">🛠️</div>
+        <div class="hero__txt"><small>Aviso da TI</small><h2>PVI em manutenção hoje às 18h</h2><p>Sistema indisponível das 18h às 19h30. Salve seu trabalho antes.</p><span class="hero__mais">Saber mais ↗</span></div>
+        <div class="pontos"><i class="on"></i><i></i><i></i></div>
+      </div>
+      <div class="grade">
+        <div class="tile tile--ouro"><span class="badge">2</span><svg><use href="#i-lista"/></svg><span>Meus chamados</span><small>3 abertos</small></div>
+        <div class="tile"><svg><use href="#i-mega"/></svg><span>Avisos da TI</span></div>
+        <div class="tile"><svg><use href="#i-luz"/></svg><span>Soluções</span></div>
+        <div class="tile wa"><svg><use href="#i-wa"/></svg><span>Falar no WhatsApp</span></div>
+        <div class="tile"><svg><use href="#i-user"/></svg><span>Meu perfil</span></div>
+        <div class="tile"><svg viewBox="0 0 24 24"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg><span>Trocar depto.</span></div>
+      </div>
+      <div class="sec"><span class="rot">Em andamento</span>
+        <div class="card"><div class="card__l1"><span>#1043 · Impressoras</span><span class="st st-and">Em atendimento</span></div><h3>Impressora do 2º andar não imprime</h3><p>Wagner (TI): Limpei a fila, tenta de novo? · há 5 min</p></div>
+      </div>
+    </div></div>
+    <p class="legenda">Depois de escolher o departamento: botão grande <b>ABRIR CHAMADO</b> no topo, carrossel de avisos <b>daquele departamento</b> e grade de quadrados de vidro (igual ao "Seu Imóvel"). A pílula "💻 TI ▾" e o quadrado "Trocar depto." voltam à escolha. Badge vermelho = chamados com resposta nova.</p>
+  </div>
+</section>
+
+<!-- ============ 2 · ABRIR CHAMADO ============ -->
+<section id="t2" class="palco" hidden>
+  <div>
+    <div class="cel"><div class="cel__rolo">
+      <div class="sub"><span class="voltar">←</span><div><h2>Abrir chamado</h2><p>Departamento: <b style="color:var(--ouro)">💻 TI</b></p></div></div>
+      <div class="sec">
+        <span class="rot" style="margin-top:0">Solicitante (do seu login)</span>
+        <div class="ro"><div><span>Nome</span>Vinicius Jose De Almeida Carvalho</div><div><span>E-mail</span>vinicius.carvalho@exemplo.com.br</div><div><span>Telefone</span>(21) 99645-3552</div></div>
+        <span class="rot">1 · Tipo de serviço</span>
+        <div class="menu-serv">
+          <div class="trilha"><span>Sistemas › TOTVS ›</span><u>voltar</u></div>
+          <div class="op on">Sistema PVI <span>✓</span></div>
+          <div class="op">TOTVS RM <span>›</span></div>
+          <div class="op">Fluig <span>›</span></div>
+          <div class="op">Outro sistema TOTVS</div>
+        </div>
+        <span class="rot">2 · Descrição</span>
+        <textarea class="campo" aria-label="Descrição">O PVI dá erro ao salvar a nota fiscal desde hoje cedo.</textarea>
+        <div class="sugestao">💡 <b>Talvez resolva:</b> "Erro ao salvar nota no PVI → limpar o cache do navegador (Ctrl+Shift+Del) e entrar de novo." <u>Ver solução</u></div>
+        <span class="rot">3 · Anexar arquivo ou foto (opcional)</span>
+        <div class="anexar"><button><em>📷</em>Tirar foto</button><button><em>📎</em>Anexar arquivo</button></div>
+        <div class="anexos"><span class="miniatura">🖼️<b>×</b></span><span class="miniatura" style="font-size:12px">PDF<b>×</b></span></div>
+        <span class="rot">4 · É urgente?</span>
+        <div class="chips"><span class="chip on">Normal</span><span class="chip">Estou parado</span></div>
+        <div style="height:16px"></div>
+        <button class="btn-ouro">Enviar chamado</button>
+        <p style="font-size:11px;color:var(--txt-3);text-align:center;margin:10px 0 18px">A TI recebe na hora. Você acompanha em <b style="color:#fff">Meus chamados</b> e pelo e-mail.</p>
+      </div>
+    </div></div>
+    <p class="legenda">Solicitante já preenchido e travado. O menu "Tipo de serviço" é a árvore de Serviços do departamento escolhido (até 3 níveis, só os marcados para o canal Portal); toque desce um nível. "Tirar foto" abre a câmera no celular, "Anexar arquivo" aceita imagem, PDF e documentos (até 10 MB cada). A dica 💡 vem das soluções de chamados anteriores do mesmo serviço.</p>
+  </div>
+  <div>
+    <div class="cel"><div class="cel__rolo" style="display:flex;flex-direction:column;justify-content:center;align-items:center;padding:30px;text-align:center">
+      <div style="width:84px;height:84px;border-radius:99px;display:grid;place-items:center;font-size:40px;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.4)">✓</div>
+      <h2 style="margin:18px 0 6px">Chamado #1052 aberto</h2>
+      <p style="color:var(--txt-2);margin:0 0 6px">Sistemas › TOTVS › Sistema PVI</p>
+      <p style="color:var(--txt-3);font-size:13px;margin:0 0 22px">Prazo para a 1ª resposta: hoje até 11:30</p>
+      <button class="btn-ouro" style="margin-bottom:10px">Acompanhar chamado</button>
+      <button class="btn-vidro">Voltar ao início</button>
+    </div></div>
+    <p class="legenda">Confirmação com número e prazo do SLA.</p>
+  </div>
+</section>
+
+<!-- ============ 3 · MEUS CHAMADOS / DETALHE ============ -->
+<section id="t3" class="palco" hidden>
+  <div>
+    <div class="cel"><div class="cel__rolo">
+      <div class="sub"><span class="voltar">←</span><div><h2>Meus chamados</h2><p>3 abertos · 12 nos últimos 90 dias</p></div></div>
+      <div class="filtros"><span class="chip on">Abertos (3)</span><span class="chip">Resolvidos</span><span class="chip">Todos</span></div>
+      <div class="lista">
+        <div class="card"><div class="card__l1"><span>#1052 · Sistema PVI</span><span class="st st-novo">Aberto</span></div><h3>PVI dá erro ao salvar a nota</h3><p>Aguardando a TI · resposta até 11:30</p></div>
+        <div class="card" style="border-color:var(--ouro-b)"><div class="card__l1"><span>#1043 · Impressoras</span><span class="st st-and">Em atendimento</span></div><h3>Impressora do 2º andar não imprime</h3><p><b style="color:var(--ouro)">● Nova resposta</b> · Wagner (TI) · há 5 min</p></div>
+        <div class="card"><div class="card__l1"><span>#1031 · Acesso VPN</span><span class="st st-and">Em atendimento</span></div><h3>VPN cai toda hora</h3><p>Com Ana (TI) · aberto há 2 dias</p></div>
+        <div class="card" style="opacity:.75"><div class="card__l1"><span>#1012 · E-mail</span><span class="st st-ok">Resolvido</span></div><h3>Caixa de e-mail cheia</h3><p>Resolvido em 02/10 · avaliar ⭐</p></div>
+      </div>
+    </div></div>
+    <p class="legenda">Só os chamados da própria pessoa (por e-mail e telefone cadastrados), de todos os canais: app, WhatsApp e e-mail.</p>
+  </div>
+  <div>
+    <div class="cel"><div class="cel__rolo">
+      <div class="sub"><span class="voltar">←</span><div><h2>#1043 · Impressoras</h2><p><span class="st st-and">Em atendimento</span> · com Wagner (TI)</p></div></div>
+      <div class="tl">
+        <div class="evt">09/10 08:44 · chamado aberto pelo app</div>
+        <div class="msg msg--eu">A impressora do 2º andar não imprime<small>08:44</small></div>
+        <div class="msg msg--eu"><span class="miniatura" style="width:120px;height:80px;font-size:28px">🖼️</span><small>print · 08:44</small></div>
+        <div class="evt">Wagner (TI) assumiu · 08:47</div>
+        <div class="msg msg--ti"><b>Wagner · TI</b>Limpei a fila de impressão. Tenta de novo?<small>08:51</small></div>
+      </div>
+      <div class="resolvido">
+        <p>✅ A TI marcou como <b>resolvido</b>. Ficou bom?</p>
+        <div class="dois"><button class="btn-vidro" style="height:40px">Sim, resolveu</button><button class="btn-vidro" style="height:40px">Não, continua</button></div>
+      </div>
+      <div class="responder"><span class="redondo">📎</span><input class="campo" placeholder="Responder à TI…"><span class="redondo ouro">➤</span></div>
+    </div></div>
+    <p class="legenda">Responder e anexar entram no ticket como ação pública (a TI vê no portal, no grupo e no WhatsApp). "Não, continua" reabre o chamado.</p>
+  </div>
+</section>
+
+<!-- ============ 4 · AVISOS / SOLUÇÕES / PERFIL / LOGIN ============ -->
+<section id="t4" class="palco" hidden>
+  <div>
+    <div class="cel"><div class="cel__rolo">
+      <div class="sub"><span class="voltar">←</span><div><h2>Soluções</h2><p>Resolva sozinho em segundos</p></div></div>
+      <div class="sec"><input class="campo" placeholder="Buscar: senha, vpn, impressora…"></div>
+      <div class="lista">
+        <div class="card"><div class="card__l1"><span>Acesso / Senha</span><span>usada 34×</span></div><h3>Esqueci a senha do Windows</h3><p>Ctrl+Alt+Del › Alterar senha… ou peça o reset pelo chamado.</p></div>
+        <div class="card"><div class="card__l1"><span>Sistema PVI</span><span>usada 21×</span></div><h3>Erro ao salvar nota</h3><p>Limpar o cache do navegador e entrar de novo.</p></div>
+        <div class="card"><div class="card__l1"><span>Impressoras</span><span>usada 17×</span></div><h3>Impressão travada na fila</h3><p>Desligar e ligar a impressora; se continuar, abra chamado.</p></div>
+      </div>
+      <div class="sub" style="padding-top:4px"><div><h2>Avisos da TI</h2><p>Os mesmos do carrossel</p></div></div>
+      <div class="lista">
+        <div class="card"><div class="card__l1"><span>Hoje · 18h</span><span class="st st-and">Manutenção</span></div><h3>PVI em manutenção</h3><p>Indisponível das 18h às 19h30.</p></div>
+        <div class="card"><div class="card__l1"><span>Ontem</span><span class="st st-ok">Resolvido</span></div><h3>Internet do 3º andar normalizada</h3><p>O link foi restabelecido às 15h.</p></div>
+      </div>
+    </div></div>
+    <p class="legenda">Soluções = "Solução aplicada" dos tickets resolvidos, só as que a TI publicar (nada de dado pessoal). Avisos = cadastrados pela TI na Administração.</p>
+  </div>
+  <div>
+    <div class="cel"><div class="cel__rolo">
+      <div class="sub"><span class="voltar">←</span><div><h2>Meu perfil</h2><p>Para a TI te encontrar rápido</p></div></div>
+      <div class="sec">
+        <div class="card" style="display:flex;gap:12px;align-items:center"><span class="logo"><i style="font-size:16px">VC</i></span><div><h3 style="margin:0">Vinicius Jose De Almeida Carvalho</h3><p>vinicius.carvalho@exemplo.com.br</p></div></div>
+        <span class="rot">WhatsApp</span><input class="campo" value="(21) 99645-3552">
+        <span class="rot">Ramal</span><input class="campo" value="2231">
+        <span class="rot">Departamento / Obra</span><input class="campo" value="TI · Sede">
+        <div style="height:16px"></div><button class="btn-ouro">Salvar</button>
+        <div style="height:10px"></div><button class="btn-vidro">Falar no WhatsApp do suporte</button>
+      </div>
+    </div></div>
+    <p class="legenda">O WhatsApp salvo aqui já identifica a pessoa quando ela escreve no número do suporte (sem a pergunta "Você é…?").</p>
+  </div>
+  <div>
+    <div class="cel"><div class="cel__rolo"><div class="login">
+      <div class="logo"><i>🎫</i><span><em>Imob</em><b>DESK</b></span></div>
+      <h1>Entrar</h1><p>Use seu e-mail e senha da empresa.</p>
+      <input class="campo" placeholder="nome@exemplo.com.br"><input class="campo" type="password" placeholder="Senha">
+      <button class="btn-ouro">Entrar</button>
+      <small>Esqueci minha senha · Primeiro acesso</small>
+      <small>Só e-mails @exemplo.com.br. No 1º acesso você vira Solicitante automaticamente.</small>
+    </div></div></div>
+    <p class="legenda">Mesmo login seguro do portal (gateway com bloqueio por tentativas), com o visual do app.</p>
+  </div>
+</section>
+
+<!-- ============ 5 · ADMIN ============ -->
+<section id="t5" class="palco" hidden>
+  <div class="adm">
+    <div class="adm__top"><i></i>Imobdesk</div>
+    <main>
+      <div class="crumb">Início / Administração</div>
+      <h1>Administração</h1><p class="desc">Atendimento por WhatsApp e e-mail, separado por setor.</p>
+      <div class="secnav"><span>Fila e horários</span><span>Setores e números</span><span>WhatsApp OpenWA</span><span class="on">App do solicitante</span><span>Central Email</span><span>Serviços</span><span>Gatilhos</span></div>
+      <div class="g2">
+        <div class="box">
+          <h2>O app</h2><p>Endereço que os colaboradores abrem no celular ou no computador.</p>
+          <div class="linha"><input class="inp" value="https://imobdesk.imobsystems.com.br/app" readonly><button class="bt">Copiar</button><button class="bt p">Abrir app</button></div>
+          <div class="linha" style="margin-top:12px;align-items:flex-start"><div class="qr" aria-label="QR Code do app"></div><div style="font-size:12px;color:var(--muted);max-width:280px">QR para cartaz/e-mail interno. <br><br><button class="bt">Simular solicitante…</button><br><small>Abre o app como a pessoa escolhida (barra amarela "Modo simulação"), sem enviar nada em nome dela.</small></div></div>
+          <div class="aviso-adm">Acesso: qualquer <b>@exemplo.com.br</b> entra com a senha da empresa e ganha o perfil <b>Solicitante</b> (só o app). Os chamados abertos aqui entram como origem <b>Portal</b>, no setor escolhido (TI, Administração ou CFTV), com triagem por IA.</div>
+        </div>
+        <div class="box">
+          <h2>Departamentos no app</h2><p>Setores que aparecem na tela de escolha (ícone e texto de ajuda).</p>
+          <table style="margin-bottom:16px"><thead><tr><th>Departamento</th><th>Serviços no portal</th><th>No app</th></tr></thead><tbody>
+            <tr><td>💻 TI</td><td>42</td><td><span class="sw"></span></td></tr>
+            <tr><td>🏢 Administração</td><td>18</td><td><span class="sw"></span></td></tr>
+            <tr><td>📹 CFTV</td><td>7</td><td><span class="sw"></span></td></tr>
+          </tbody></table>
+          <h2>Quadrados do app</h2><p>Ligue/desligue e mude a ordem.</p>
+          <table><thead><tr><th>Quadrado</th><th>Visível</th></tr></thead><tbody>
+            <tr><td>🎫 Botão ABRIR CHAMADO (sempre visível)</td><td>—</td></tr>
+            <tr><td>📋 Meus chamados</td><td><span class="sw"></span></td></tr>
+            <tr><td>📣 Avisos da TI</td><td><span class="sw"></span></td></tr>
+            <tr><td>💡 Soluções</td><td><span class="sw"></span></td></tr>
+            <tr><td>💬 Falar no WhatsApp <small style="color:var(--muted)">(+55 21 96974-0876)</small></td><td><span class="sw"></span></td></tr>
+            <tr><td>👤 Meu perfil</td><td><span class="sw"></span></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+      <div class="g2" style="margin-top:16px">
+        <div class="box">
+          <div class="linha" style="justify-content:space-between"><div><h2>Avisos da TI (carrossel)</h2><p style="margin:0;color:var(--muted);font-size:12px">Aparecem no topo do app e na tela Avisos, no período definido.</p></div><button class="bt p">+ Novo aviso</button></div>
+          <table style="margin-top:10px"><thead><tr><th>Aviso</th><th>Tipo</th><th>Período</th><th></th></tr></thead><tbody>
+            <tr><td>PVI em manutenção hoje às 18h</td><td><span class="tag info">Manutenção</span></td><td>09/10 08:00 → 09/10 19:30</td><td><span class="tag ok">No ar</span></td></tr>
+            <tr><td>Nova política de senhas</td><td><span class="tag info">Comunicado</span></td><td>10/10 → 31/10</td><td><span class="tag off">Agendado</span></td></tr>
+            <tr><td>Internet do 3º andar normalizada</td><td><span class="tag ok">Resolvido</span></td><td>08/10 → 09/10</td><td><span class="tag off">Encerrado</span></td></tr>
+          </tbody></table>
+        </div>
+        <div class="box">
+          <h2>Soluções publicadas</h2><p>Escolha quais "Soluções aplicadas" de tickets resolvidos aparecem no app (texto revisado, sem dados pessoais).</p>
+          <table><thead><tr><th>Solução</th><th>Serviço</th><th>No app</th></tr></thead><tbody>
+            <tr><td>Esqueci a senha do Windows</td><td>Acesso / Senha</td><td><span class="sw"></span></td></tr>
+            <tr><td>Erro ao salvar nota</td><td>Sistema PVI</td><td><span class="sw"></span></td></tr>
+            <tr><td>Reiniciei o servidor de arquivos</td><td>Rede</td><td><span class="sw off"></span></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </main>
+  </div>
+</section>
+
+<script>
+const abas=document.querySelectorAll('.abas [role=tab]');
+function ver(id){document.querySelectorAll('section.palco').forEach(s=>s.hidden=s.id!==id);abas.forEach(a=>a.setAttribute('aria-selected',a.dataset.t===id));}
+abas.forEach(a=>a.addEventListener('click',()=>ver(a.dataset.t)));
+if(/^#t[0-5]$/.test(location.hash))ver(location.hash.slice(1));
+</script>
+</body>
+</html>

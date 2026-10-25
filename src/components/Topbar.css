@@ -1,0 +1,175 @@
+.topbar {
+  height: 64px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.topbar__icon-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.topbar__icon-button:hover {
+  background: var(--page);
+  color: var(--ink);
+}
+
+.topbar__badge {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--brand);
+}
+
+.topbar__logo {
+  display: block;
+  flex-shrink: 0;
+  height: 38px;
+  width: auto;
+}
+
+.topbar__divider {
+  width: 1px;
+  height: 24px;
+  flex-shrink: 0;
+  background: var(--line);
+}
+
+.topbar__title {
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.topbar__status,
+.topbar__date {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.topbar__user {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+}
+
+.topbar__user-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 180px;
+  line-height: 1.2;
+}
+
+.topbar__user-text strong,
+.topbar__user-text small {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar__user-text strong {
+  font-size: 12px;
+  color: var(--ink);
+}
+
+.topbar__user-text small {
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
+.topbar__logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-left: 4px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+}
+
+.topbar__logout:hover:not(:disabled) {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+.topbar__logout:disabled {
+  opacity: 0.5;
+}
+
+@media (max-width: 900px) {
+  .topbar__hide-sm {
+    display: none;
+  }
+}
+
+/* Celular: some o nome do sistema e o texto do usuário (o topo não pode passar da largura da tela). */
+@media (max-width: 640px) {
+  .topbar {
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .topbar__left {
+    gap: 10px;
+  }
+
+  .topbar__user-text,
+  .topbar__title,
+  .topbar__divider {
+    display: none;
+  }
+
+  .topbar__logo {
+    height: 30px;
+  }
+}

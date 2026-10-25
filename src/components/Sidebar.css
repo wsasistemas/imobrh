@@ -1,0 +1,252 @@
+.sidebar {
+  /* Largura pensada para o rótulo mais longo do menu caber inteiro. */
+  width: 280px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--sidebar);
+  border-right: 1px solid var(--sidebar-border);
+  overflow: hidden;
+  transition: width 0.18s ease;
+}
+
+/* Só o menu rola; o rodapé fica parado. */
+.sidebar__nav {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  overflow-y: auto;
+  /* Barra fina: a padrão do Windows comia ~17px da largura e cortava os rótulos. */
+  scrollbar-width: thin;
+  padding: 20px 12px 12px;
+}
+
+.sidebar--collapsed {
+  width: 68px;
+  align-items: center;
+}
+
+.sidebar__label {
+  margin: 4px 12px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sidebar-text);
+}
+
+.sidebar__nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar__item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--sidebar-text);
+  font-size: 13.5px;
+}
+
+.sidebar--collapsed .sidebar__item {
+  justify-content: center;
+  padding: 10px;
+}
+
+.sidebar__item:hover {
+  background: var(--sidebar-hover);
+  color: var(--sidebar-strong);
+}
+
+.sidebar__item--active,
+.sidebar__item--active:hover {
+  background: var(--menu-ativo);
+  color: #ffffff;
+}
+
+.sidebar__item span,
+.sidebar__group-link span,
+.sidebar__subitem span:last-child {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- Grupo Configurações ---------- */
+
+.sidebar__group {
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  color: var(--sidebar-text);
+}
+
+.sidebar__group:hover {
+  background: var(--sidebar-hover);
+  color: var(--sidebar-strong);
+}
+
+.sidebar__group--active,
+.sidebar__group--active:hover {
+  background: var(--menu-ativo);
+  color: #ffffff;
+}
+
+.sidebar__group-link {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 4px 10px 10px;
+  border-radius: 8px;
+  font-size: 13.5px;
+}
+
+.sidebar__group-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-right: 4px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+}
+
+.sidebar__group-toggle:hover {
+  background: var(--sidebar-hover);
+}
+
+.sidebar__chevron {
+  flex-shrink: 0;
+  opacity: 0.6;
+  transition: transform 0.15s ease;
+}
+
+.sidebar__chevron--open {
+  transform: rotate(90deg);
+}
+
+/* Subitens recuados sob o grupo */
+.sidebar__subitems {
+  margin: 2px 0 6px;
+}
+
+.sidebar__subitem {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 10px 9px 32px;
+  border-radius: 8px;
+  color: var(--sidebar-text);
+  font-size: 13px;
+}
+
+.sidebar__subitem:hover {
+  background: var(--sidebar-hover);
+  color: var(--sidebar-strong);
+}
+
+.sidebar__subitem--active,
+.sidebar__subitem--active:hover {
+  background: var(--menu-ativo);
+  color: #ffffff;
+}
+
+/* Flyout da sidebar recolhida (renderizado em portal) */
+.sidebar-flyout {
+  z-index: 50;
+  min-width: 220px;
+  padding: 10px 8px;
+  border-radius: 10px;
+  background: var(--sidebar);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.45);
+}
+
+.sidebar-flyout__title {
+  display: block;
+  padding: 4px 10px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sidebar-strong);
+}
+
+.sidebar-flyout .sidebar__subitem {
+  padding-left: 10px;
+}
+
+.sidebar-flyout .sidebar__subitems {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ---------- Carregando ---------- */
+
+.sidebar__loading {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 6px 12px;
+}
+
+.sidebar__loading-bar {
+  height: 14px;
+  border-radius: 6px;
+  background: var(--sidebar-hover);
+}
+
+.sidebar--collapsed .sidebar__loading-bar {
+  width: 20px;
+}
+
+/* ---------- Rodapé ---------- */
+
+.sidebar__footer {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 0 20px;
+  border-top: 1px solid var(--sidebar-hover);
+  margin: 0 12px;
+  width: auto;
+  align-self: stretch;
+}
+
+.sidebar__footer-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--sidebar-text);
+  font-size: 13.5px;
+}
+
+.sidebar--collapsed .sidebar__footer-item {
+  justify-content: center;
+  padding: 10px;
+}
+
+.sidebar__footer-item:hover {
+  background: var(--sidebar-hover);
+  color: var(--sidebar-strong);
+}

@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Contas de e-mail</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Estrutura copiada da Movidesk (Configurações › Contas de e-mail: lista + formulário com 3 abas),
+     no visual do Imobdesk (mesmos tokens do mockup atendimento-portal.html). */
+  :root {
+    --brand: #d6293b; --brand-hover: #a91d2c; --brand-soft: #fdecee;
+    --ink: #17181c; --muted: #6b7280; --line: #e9eaee; --page: #f5f6f8; --surface: #fff; --table-head: #fafafa;
+    --sidebar: #17181c; --sidebar-hover: #232429; --sidebar-text: #9a9ba3;
+    --success-bg: #e8f6ed; --success-fg: #166534; --neutral-bg: #f1f1f3; --neutral-fg: #52525b;
+    --warning-bg: #fff1e3; --warning-fg: #c2410c; --danger-bg: #fdecee; --danger-fg: #b91c1c;
+    --info-bg: #e8effd; --info-fg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { font-family: Inter, system-ui, sans-serif; font-size: 14px; color: var(--ink); background: var(--page); }
+  button, input, select, textarea { font: inherit; }
+  svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  .faixa { padding: 6px 16px; background: #fff7e0; border-bottom: 1px solid #f5e1a4; font-size: 12.5px; color: #7a5b00; }
+  .app { display: flex; min-height: calc(100% - 31px); }
+  .sidebar { width: 252px; flex: none; background: var(--sidebar); color: var(--sidebar-text); padding: 18px 12px; }
+  .sidebar__label { margin: 4px 12px 10px; font-size: 11px; font-weight: 700; letter-spacing: .08em; }
+  .item, .sub { width: 100%; display: flex; align-items: center; gap: 9px; border: 0; border-radius: 8px; background: none; color: var(--sidebar-text); text-align: left; }
+  .item { padding: 10px; margin-bottom: 2px; }
+  .item.on, .sub.on { background: var(--brand); color: #fff; }
+  .sub { padding: 9px 10px 9px 32px; font-size: 13.5px; }
+  .novo { margin-left: auto; padding: 1px 6px; border-radius: 999px; background: #ffd75e; color: #3a2a00; font-size: 10px; font-weight: 800; }
+  .main { flex: 1; min-width: 0; }
+  .topbar { height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; background: var(--surface); border-bottom: 1px solid var(--line); }
+  .logo { display: flex; align-items: center; gap: 4px; font-size: 26px; font-weight: 600; }
+  .logo i { width: 30px; height: 30px; border: 5px solid var(--brand); border-radius: 50%; }
+  .app-nome { margin-left: 16px; font-size: 15px; font-weight: 800; }
+  .conteudo { padding: 22px 32px 40px; }
+  .bread { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+  .bread b { color: var(--ink); }
+  h1 { margin: 0 0 4px; font-size: 22px; }
+  .sub-h { margin: 0 0 18px; color: var(--muted); }
+  .secoes { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .secao { height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-weight: 600; }
+  .secao.on { border-color: var(--brand); background: var(--brand-soft); color: var(--brand-hover); }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 1px 2px rgba(23,24,28,.05); }
+  .btn { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .btn-p { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .btn-ok { background: #16a34a; border-color: #16a34a; color: #fff; }
+  .btn-perigo { background: var(--danger-fg); border-color: var(--danger-fg); color: #fff; }
+  .btn-txt { border-color: transparent; background: none; }
+  .btn-sm { height: 30px; padding: 0 10px; font-size: 12.5px; }
+  .input { width: 100%; height: 38px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); }
+  textarea.input { height: 110px; padding: 10px; resize: vertical; }
+  .lbl { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+  .ajuda { display: flex; gap: 6px; font-size: 12.5px; color: var(--muted); margin: 4px 0 0; }
+  .selo { display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+  .s-ok { background: var(--success-bg); color: var(--success-fg); }
+  .s-inat { background: #3f4650; color: #fff; }
+  .s-falha { background: var(--danger-fg); color: #fff; }
+  .s-aut { background: var(--warning-bg); color: var(--warning-fg); }
+  .notice { padding: 10px 12px; border-radius: 10px; font-size: 13px; line-height: 1.45; }
+  .notice.info { background: var(--info-bg); color: #1e3a8a; }
+  .notice.warn { background: var(--warning-bg); color: #7c2d12; }
+  .tela { display: none; }
+  .tela.on { display: block; }
+
+  /* ---------- Lista (como a Movidesk) ---------- */
+  .lista-head { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; padding: 16px 18px 6px; }
+  .lista-head .tit { flex: 1; min-width: 220px; }
+  .lista-head .tit b { font-size: 17px; }
+  .lista-head .tit small { display: block; color: var(--muted); margin-top: 2px; }
+  .busca { width: 340px; }
+  .busca small { display: block; color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .opcoes { position: relative; }
+  .menu { position: absolute; right: 0; top: 40px; z-index: 5; display: none; min-width: 230px; padding: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.12); }
+  .menu.on { display: block; }
+  .menu button { width: 100%; padding: 8px 10px; border: 0; border-radius: 6px; background: none; text-align: left; cursor: pointer; }
+  .menu button:hover { background: var(--page); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th, td { padding: 13px 14px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+  th { font-size: 12.5px; color: var(--muted); background: var(--table-head); }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover td { background: var(--page); }
+  tr.inativa td { color: #9ca3af; }
+  .hab { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; border: 2px solid; font-size: 12px; font-weight: 800; }
+  .hab.sim { color: #16a34a; }
+  .hab.nao { color: var(--danger-fg); }
+  .tag { padding: 2px 8px; border-radius: 6px; background: var(--neutral-bg); color: var(--neutral-fg); font-size: 11.5px; font-weight: 700; }
+  .rodape-lista { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; color: var(--muted); font-size: 13px; }
+
+  /* ---------- Formulário (3 abas, como a Movidesk) ---------- */
+  .form-wrap { display: grid; grid-template-rows: auto 1fr auto; min-height: 640px; }
+  .abas { display: flex; gap: 6px; padding: 0 18px; border-bottom: 1px solid var(--line); }
+  .aba { padding: 14px 10px; border: 0; border-bottom: 3px solid transparent; background: none; color: var(--muted); font-weight: 600; cursor: pointer; }
+  .aba.on { color: var(--ink); border-bottom-color: var(--brand); }
+  .corpo { padding: 18px; max-width: 980px; }
+  .pane { display: none; }
+  .pane.on { display: grid; gap: 18px; }
+  .l2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .l3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; }
+  .sep { border-top: 1px solid var(--line); }
+  .chk { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+  .chk input { width: 16px; height: 16px; accent-color: var(--brand); }
+  .radios { display: grid; grid-template-columns: repeat(3, minmax(0, 220px)); gap: 8px 16px; }
+  .radios label { display: flex; align-items: center; gap: 8px; }
+  .radios input { accent-color: var(--brand); }
+  .google { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 10px; }
+  .google b { display: block; }
+  .google span { color: var(--muted); font-size: 13px; }
+  .modo { display: flex; gap: 8px; }
+  .modo button { flex: 1; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); text-align: left; cursor: pointer; }
+  .modo button.on { border-color: var(--brand); background: var(--brand-soft); }
+  .modo button b { display: block; }
+  .modo button span { color: var(--muted); font-size: 12.5px; }
+  .barra-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 14px 18px; border-top: 1px solid var(--line); background: var(--surface); border-radius: 0 0 12px 12px; }
+  .barra-acoes .dir { margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px; }
+  .teste { display: grid; gap: 8px; }
+  .passo { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; }
+  .passo i { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; font-style: normal; font-weight: 800; font-size: 12px; }
+  .passo i.ok { background: var(--success-bg); color: var(--success-fg); }
+  .passo i.er { background: var(--danger-bg); color: var(--danger-fg); }
+  .passo span { color: var(--muted); font-size: 13px; margin-left: auto; }
+  .oculto { display: none !important; }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .conteudo { padding: 16px; }
+    .l2, .l3 { grid-template-columns: 1fr; }
+    .radios { grid-template-columns: 1fr 1fr; }
+    .busca { width: 100%; }
+    .tabela { overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="faixa"><b>Mockup para aprovação · Contas de e-mail.</b> Estrutura da Movidesk (lista + formulário em 3 abas) no visual do portal. Cada conta é ligada a um <b>setor</b>: os e-mails recebidos viram chamados na fila desse setor (o processo de ticket vem depois). Tudo clicável; dados de exemplo.</div>
+<div class="app">
+  <nav class="sidebar">
+    <div class="sidebar__label">MENU PRINCIPAL</div>
+    <button class="item">Página Inicial</button>
+    <button class="item on">Gestão de Atendimento<span class="novo">NOVO</span></button>
+    <button class="sub">Central de atendimento</button>
+    <button class="sub">Fila e horários</button>
+    <button class="sub">Setores e números</button>
+    <button class="sub on">Contas de e-mail</button>
+    <button class="item">Configurações</button>
+  </nav>
+  <div class="main">
+    <header class="topbar"><div style="display:flex;align-items:center"><span class="logo"><i></i>imobdesk</span><span class="app-nome">PORTAL ATENDIMENTO</span></div><span>👤 Wagner Antunes · Super admin</span></header>
+    <div class="conteudo">
+      <div class="bread" id="bread">🏠 Início / Gestão de Atendimento / <b>Contas de e-mail</b></div>
+      <h1>Gestão de Atendimento</h1>
+      <p class="sub-h">Contas de e-mail que recebem os chamados e enviam as respostas de cada setor.</p>
+      <div class="secoes">
+        <button class="secao">💬 Central de atendimento</button>
+        <button class="secao">👥 Fila e horários</button>
+        <button class="secao">🏢 Setores e números</button>
+        <button class="secao on">✉️ Contas de e-mail</button>
+      </div>
+
+      <!-- ======================= LISTA ======================= -->
+      <section class="tela on" id="t-lista">
+        <div class="card">
+          <div class="lista-head">
+            <div class="tit"><b>Contas de e-mail</b><small id="contagem"></small></div>
+            <button class="btn btn-ok" id="novo" title="Nova conta">＋ Nova conta</button>
+            <div class="opcoes"><button class="btn" id="btnOpcoes">OPÇÕES ⋮</button>
+              <div class="menu" id="menuOpcoes"><button>↻ Testar todas as contas</button><button>✓ Habilitar selecionadas</button><button>✕ Desabilitar selecionadas</button><button>⬇ Exportar lista (Excel)</button></div></div>
+            <div class="busca"><input class="input" id="busca" placeholder="Pesquisar nome, endereço ou setor"><small>Digite pelo menos 3 caracteres para iniciar a busca.</small></div>
+            <select class="input" id="fStatus" style="width:200px"><option value="">Todos os status</option><option>Conectado</option><option>Falha na conexão</option><option>Aguardando autorização</option><option>Inativo</option></select>
+          </div>
+          <div class="tabela"><table>
+            <thead><tr><th><input type="checkbox"></th><th>Nome</th><th>↑ Endereço</th><th>Setor</th><th>Provedor</th><th>Status de conexão</th><th>E-mails na fila</th><th>Última leitura</th><th>Habilitado</th></tr></thead>
+            <tbody id="linhas"></tbody>
+          </table></div>
+          <div class="rodape-lista"><span id="rodape"></span><span>‹ 1 ›</span></div>
+        </div>
+      </section>
+
+      <!-- ======================= FORMULÁRIO ======================= -->
+      <section class="tela" id="t-form">
+        <div class="card form-wrap">
+          <div class="abas">
+            <button class="aba on" data-aba="principal">Principal</button>
+            <button class="aba" data-aba="receb">Configurações de recebimento</button>
+            <button class="aba" data-aba="envio">Configurações de envio</button>
+          </div>
+          <div class="corpo">
+            <!-- Principal -->
+            <div class="pane on" id="p-principal">
+              <div class="l2">
+                <div><label class="lbl">Nome da conta</label><input class="input" id="fNome" value="CFTV"></div>
+                <div><label class="lbl">Endereço de e-mail</label><input class="input" id="fEmail" value="cftv@exemplo.com.br"></div>
+              </div>
+              <div class="l2">
+                <div><label class="lbl">Setor (fila que recebe os chamados)</label><select class="input" id="fSetor"><option>Assistência técnica</option><option>Financeiro</option><option>Relacionamento com o cliente</option></select>
+                  <p class="ajuda">ⓘ Faz o papel da "Marca" da Movidesk: define a fila, a equipe e o horário dos chamados desta conta.</p></div>
+                <div><label class="lbl">Nome de exibição do remetente</label><input class="input" value="Exemplo · CFTV"><p class="ajuda">ⓘ Como o cliente vê quem respondeu: "Exemplo · CFTV &lt;cftv@exemplo.com.br&gt;".</p></div>
+              </div>
+              <div class="sep"></div>
+              <div><label class="chk"><input type="checkbox" checked> Exibir esta conta no envio de e-mails do chamado</label>
+                <p class="ajuda">ⓘ Desmarcado, a conta não aparece como possível remetente ao responder um chamado.</p></div>
+              <div><label class="chk"><input type="checkbox"> Conta padrão de envio do setor</label>
+                <p class="ajuda">ⓘ Usada quando o atendente abre um chamado novo para o cliente (e não responde a um e-mail recebido).</p></div>
+              <div><label class="chk"><input type="checkbox" id="chkLogo"> Utilizar logomarca da conta de e-mail</label>
+                <p class="ajuda">ⓘ Marcado, o e-mail sai com esta logomarca no lugar da foto do atendente.</p>
+                <div id="logo" class="oculto" style="margin-top:8px"><button class="btn btn-sm">⬆ Enviar logomarca (PNG/JPG, até 1 MB)</button></div></div>
+              <div class="sep"></div>
+              <div><label class="lbl">Selecione o provedor de e-mail para auxiliar na configuração da conta</label>
+                <div class="radios" id="provedores"></div>
+                <p class="ajuda">ⓘ O domínio @exemplo.com.br está no <b>Google Workspace</b> (conferido pelo MX). Para essas contas, use "Google Workspace / Gmail".</p></div>
+              <div><label class="chk"><input type="checkbox" checked> Conta habilitada</label>
+                <p class="ajuda">ⓘ Desabilitada: não lê nem envia e-mails, mas mantém o histórico.</p></div>
+            </div>
+
+            <!-- Recebimento -->
+            <div class="pane" id="p-receb">
+              <div id="recGoogle">
+                <label class="lbl">Como o sistema acessa a caixa</label>
+                <div class="modo" id="modoGoogle">
+                  <button class="on" data-m="api"><b>Conexão Google (recomendado)</b><span>Sem senha: a TI autoriza o portal uma vez no Google Workspace e ele lê/envia por API.</span></button>
+                  <button data-m="imap"><b>IMAP/SMTP com senha de app</b><span>Exige verificação em 2 etapas na conta e uma senha de app de 16 letras.</span></button>
+                </div>
+                <div class="google" id="gApi" style="margin-top:12px"><span class="selo s-ok">Autorizado</span><div><b>cftv@exemplo.com.br</b><span>Acesso pelo Google Workspace da empresa · leitura e envio · autorizado por wagner.antunes em 06/10/2026</span></div><button class="btn btn-sm" style="margin-left:auto">Refazer autorização</button></div>
+              </div>
+              <div id="recImap">
+                <div class="l3">
+                  <div><label class="lbl">Servidor de entrada (IMAP)</label><input class="input" id="imapHost" value="imap.gmail.com"></div>
+                  <div><label class="lbl">Porta</label><input class="input" id="imapPorta" value="993"></div>
+                  <div><label class="lbl">Segurança</label><select class="input"><option>SSL/TLS</option><option>STARTTLS</option></select></div>
+                </div>
+                <div class="l2" style="margin-top:14px">
+                  <div><label class="lbl">Usuário</label><input class="input" value="cftv@exemplo.com.br"></div>
+                  <div><label class="lbl">Senha (ou senha de app)</label><input class="input" type="password" value="xxxxxxxxxxxxxxxx"><p class="ajuda">🔒 Fica no cofre do Supabase; nunca volta para o navegador (só "••••abcd").</p></div>
+                </div>
+              </div>
+              <div class="sep"></div>
+              <div class="l3">
+                <div><label class="lbl">Pasta a ler</label><input class="input" value="INBOX"></div>
+                <div><label class="lbl">Ler a cada</label><select class="input"><option>1 minuto</option><option>2 minutos</option><option>5 minutos</option></select></div>
+                <div><label class="lbl">Ler a partir de</label><input class="input" type="date" value="2026-10-06"></div>
+              </div>
+              <div><label class="chk"><input type="checkbox" checked> Marcar como lido na caixa depois de importar</label></div>
+              <div><label class="chk"><input type="checkbox"> Mover para a pasta "Importados pelo portal" depois de importar</label></div>
+              <div><label class="chk"><input type="checkbox" checked> Juntar respostas ao mesmo chamado (pelo número no assunto e pelo histórico do e-mail)</label>
+                <p class="ajuda">ⓘ A resposta do cliente a "[#10241] Segunda via do boleto" entra no chamado 10241 em vez de abrir outro.</p></div>
+              <div><label class="lbl">Ignorar e-mails destes remetentes ou domínios (um por linha)</label>
+                <textarea class="input" style="height:80px">mailer-daemon@googlemail.com
+noreply@
+@rdstation.com.br</textarea><p class="ajuda">ⓘ Evita chamado de resposta automática, aviso de entrega e marketing.</p></div>
+            </div>
+
+            <!-- Envio -->
+            <div class="pane" id="p-envio">
+              <div id="envGoogle" class="notice info">Com a <b>Conexão Google</b>, o envio sai pela própria conta (fica em "Enviados" do Gmail). Não há servidor nem senha para configurar.</div>
+              <div id="envSmtp">
+                <div class="l3">
+                  <div><label class="lbl">Servidor de saída (SMTP)</label><input class="input" id="smtpHost" value="smtp.gmail.com"></div>
+                  <div><label class="lbl">Porta</label><select class="input" id="smtpPorta"><option>465</option></select></div>
+                  <div><label class="lbl">Segurança</label><select class="input"><option>SSL/TLS</option></select></div>
+                </div>
+                <p class="ajuda" style="margin-top:6px">ⓘ Só a porta 465 (SSL): o servidor do portal (Supabase) bloqueia as portas 25 e 587.</p>
+                <div class="l2" style="margin-top:14px">
+                  <div><label class="chk"><input type="checkbox" checked> Usar o mesmo usuário e senha do recebimento</label></div>
+                  <div></div>
+                </div>
+              </div>
+              <div class="sep"></div>
+              <div class="l2">
+                <div><label class="lbl">Responder para (opcional)</label><input class="input" placeholder="igual ao endereço da conta"></div>
+                <div><label class="lbl">Cópia oculta de todas as respostas (opcional)</label><input class="input" placeholder="ex.: arquivo-cftv@exemplo.com.br"></div>
+              </div>
+              <div><label class="lbl">Assinatura das respostas</label>
+                <textarea class="input">--
+{atendente}
+Exemplo · CFTV
+(21) 3333-4444 · o site da empresa</textarea>
+                <p class="ajuda">ⓘ {atendente} vira o nome de quem respondeu. O número do chamado entra no assunto: "[#10241] …".</p></div>
+            </div>
+
+            <!-- Resultado do teste -->
+            <div id="resTeste" class="teste oculto" style="margin-top:18px">
+              <b>Resultado do teste</b>
+              <div class="passo"><i class="ok">✓</i>Conexão com o Google Workspace<span>autorizado · escopo leitura e envio</span></div>
+              <div class="passo"><i class="ok">✓</i>Leitura da pasta INBOX<span>3 e-mails não lidos</span></div>
+              <div class="passo"><i class="ok">✓</i>Envio de e-mail de teste para wagner.antunes@exemplo.com.br<span>entregue em 2 s</span></div>
+            </div>
+          </div>
+          <div class="barra-acoes">
+            <button class="btn btn-perigo">EXCLUIR</button>
+            <button class="btn btn-txt" id="cancelar">CANCELAR</button>
+            <div class="dir">
+              <button class="btn btn-txt" id="testar">TESTAR CONFIGURAÇÕES</button>
+              <button class="btn btn-txt">SALVAR E CRIAR UM NOVO</button>
+              <button class="btn btn-ok" id="salvar">SALVAR</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<script>
+const CONTAS = [
+  ["Administrativo", "chamados.adm@exemplo.com.br", "Administrativo", "Google", "ok", 0, "há 1 min", true],
+  ["CFTV", "cftv@exemplo.com.br", "Assistência técnica", "Google", "ok", 0, "há 1 min", true],
+  ["chamados.ti", "chamados.ti@exemplo.com.br", "TI", "Google", "ok", 0, "há 2 min", true],
+  ["Cobrança", "cobranca@exemplo.com.br", "Financeiro", "Google", "ok", 1, "há 1 min", true],
+  ["Comercial", "comercial@exemplo.com.br", "Relacionamento com o cliente", "Google", "ok", 0, "há 1 min", true],
+  ["Contratos", "contratos@exemplo.com.br", "Contratos", "Google", "ok", 0, "há 3 min", true],
+  ["Dept° Pessoal", "dp@exemplo.com.br", "Departamento Pessoal", "IMAP/SMTP", "falha", 0, "há 2 h", true],
+  ["Jurídico", "juridico@exemplo.com.br", "Jurídico", "Google", "aut", 0, "—", true],
+  ["chamados.sistemas@exemplo.com.br", "chamados.sistemas@exemplo.com.br", "TI", "Google", "inat", 0, "—", false],
+  ["noreply.coligada@exemplo.com.br", "noreply.coligada@exemplo.com.br", "—", "IMAP/SMTP", "inat", 0, "—", false],
+];
+const STATUS = { ok: ["s-ok", "Conectado"], falha: ["s-falha", "Falha na conexão"], aut: ["s-aut", "Aguardando autorização"], inat: ["s-inat", "Inativo"] };
+function renderLista() {
+  const q = document.getElementById("busca").value.trim().toLowerCase();
+  const fs = document.getElementById("fStatus").value;
+  const lista = CONTAS.filter((c) => (q.length < 3 || `${c[0]} ${c[1]} ${c[2]}`.toLowerCase().includes(q)) && (!fs || STATUS[c[4]][1] === fs));
+  document.getElementById("contagem").textContent = `Exibindo de 1 até ${lista.length} de um total de ${CONTAS.length} registro(s)`;
+  document.getElementById("rodape").textContent = `${CONTAS.filter((c) => c[4] === "ok").length} conectadas · ${CONTAS.filter((c) => c[4] === "falha").length} com falha · ${CONTAS.reduce((s, c) => s + c[5], 0)} e-mail(s) na fila`;
+  document.getElementById("linhas").innerHTML = lista.map((c, i) => `<tr class="${c[7] ? "" : "inativa"}" data-i="${i}"><td><input type="checkbox" onclick="event.stopPropagation()"></td><td>${c[0]}</td><td>${c[1]}</td><td>${c[2] === "—" ? "—" : `<span class="tag">${c[2]}</span>`}</td><td>${c[3]}</td><td><span class="selo ${STATUS[c[4]][0]}">${STATUS[c[4]][1]}</span></td><td>${c[5]}</td><td>${c[6]}</td><td><span class="hab ${c[7] ? "sim" : "nao"}">${c[7] ? "✓" : "✕"}</span></td></tr>`).join("");
+  document.querySelectorAll("#linhas tr").forEach((tr) => tr.addEventListener("click", () => abrir(CONTAS[Number(tr.dataset.i)])));
+}
+const PROV = [["google", "Google Workspace / Gmail", "imap.gmail.com", "smtp.gmail.com"], ["outlook", "Outlook / Microsoft 365", "outlook.office365.com", "smtp.office365.com"], ["exchange", "Exchange", "", ""], ["yahoo", "Yahoo", "imap.mail.yahoo.com", "smtp.mail.yahoo.com"], ["uol", "Uol", "imap.uol.com.br", "smtps.uol.com.br"], ["bol", "Bol", "imap.bol.com.br", "smtps.bol.com.br"], ["terra", "Terra", "imap.terra.com.br", "smtp.terra.com.br"], ["ig", "Ig", "imap.ig.com.br", "smtp.ig.com.br"], ["ibest", "IBest", "imap.ibest.com.br", "smtp.ibest.com.br"], ["manual", "Definir manualmente", "", ""]];
+document.getElementById("provedores").innerHTML = PROV.map((p, i) => `<label><input type="radio" name="prov" value="${p[0]}" ${i === 0 ? "checked" : ""}> ${p[1]}</label>`).join("");
+let modoGoogle = "api";
+function aplicarProvedor() {
+  const v = document.querySelector('input[name="prov"]:checked').value;
+  const p = PROV.find((x) => x[0] === v);
+  const google = v === "google";
+  document.getElementById("recGoogle").classList.toggle("oculto", !google);
+  const api = google && modoGoogle === "api";
+  document.getElementById("gApi").classList.toggle("oculto", !api);
+  document.getElementById("recImap").classList.toggle("oculto", api);
+  document.getElementById("envGoogle").classList.toggle("oculto", !api);
+  document.getElementById("envSmtp").classList.toggle("oculto", api);
+  document.getElementById("imapHost").value = p[2];
+  document.getElementById("smtpHost").value = p[3];
+}
+document.getElementById("provedores").addEventListener("change", aplicarProvedor);
+document.querySelectorAll("#modoGoogle button").forEach((b) => b.addEventListener("click", () => {
+  modoGoogle = b.dataset.m;
+  document.querySelectorAll("#modoGoogle button").forEach((x) => x.classList.toggle("on", x === b));
+  aplicarProvedor();
+}));
+document.querySelectorAll(".aba").forEach((a) => a.addEventListener("click", () => {
+  document.querySelectorAll(".aba").forEach((x) => x.classList.toggle("on", x === a));
+  document.querySelectorAll(".pane").forEach((p) => p.classList.toggle("on", p.id === "p-" + a.dataset.aba));
+}));
+function mostrar(t) {
+  document.querySelectorAll(".tela").forEach((s) => s.classList.toggle("on", s.id === "t-" + t));
+  document.getElementById("bread").innerHTML = t === "lista" ? "🏠 Início / Gestão de Atendimento / <b>Contas de e-mail</b>" : "🏠 Início / Gestão de Atendimento / Contas de e-mail / <b>" + document.getElementById("fNome").value + "</b>";
+}
+function abrir(c) {
+  document.getElementById("fNome").value = c ? c[0] : "";
+  document.getElementById("fEmail").value = c ? c[1] : "";
+  document.getElementById("resTeste").classList.add("oculto");
+  const prov = c && c[3] !== "Google" ? "manual" : "google";
+  document.querySelector(`input[name="prov"][value="${prov}"]`).checked = true;
+  aplicarProvedor();
+  document.querySelector('.aba[data-aba="principal"]').click();
+  mostrar("form");
+}
+document.getElementById("novo").addEventListener("click", () => abrir(null));
+document.getElementById("cancelar").addEventListener("click", () => mostrar("lista"));
+document.getElementById("salvar").addEventListener("click", () => mostrar("lista"));
+document.getElementById("testar").addEventListener("click", () => document.getElementById("resTeste").classList.remove("oculto"));
+document.getElementById("chkLogo").addEventListener("change", (e) => document.getElementById("logo").classList.toggle("oculto", !e.target.checked));
+document.getElementById("btnOpcoes").addEventListener("click", () => document.getElementById("menuOpcoes").classList.toggle("on"));
+document.getElementById("busca").addEventListener("input", renderLista);
+document.getElementById("fStatus").addEventListener("change", renderLista);
+renderLista(); aplicarProvedor();
+</script>
+</body>
+</html>

@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Centro de Treinamento</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Centro de Treinamento: tour por balões sobre a própria tela do sistema, só texto, uma trilha por setor.
+     Tokens = os de src/index.css. Novo (só do tour): --stage (fundo do player) e --spot (escurecimento fora do destaque). */
+  :root {
+    --brand: #d6293b; --brand-hover: #a91d2c; --brand-soft: #fdecee;
+    --ink: #17181c; --muted: #6b7280; --line: #e9eaee; --input-border: #8d939e;
+    --page: #f5f6f8; --surface: #fff; --table-head: #fafafa;
+    --sidebar: #17181c; --sidebar-hover: #232429; --sidebar-sub-active: #2a2b31; --sidebar-text: #9a9ba3;
+    --success-bg: #e8f6ed; --success-fg: #166534; --neutral-bg: #f1f1f3; --neutral-fg: #52525b;
+    --warning-bg: #fff1e3; --warning-fg: #c2410c; --danger-bg: #fdecee; --danger-fg: #b91c1c;
+    --info-bg: #e8effd; --info-fg: #1d4ed8; --violet-bg: #f3e8ff; --violet-fg: #7e22ce;
+    --stage: #0f1013;               /* NOVO: fundo do player */
+    --spot: rgba(15, 16, 19, .55);  /* NOVO: escurece a tela fora do botão explicado */
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font-family: Inter, system-ui, sans-serif; font-size: 14px; color: var(--ink); background: var(--page); }
+  button, input, select, textarea { font: inherit; color: inherit; }
+
+  /* Faixa do mockup */
+  .faixa { position: sticky; top: 0; z-index: 60; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 7px 16px; background: #fff7e0; border-bottom: 1px solid #f5e1a4; font-size: 12.5px; color: #7a5b00; }
+  .faixa button { border: 1px solid #e3c870; background: #fff; border-radius: 999px; padding: 3px 10px; font-weight: 600; cursor: pointer; font-size: 12.5px; }
+  .faixa button[aria-pressed="true"] { background: #7a5b00; color: #fff; border-color: #7a5b00; }
+  .faixa select { font-weight: 700; padding: 3px 6px; border-radius: 6px; border: 1px solid #e3c870; background: #fff; }
+
+  /* Shell do portal */
+  .app { display: flex; min-height: calc(100vh - 38px); }
+  .sidebar { width: 264px; flex: none; background: var(--sidebar); color: var(--sidebar-text); padding: 18px 12px; }
+  .sidebar__label { margin: 4px 10px 10px; font-size: 11px; font-weight: 700; letter-spacing: .08em; }
+  .nav { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px; font-size: 13.5px; margin-bottom: 2px; }
+  .nav--on { background: var(--brand); color: #fff; }
+  .nav--sub { padding: 8px 10px 8px 30px; font-size: 13px; cursor: pointer; }
+  .nav--subon { background: var(--sidebar-sub-active); color: #fff; }
+  .main { flex: 1; min-width: 0; padding: 22px 32px 48px; }
+  .crumb { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+  .crumb b { color: var(--ink); font-weight: 600; }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 18px; }
+  .btn { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 8px 13px; font-weight: 600; cursor: pointer; text-decoration: none; color: var(--ink); font-size: 13.5px; }
+  .btn:hover { border-color: var(--input-border); }
+  .btn--primary { background: var(--brand); color: #fff; border-color: var(--brand); }
+  .btn--primary:hover { background: var(--brand-hover); }
+  .btn--sm { padding: 5px 10px; font-size: 12.5px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
+  .chip { display: inline-flex; align-items: center; gap: 5px; border-radius: 999px; padding: 2px 9px; font-size: 11.5px; font-weight: 600; background: var(--neutral-bg); color: var(--neutral-fg); white-space: nowrap; }
+  .chip--ok { background: var(--success-bg); color: var(--success-fg); }
+  .chip--warn { background: var(--warning-bg); color: var(--warning-fg); }
+  .chip--info { background: var(--info-bg); color: var(--info-fg); }
+  .chip--brand { background: var(--brand-soft); color: var(--brand-hover); }
+  .chip--violet { background: var(--violet-bg); color: var(--violet-fg); }
+  .tela { display: none; }
+  .tela--on { display: block; }
+
+  /* Catálogo */
+  .hero { display: flex; gap: 18px; align-items: center; background: linear-gradient(120deg, #17181c 0%, #2a2b31 60%, #3b1218 100%); color: #fff; border-radius: 14px; padding: 22px 24px; margin-bottom: 20px; }
+  .hero h2 { margin: 0 0 4px; font-size: 20px; }
+  .hero p { margin: 0; color: #c9cad0; }
+  .hero__stats { margin-left: auto; display: flex; gap: 22px; }
+  .hero__stats b { display: block; font-size: 22px; }
+  .hero__stats span { font-size: 12px; color: #a9aab2; }
+  .papel { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 18px 0 8px; }
+  .grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+  .mod { background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: box-shadow .15s, transform .15s; }
+  .mod:hover { box-shadow: 0 10px 24px -14px rgba(0,0,0,.35); transform: translateY(-2px); }
+  .mod__capa { position: relative; aspect-ratio: 16/9; background: #fff; overflow: hidden; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .mod__capa img { width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+  .mod__capa .play { position: absolute; inset: 0; display: grid; place-items: center; background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.45)); }
+  .mod__capa .play span { width: 54px; height: 54px; border-radius: 50%; background: var(--brand); display: grid; place-items: center; box-shadow: 0 6px 18px -6px rgba(214,41,59,.7); transition: transform .15s; }
+  .mod:hover .play span { transform: scale(1.08); }
+  .mod__capa .dur { position: absolute; right: 8px; bottom: 8px; background: rgba(0,0,0,.75); color: #fff; font-size: 11.5px; font-weight: 600; padding: 2px 7px; border-radius: 6px; }
+  .mod__corpo { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .mod__corpo h4 { margin: 0; font-size: 14.5px; }
+  .mod__corpo p { margin: 0; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+  .mod__meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; padding-top: 6px; }
+  .barra { height: 5px; border-radius: 99px; background: var(--neutral-bg); overflow: hidden; }
+  .barra i { display: block; height: 100%; background: var(--brand); border-radius: 99px; }
+  .barra--ok i { background: var(--success-fg); }
+  .mod__rodape { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted); }
+
+  /* Tour */
+  .player { position: fixed; inset: 0; z-index: 80; background: var(--stage); color: #fff; display: none; flex-direction: column; }
+  .player--on { display: flex; }
+  .pl-top { display: flex; align-items: center; gap: 12px; padding: 10px 18px; border-bottom: 1px solid #23242a; }
+  .pl-top h2 { margin: 0; font-size: 15px; }
+  .pl-top small { color: #9a9ba3; }
+  .pl-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #34353c; background: #1c1d22; color: #fff; border-radius: 8px; padding: 7px 11px; cursor: pointer; font-weight: 600; font-size: 13px; text-decoration: none; }
+  .pl-btn:hover { background: #26272d; }
+  .pl-corpo { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 290px; }
+  .palco { position: relative; min-height: 0; overflow: hidden; }
+  .tela-sis { position: absolute; border-radius: 6px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,.8); background: #fff; }
+  .tela-sis img { display: block; width: 100%; height: 100%; transition: opacity .35s; }
+  .tela-sis img.troca { opacity: 0; }
+  .alvo { position: absolute; border: 3px solid var(--brand); border-radius: 8px; box-shadow: 0 0 0 9999px var(--spot); transition: left .5s cubic-bezier(.3,.8,.3,1), top .5s cubic-bezier(.3,.8,.3,1), width .5s, height .5s; pointer-events: none; }
+  .alvo::after { content: ""; position: absolute; inset: -3px; border-radius: 8px; animation: pulsa 1.6s infinite; }
+  @keyframes pulsa { 0% { box-shadow: 0 0 0 0 rgba(214,41,59,.55); } 100% { box-shadow: 0 0 0 12px rgba(214,41,59,0); } }
+  .balao { position: absolute; width: 320px; background: #fff; color: var(--ink); border-radius: 12px; padding: 14px 16px 12px; box-shadow: 0 18px 40px -12px rgba(0,0,0,.6); border: 2px solid var(--ink);
+    transition: left .5s cubic-bezier(.3,.8,.3,1), top .5s cubic-bezier(.3,.8,.3,1), opacity .25s; z-index: 3; }
+  .balao--some { opacity: 0; }
+  .balao__seta { position: absolute; width: 16px; height: 16px; background: #fff; border: 2px solid var(--ink); transform: rotate(45deg); }
+  .balao[data-lado="direita"] .balao__seta { left: -9px; border-top: 0; border-right: 0; }
+  .balao[data-lado="esquerda"] .balao__seta { right: -9px; border-bottom: 0; border-left: 0; }
+  .balao[data-lado="abaixo"] .balao__seta { top: -9px; border-bottom: 0; border-right: 0; }
+  .balao[data-lado="acima"] .balao__seta { bottom: -9px; border-top: 0; border-left: 0; }
+  .balao__passo { font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); }
+  .balao h3 { margin: 3px 0 5px; font-size: 16px; }
+  .balao p { margin: 0; font-size: 14px; line-height: 1.5; color: #33343a; }
+  .balao__acoes { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+  .balao__acoes .pontos { display: flex; gap: 4px; margin-right: auto; }
+  .balao__acoes .pontos i { width: 6px; height: 6px; border-radius: 50%; background: var(--line); }
+  .balao__acoes .pontos i.a { background: var(--brand); width: 16px; border-radius: 99px; }
+  .fim { position: absolute; inset: 0; display: grid; place-items: center; padding: 20px; }
+  .fim[hidden] { display: none; }
+  .fim__card { background: #fff; color: var(--ink); border-radius: 14px; padding: 26px 28px; max-width: 560px; width: 100%; text-align: center; }
+  .fim__card h3 { font-size: 22px; margin: 0 0 4px; }
+  .quiz { text-align: left; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin: 14px 0 0; }
+  .quiz p { margin: 0 0 8px; font-weight: 700; }
+  .quiz label { display: flex; gap: 8px; padding: 6px 8px; border-radius: 8px; cursor: pointer; }
+  .quiz label:hover { background: var(--page); }
+  .ok { color: var(--success-fg); font-weight: 700; }
+  .no { color: var(--danger-fg); font-weight: 700; }
+  .pl-lado { border-left: 1px solid #23242a; overflow: auto; padding: 14px; }
+  .pl-lado h3 { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9a9ba3; margin: 0 0 10px; }
+  .cap { display: flex; gap: 10px; padding: 8px; border-radius: 8px; cursor: pointer; font-size: 13px; color: #c9cad0; align-items: flex-start; }
+  .cap:hover { background: #1c1d22; }
+  .cap--on { background: #26272d; color: #fff; }
+  .cap__n { flex: none; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 700; background: #2f3037; }
+  .cap--feito .cap__n { background: var(--success-fg); }
+  .cap--on .cap__n { background: var(--brand); }
+  .pl-ctl { display: flex; align-items: center; gap: 10px; padding: 10px 18px 14px; border-top: 1px solid #23242a; flex-wrap: wrap; }
+  .pl-prog { flex: 1; min-width: 160px; display: flex; gap: 3px; }
+  .pl-prog i { flex: 1; height: 6px; border-radius: 99px; background: #2f3037; cursor: pointer; }
+  .pl-prog i.f { background: #8b8c94; }
+  .pl-prog i.a { background: var(--brand); }
+  .pl-ctl select { background: #1c1d22; color: #fff; border: 1px solid #34353c; border-radius: 8px; padding: 6px 8px; }
+  .pl-tempo { font-variant-numeric: tabular-nums; color: #9a9ba3; font-size: 12.5px; }
+  .auto-barra { height: 3px; background: var(--brand); position: absolute; left: 0; bottom: 0; width: 0; z-index: 4; }
+
+  /* Gerenciar */
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 12px; color: var(--muted); font-weight: 600; background: var(--table-head); padding: 9px 10px; border-bottom: 1px solid var(--line); }
+  td { padding: 10px; border-bottom: 1px solid var(--line); vertical-align: middle; font-size: 13px; }
+  .duas { display: grid; grid-template-columns: 1.25fr 1fr; gap: 16px; align-items: start; }
+  .campo { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+  .campo label { font-size: 12.5px; font-weight: 600; }
+  .campo input, .campo select, .campo textarea { border: 1px solid var(--input-border); border-radius: 8px; padding: 8px 10px; background: #fff; }
+  .campo textarea { min-height: 96px; resize: vertical; }
+  .campo small { color: var(--muted); font-size: 12px; }
+  .lado { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .prev { position: relative; border-radius: 8px; overflow: hidden; background: var(--stage); }
+  .prev .tela-sis { position: relative; margin: 0 auto; box-shadow: none; }
+  .prev .alvo { cursor: move; }
+  .prev .balao { width: 230px; padding: 10px 12px; }
+  .prev .balao h3 { font-size: 13.5px; }
+  .prev .balao p { font-size: 12px; }
+  .quadros-lista { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; }
+  .mini { flex: none; width: 112px; border: 2px solid var(--line); border-radius: 8px; overflow: hidden; cursor: pointer; font-size: 11.5px; background: #fff; }
+  .mini img { width: 100%; aspect-ratio: 16/10; object-fit: cover; object-position: left top; display: block; }
+  .mini span { display: block; padding: 4px 6px; font-weight: 600; }
+  .mini--on { border-color: var(--brand); }
+  .mini--novo { display: grid; place-items: center; color: var(--muted); min-height: 92px; border-style: dashed; }
+  .secao { font-size: 15px; margin: 22px 0 10px; }
+
+  /* Decisões */
+  .dec { border: 1px solid var(--line); background: #fff; border-radius: 12px; padding: 14px 18px; margin-bottom: 10px; display: grid; grid-template-columns: 54px 1fr; gap: 4px 14px; }
+  .dec__id { grid-row: span 2; width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; font-weight: 800; background: var(--success-bg); color: var(--success-fg); }
+  .dec__id--pend { background: var(--warning-bg); color: var(--warning-fg); }
+  .dec h3 { margin: 0; font-size: 15px; }
+  .dec p { margin: 0; color: var(--muted); line-height: 1.5; }
+  .fluxo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+  .passo { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px; line-height: 1.45; }
+  .passo b { display: block; color: var(--brand); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px; }
+
+  @media (max-width: 1000px) {
+    .sidebar { display: none; }
+    .main { padding: 16px; }
+    .hero { flex-direction: column; align-items: flex-start; }
+    .hero__stats { margin-left: 0; }
+    .pl-corpo { grid-template-columns: 1fr; }
+    .pl-lado { display: none; }
+    .duas, .fluxo { grid-template-columns: 1fr; }
+    .dec { grid-template-columns: 1fr; }
+    .dec__id { grid-row: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="faixa">
+  <strong>MOCKUP · Centro de Treinamento</strong>
+  <label>Ver como:
+    <select id="f-setor">
+      <option value="TI">Wagner · TI - Suporte</option>
+      <option value="ADM">Gustavo · Administrativo</option>
+      <option value="CFTV">Helena · CFTV</option>
+      <option value="FIN">Fernanda · Financeiro</option>
+    </select>
+  </label>
+  <span style="margin-left:auto">Tela:</span>
+  <button data-tela="catalogo" aria-pressed="true">1. Meus treinamentos</button>
+  <button data-tela="tour">2. Tour com balões</button>
+  <button data-tela="gerenciar">3. Gerenciar tutoriais (Admin)</button>
+  <button data-tela="decisoes">4. Decisões</button>
+</div>
+
+<div class="app">
+  <aside class="sidebar" aria-label="Menu lateral (ilustrativo)">
+    <p class="sidebar__label">MENU PRINCIPAL</p>
+    <div class="nav">Página Inicial</div>
+    <div class="nav">Gestão de Tickets</div>
+    <div class="nav">Gestão Tickets Movidesk</div>
+    <div class="nav">Administração</div>
+    <div class="nav">Solicitações Financeiras</div>
+    <div class="nav">Configurações</div>
+    <div class="nav nav--on">Centro de Treinamento</div>
+    <div class="nav nav--sub nav--subon" data-ir="catalogo">Meus treinamentos</div>
+    <div class="nav nav--sub" data-ir="gerenciar">Gerenciar tutoriais <span class="chip" style="margin-left:auto;background:#2f3037;color:#c9cad0">Admin</span></div>
+  </aside>
+
+  <main class="main">
+    <!-- ============ 1. MEUS TREINAMENTOS ============ -->
+    <section class="tela tela--on" id="tela-catalogo">
+      <div class="crumb">Início / <b>Centro de Treinamento</b></div>
+      <h1>Centro de Treinamento</h1>
+      <p class="sub">Tutoriais passo a passo na própria tela do sistema. Clique em Começar e siga os balões.</p>
+
+      <div class="hero">
+        <svg width="56" height="56" viewBox="0 0 24 24" aria-hidden="true"><path fill="#d6293b" d="M12 3 1 9l11 6 9-4.91V17h2V9z"/><path fill="#fff" opacity=".85" d="M5 13.18v4L12 21l7-3.82v-4L12 17z"/></svg>
+        <div>
+          <h2 id="hero-titulo"></h2>
+          <p id="hero-desc"></p>
+        </div>
+        <div class="hero__stats">
+          <div><b id="st-feitos">0</b><span>concluídos</span></div>
+          <div><b id="st-total">0</b><span>módulos</span></div>
+          <div><b id="st-min">0</b><span>minutos</span></div>
+        </div>
+      </div>
+
+      <div id="catalogo"></div>
+    </section>
+
+    <!-- ============ 3. GERENCIAR ============ -->
+    <section class="tela" id="tela-gerenciar">
+      <div class="crumb">Início / Centro de Treinamento / <b>Gerenciar tutoriais</b></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap">
+        <div><h1>Gerenciar tutoriais</h1><p class="sub">Módulos de cada setor, os balões de cada tela e quem já concluiu. Só Admin.</p></div>
+        <div style="margin-left:auto;display:flex;gap:8px">
+          <button class="btn" title="Roda o roteiro de captura na demonstração">⟳ Recapturar telas da demonstração</button>
+          <button class="btn btn--primary">+ Novo módulo</button>
+        </div>
+      </div>
+
+      <div class="card" style="padding:0;overflow:auto">
+        <table>
+          <thead><tr><th>Módulo</th><th>Setores</th><th>Para quem</th><th>Balões</th><th>Duração</th><th>Concluíram</th><th>Status</th><th></th></tr></thead>
+          <tbody id="tab-mods"></tbody>
+        </table>
+      </div>
+
+      <h2 class="secao">Editar balão · <span id="ed-mod"></span></h2>
+      <div class="card" style="margin-bottom:12px">
+        <div class="quadros-lista" id="ed-quadros"></div>
+      </div>
+      <div class="duas">
+        <div class="card">
+          <div class="prev" id="ed-prev"></div>
+          <p style="font-size:12px;color:var(--muted);margin:8px 0 0">Arraste o contorno vermelho até o botão que o balão explica. O balão se posiciona sozinho ao lado.</p>
+        </div>
+        <div class="card">
+          <div class="lado">
+            <div class="campo"><label>Tela do sistema</label><select id="ed-img"></select><small>Capturada da demonstração em 20/10/2026</small></div>
+            <div class="campo"><label>Posição do balão</label><select id="ed-lado"><option value="auto">Automática</option><option value="direita">À direita</option><option value="esquerda">À esquerda</option><option value="abaixo">Abaixo</option><option value="acima">Acima</option></select></div>
+          </div>
+          <div class="campo"><label for="ed-tit">Título do balão</label><input id="ed-tit"></div>
+          <div class="campo"><label for="ed-txt">Explicação</label><textarea id="ed-txt"></textarea><small id="ed-txt-info"></small></div>
+          <div class="campo"><label>Rota na demonstração</label><input id="ed-rota"><small>O botão "Praticar na demonstração" abre aqui</small></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn--primary">Salvar balão</button>
+            <button class="btn" id="ed-ver">▶ Ver no tour</button>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="secao">Progresso por setor</h2>
+      <div class="card" style="padding:0;overflow:auto">
+        <table>
+          <thead><tr><th>Setor</th><th>Pessoas</th><th>Trilha</th><th>Concluíram tudo</th><th>Em andamento</th><th>Não começaram</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><b>TI - Suporte</b></td><td>6</td><td>Gestão de Tickets</td><td><span class="chip chip--ok">3</span></td><td><span class="chip chip--warn">2</span></td><td><span class="chip">1</span></td><td><button class="btn btn--sm">Ver pessoas</button></td></tr>
+            <tr><td><b>Administrativo</b></td><td>4</td><td>Gestão de Tickets</td><td><span class="chip chip--ok">1</span></td><td><span class="chip chip--warn">1</span></td><td><span class="chip">2</span></td><td><button class="btn btn--sm">Ver pessoas</button></td></tr>
+            <tr><td><b>CFTV</b></td><td>3</td><td>Gestão de Tickets</td><td><span class="chip chip--ok">0</span></td><td><span class="chip chip--warn">1</span></td><td><span class="chip">2</span></td><td><button class="btn btn--sm">Ver pessoas</button></td></tr>
+            <tr><td><b>Financeiro</b></td><td>3</td><td>Solicitações Financeiras</td><td><span class="chip chip--ok">2</span></td><td><span class="chip chip--warn">1</span></td><td><span class="chip">0</span></td><td><button class="btn btn--sm">Ver pessoas</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ 4. DECISÕES ============ -->
+    <section class="tela" id="tela-decisoes">
+      <div class="crumb">Mockup / <b>Decisões</b></div>
+      <h1>Como vai funcionar</h1>
+      <p class="sub">Cada módulo é um tour sobre a própria tela do sistema: a tela fica como é, e um balão aponta cada botão e explica o processo.</p>
+
+      <div class="fluxo">
+        <div class="passo"><b>1 · Roteiro</b>Cada módulo é uma lista de balões: a tela, o botão destacado, o título e a explicação.</div>
+        <div class="passo"><b>2 · Telas</b>Um script entra na demonstração com o usuário fictício e captura as telas. Mudou a tela? Roda de novo.</div>
+        <div class="passo"><b>3 · Tour</b>Avançar, voltar, ir direto a um passo pelo teclado (← → Esc) ou deixar passar sozinho.</div>
+        <div class="passo"><b>4 · Conclusão</b>Uma pergunta no fim. Acertou, o módulo fica concluído e o progresso vai para o banco.</div>
+      </div>
+
+      <div class="dec"><span class="dec__id">D1</span><h3>Sem voz: só texto</h3><p>Os balões trazem título e explicação. Nada de áudio.</p></div>
+      <div class="dec"><span class="dec__id">D2</span><h3>Balões sobre a própria tela do sistema</h3><p>A tela capturada da demonstração aparece inteira, sem desenho por cima, com o botão explicado contornado e o balão ao lado. O resto da tela fica levemente escurecido. No fim, "Praticar na demonstração" abre o link de dados fictícios.</p></div>
+      <div class="dec"><span class="dec__id">D3</span><h3>Cada pessoa vê o seu setor</h3><p>TI, Administrativo e CFTV veem a trilha Gestão de Tickets. Financeiro vê Solicitações Financeiras, com os módulos de quem pede, quem aprova e quem administra. O setor vem do cadastro do usuário. O Admin vê todos em Gerenciar tutoriais.</p></div>
+      <div class="dec"><span class="dec__id">D4</span><h3>Progresso gravado no banco</h3><p>Tabela nova (migration aditiva) com o passo em que cada pessoa parou e a data de conclusão de cada módulo. Retoma de onde parou em qualquer computador e alimenta "Progresso por setor".</p></div>
+      <div class="dec"><span class="dec__id dec__id--pend">D5</span><h3>Ajustes na demonstração antes de capturar</h3><p>App do solicitante sem setores no modo demonstração (não dá para mostrar "Abrir chamado"); "Meus chamados" mostra "undefined nos últimos 90 dias"; esconder a faixa "DEV · Ver como · Modo simulado" nas capturas, para a tela ficar igual à de produção.</p></div>
+    </section>
+  </main>
+</div>
+
+<!-- ============ 2. TOUR ============ -->
+<div class="player" id="player" role="dialog" aria-modal="true" aria-labelledby="pl-titulo">
+  <div class="pl-top">
+    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path fill="#d6293b" d="M12 3 1 9l11 6 9-4.91V17h2V9z"/></svg>
+    <div><h2 id="pl-titulo"></h2><small id="pl-sub"></small></div>
+    <div style="margin-left:auto;display:flex;gap:8px">
+      <a class="pl-btn" id="pl-praticar" href="https://imobdesk-demo.vercel.app/login" target="_blank" rel="noopener">Praticar na demonstração ↗</a>
+      <button class="pl-btn" id="pl-fechar">✕ Fechar</button>
+    </div>
+  </div>
+  <div class="pl-corpo">
+    <div class="palco" id="palco">
+      <div class="tela-sis" id="tela-sis"><img id="tela-img" alt=""><div class="alvo" id="alvo"></div></div>
+      <div class="balao" id="balao" role="status" aria-live="polite"><span class="balao__seta" id="seta"></span><div id="balao-conteudo"></div></div>
+      <div class="fim" id="fim" hidden></div>
+      <div class="auto-barra" id="auto-barra"></div>
+    </div>
+    <aside class="pl-lado"><h3>Passos</h3><div id="pl-caps"></div></aside>
+  </div>
+  <div class="pl-ctl">
+    <button class="pl-btn" id="pl-ant">‹ Voltar</button>
+    <button class="pl-btn" id="pl-prox">Próximo ›</button>
+    <span class="pl-tempo" id="pl-tempo"></span>
+    <div class="pl-prog" id="pl-prog"></div>
+    <button class="pl-btn" id="pl-auto" aria-pressed="false">▶ Passar sozinho</button>
+    <select id="pl-ritmo" aria-label="Ritmo"><option value="1.4">Devagar</option><option value="1" selected>Normal</option><option value="0.7">Rápido</option></select>
+  </div>
+</div>
+
+<script>
+const IMG = "centro-treinamento/";
+const W = { d: [1440, 900], m: [780, 1688] };
+// alvo = [x, y, largura, altura] em % da tela capturada. Cada passo = um balão.
+const MODULOS = [
+  // ---------- Gestão de Tickets (TI, Administrativo, CFTV) ----------
+  { id: "t1", trilha: "tickets", papel: "atendente", titulo: "Visão geral: o painel da sua equipe", desc: "O que olhar primeiro ao começar o dia: prazos vencidos, tickets sem dono e a triagem.", min: 4, progresso: 100, rota: "/gestao-chamados/visao-geral",
+    passos: [
+      { img: "t-visao", tit: "Comece pela Visão geral", txt: "É o painel da sua equipe: tudo o que precisa de atenção hoje, num lugar só.", alvo: [1, 22.8, 18.2, 3.9] },
+      { img: "t-visao", tit: "Os números do dia", txt: "Sem responsável, SLA vencido, vencem hoje, em atendimento. Clique num cartão para ver a lista dele.", alvo: [21.5, 48, 76.5, 14.6] },
+      { img: "t-visao", tit: "SLA vencido", txt: "O cartão vermelho conta os tickets que já passaram do prazo. Eles são a prioridade.", alvo: [34.5, 48.4, 12, 14.2] },
+      { img: "t-visao", tit: "Meus, equipe ou todos", txt: "Troque o recorte do painel. Os filtros de equipe e origem ficam à direita.", alvo: [21.5, 41.6, 17.8, 5] },
+      { img: "t-visao", tit: "Novo ticket", txt: "Abre um ticket na hora, por exemplo para um pedido que chegou por telefone.", alvo: [89.2, 32, 8.7, 4.6] },
+      { img: "t-visao", tit: "Precisa de ação agora", txt: "A lista já vem em ordem: vencidos primeiro, depois o próximo prazo de SLA.", alvo: [21.5, 74.6, 54, 25.4] },
+    ] },
+  { id: "t2", trilha: "tickets", papel: "atendente", titulo: "A fila de tickets: Kanban e visões", desc: "Colunas por situação, busca, visões da equipe e como ler o prazo de cada cartão.", min: 5, progresso: 40, rota: "/gestao-chamados/tickets",
+    passos: [
+      { img: "t-tickets", tit: "A fila em colunas", txt: "A fazer, Aguardando, Em atendimento e Pré-fechamento. Cada cartão é um ticket.", alvo: [21.5, 41.2, 77.3, 58.8] },
+      { img: "t-tickets", tit: "Escolha a visão", txt: "A visão filtra a fila da sua equipe, em Kanban ou em lista.", alvo: [21.6, 29.8, 19.8, 4.8] },
+      { img: "t-tickets", tit: "Busque", txt: "Digite o número, parte do assunto ou o nome do solicitante.", alvo: [42, 29.6, 18.2, 4.9] },
+      { img: "t-tickets", tit: "Leia o cartão", txt: "Número, quem pediu, o assunto e o prazo. A etiqueta vermelha avisa que o SLA venceu; as iniciais são do responsável.", alvo: [61.5, 61.9, 17.4, 12] },
+      { img: "t-tickets", tit: "Abra o ticket", txt: "Clique no cartão para atender. No próximo módulo abrimos este, o 48231.", alvo: [61.5, 61.9, 17.4, 12] },
+    ] },
+  { id: "t3", trilha: "tickets", papel: "atendente", titulo: "Atender um ticket do começo ao fim", desc: "Serviço, responsável, resposta ao solicitante, solução reaproveitada e status.", min: 7, progresso: 0, rota: "/gestao-chamados/tickets/48231",
+    passos: [
+      { img: "t-ticket", tit: "Quem pediu e por onde", txt: "Número, solicitante e canal (aqui, e-mail). Seguir avisa você de cada novidade do ticket.", alvo: [29, 32, 28.6, 3.3] },
+      { img: "t-ticket", tit: "Status do ticket", txt: "Mostra e muda a situação: Em atendimento, Aguardando, Resolvido…", alvo: [68.5, 31.1, 19.7, 4.8] },
+      { img: "t-ticket", tit: "Classifique pelo serviço", txt: "O serviço define a equipe e o prazo de SLA. Ele é obrigatório para enviar a resposta.", alvo: [23, 64.6, 22.4, 12.6] },
+      { img: "t-ticket2", tit: "Assuma o ticket", txt: "Em Responsável, escolha você mesmo. Acima, a Previsão de solução mostra quanto falta, ou quanto já venceu.", alvo: [23, 57.6, 22.4, 16] },
+      { img: "t-ticket", tit: "Já resolveram antes?", txt: "O portal acha tickets parecidos. Se servir, clique em Usar esta solução na resposta e ajuste o texto.", alvo: [48.3, 80.2, 47.9, 17] },
+      { img: "t-ticket", tit: "Responda ou anote", txt: "Responder ao solicitante vai para ele. Nota interna fica só para a equipe.", alvo: [48.6, 48.6, 19.3, 3.4] },
+      { img: "t-ticket", tit: "Escreva a resposta", txt: "A resposta sai pelo mesmo canal em que o pedido chegou.", alvo: [48.3, 51.6, 47.9, 14.8] },
+      { img: "t-ticket", tit: "Escolha o status e envie", txt: "Marque o Status após enviar, por exemplo Resolvido, e clique em Adicionar ação.", alvo: [48.9, 67.2, 46.6, 10.6] },
+      { img: "t-ticket2", tit: "Tudo fica no histórico", txt: "Cada resposta, nota e mudança de status entra aqui, com data e autor.", alvo: [48.3, 47, 47.9, 22.5] },
+    ] },
+  { id: "t4", trilha: "tickets", papel: "atendente", titulo: "Conversas de WhatsApp", desc: "A fila do setor, assumir uma conversa e acompanhar quem está com quem.", min: 4, progresso: 0, rota: "/gestao-chamados/conversas",
+    passos: [
+      { img: "t-conversas", tit: "WhatsApp ao vivo", txt: "As conversas do seu setor chegam aqui. À esquerda a lista; à direita, o chat e o ticket da conversa.", alvo: [21.7, 38.5, 76.1, 61.5] },
+      { img: "t-conversas", tit: "Quantos esperam", txt: "Conta as conversas na fila, sem ninguém atendendo.", alvo: [91.6, 32.6, 6.2, 4.3] },
+      { img: "t-conversas", tit: "Filtre a lista", txt: "Na fila: quem espera. Comigo: as suas. Com outro atendente: as dos colegas.", alvo: [22.4, 45, 21.6, 7.4] },
+      { img: "t-conversas", tit: "Assuma a conversa", txt: "Na fila e o número vermelho mostram quem espera e quantas mensagens não lidas há. Clique para assumir.", alvo: [21.7, 60.8, 22.9, 7.6] },
+      { img: "t-conversas", tit: "Lista ou Kanban", txt: "Veja as conversas em lista ou num quadro por situação.", alvo: [21.7, 32.6, 20.8, 4.2] },
+    ] },
+  { id: "t5", trilha: "tickets", papel: "gestor", titulo: "Monitor de atendimento", desc: "Para gestores: indicadores do mês e a situação de cada atendente em tempo real.", min: 4, progresso: 0, rota: "/gestao-chamados/monitor",
+    passos: [
+      { img: "t-monitor", tit: "Escolha o setor", txt: "Você vê os setores em que é gestor; a supervisão geral vê todos.", alvo: [21.7, 32, 16.7, 4.9] },
+      { img: "t-monitor", tit: "Os indicadores", txt: "Atendidas, resolvidas no 1º atendimento, tempo médio de espera e de atendimento, com a variação do período.", alvo: [21.7, 38.2, 37.5, 50.8] },
+      { img: "t-monitor", tit: "Período", txt: "Troque entre hoje, semana e mês.", alvo: [46, 39.6, 9.1, 4.6] },
+      { img: "t-monitor", tit: "A equipe agora", txt: "Cada atendente: online, disponível, em atendimento e quantas conversas tem. Laranja é pausa; vermelho, ausente.", alvo: [60.3, 38.2, 37.6, 61] },
+    ] },
+  { id: "t6", trilha: "tickets", papel: "solicitante", titulo: "Como o colaborador abre um chamado", desc: "O App do solicitante no celular ou no computador: setor, chamado e acompanhamento.", min: 3, progresso: 0, rota: "/app", celular: true,
+    passos: [
+      { img: "app-home", tit: "O App do solicitante", txt: "É o app em que qualquer colaborador abre chamados, com o e-mail da empresa.", alvo: [4, 6, 92, 34], cel: true },
+      { img: "app-home", tit: "1. Escolha o setor", txt: "Toque em Setor e escolha quem vai atender: TI, Administrativo ou CFTV.", alvo: [4.8, 44.5, 28.5, 13.2], cel: true },
+      { img: "app-home", tit: "2. Abra o chamado", txt: "Descreva o problema e, se ajudar, anexe uma foto.", alvo: [35.9, 44.5, 28.6, 13.2], cel: true },
+      { img: "app-home", tit: "3. Acompanhe", txt: "Em Meus chamados você vê as respostas da equipe.", alvo: [66.8, 44.5, 28.6, 13.2], cel: true },
+    ] },
+
+  // ---------- Solicitações Financeiras (Financeiro) ----------
+  { id: "f1", trilha: "fin", papel: "solicitante", titulo: "Pedir um reembolso de despesas", desc: "Do botão Novo reembolso ao envio, com o comprovante lido automaticamente.", min: 6, progresso: 0, rota: "/financeiro/nova",
+    passos: [
+      { img: "f-minhas", tit: "Minhas solicitações", txt: "Seus pedidos e a etapa de cada um.", alvo: [21.6, 21.2, 13.2, 3.9] },
+      { img: "f-minhas", tit: "Contadores por situação", txt: "Rascunhos, em aprovação, devolvidas, no Financeiro, a comprovar e pagas no mês.", alvo: [21.6, 60.2, 76.3, 13.6] },
+      { img: "f-nova", tit: "Novo reembolso", txt: "Gastou do seu bolso a serviço da empresa? Comece aqui. Paga em até 15 dias após a última aprovação.", alvo: [23.1, 48.5, 11.8, 5] },
+      { img: "f-reembolso", tit: "Seus dados já vêm", txt: "Nome, CPF e setor vêm do cadastro e não se editam aqui.", alvo: [21.7, 48, 51, 15.9] },
+      { img: "f-reembolso", tit: "Quem vai aprovar", txt: "A cadeia de aprovação do seu setor, na ordem.", alvo: [74.2, 48, 23.6, 30.2] },
+      { img: "f-reembolso", tit: "Rascunho automático", txt: "Tudo é salvo sozinho. Pode sair e voltar depois.", alvo: [21.5, 40.4, 14.5, 2.6] },
+      { img: "f-reembolso", tit: "Antes de enviar", txt: "Confira as checagens e marque a declaração de aceite. O aceite substitui a assinatura.", alvo: [74.2, 80, 23.6, 18] },
+      { img: "f-detalhe", tit: "Acompanhe", txt: "A linha do tempo mostra cada etapa: gestor, conferência, SIENGE e pagamento.", alvo: [74.2, 41.8, 23.6, 35] },
+    ] },
+  { id: "f2", trilha: "fin", papel: "solicitante", titulo: "Pelo celular: comprovante pela câmera", desc: "Reembolso e fundo fixo no App do solicitante, com a foto do cupom na hora.", min: 3, progresso: 0, rota: "/app/financeiro", celular: true,
+    passos: [
+      { img: "app-home", tit: "Toque em Financeiro", txt: "No App do solicitante do celular, o Financeiro fica na tela inicial.", alvo: [4.8, 58.8, 28.5, 13.2], cel: true },
+      { img: "app-fin", tit: "Reembolso ou fundo fixo", txt: "Escolha e fotografe o cupom na hora. Sem internet, o rascunho sincroniza quando a rede voltar.", alvo: [4.8, 9.6, 90.4, 13.6], cel: true },
+      { img: "app-fin", tit: "Devolvida para ajuste", txt: "Abra, leia o comentário do aprovador, corrija e reenvie.", alvo: [4.8, 60.4, 90.4, 10.8], cel: true },
+    ] },
+  { id: "f3", trilha: "fin", papel: "gestor", titulo: "Aprovar, devolver ou reprovar", desc: "Para aprovadores: a fila, os prazos, o substituto e a decisão.", min: 4, progresso: 0, rota: "/financeiro/aprovacoes",
+    passos: [
+      { img: "f-aprov", tit: "Aguardando mim", txt: "O que espera pela sua decisão, com o prazo de cada etapa.", alvo: [21.6, 39.5, 13.4, 5.3] },
+      { img: "f-aprov", tit: "Prazo vencido", txt: "Faltando 25% do prazo você recebe um lembrete; vencido, a etapa vai para o substituto.", alvo: [70.3, 66.8, 10.2, 3.8] },
+      { img: "f-aprov", tit: "Definir substituto", txt: "Vai sair de férias? Indique quem aprova no seu lugar.", alvo: [85.6, 31, 12.2, 4.4] },
+      { img: "f-aprov", tit: "Abrir", txt: "Abre o pedido com as despesas e as checagens automáticas.", alvo: [92.5, 53.3, 4.8, 4.5] },
+      { img: "f-aprov-det", tit: "Comentário", txt: "Obrigatório para devolver ou reprovar: explique o que precisa mudar.", alvo: [22.8, 81.4, 48.9, 5] },
+      { img: "f-aprov-det", tit: "Decida", txt: "Reprovar encerra. Devolver para ajuste volta ao solicitante. Aprovar segue para a próxima etapa.", alvo: [39.8, 87.6, 31.9, 5.6] },
+    ] },
+  { id: "f4", trilha: "fin", papel: "financeiro", titulo: "Conferência item a item", desc: "Fila do Financeiro, comprovante ao lado do declarado, aceitar, pedir ajuste ou glosar.", min: 6, progresso: 0, rota: "/financeiro/conferencia",
+    passos: [
+      { img: "f-conf", tit: "A fila do Financeiro", txt: "Os contadores de cada etapa. Comece por A conferir.", alvo: [21.6, 39.6, 76.3, 13.4] },
+      { img: "f-conf", tit: "Pagar até", txt: "O limite de pagamento de cada pedido. Ordem: aprovação mais antiga primeiro.", alvo: [63.8, 71.4, 11, 21] },
+      { img: "f-conf-det", tit: "Os itens", txt: "Cada despesa é um item. O alerta laranja indica uma regra a conferir.", alvo: [21.7, 41.8, 17.3, 42.4] },
+      { img: "f-conf-det", tit: "O comprovante", txt: "Abre aqui dentro, com zoom, girar e tela cheia.", alvo: [40.1, 41.8, 30.2, 42.3] },
+      { img: "f-conf-det", tit: "Declarado × comprovante", txt: "O que o solicitante informou ao lado do que está no comprovante.", alvo: [71.5, 41.8, 26.5, 30.2] },
+      { img: "f-conf-det", tit: "Decida o item", txt: "Aceitar, Pedir ajuste ao solicitante ou Glosar o valor.", alvo: [72.6, 92.8, 20.6, 5.6] },
+    ] },
+  { id: "f5", trilha: "fin", papel: "financeiro", titulo: "Lançamento no SIENGE e pagamento", desc: "Gerar o título, programar e marcar como paga.", min: 4, progresso: 0, rota: "/financeiro/conferencia",
+    passos: [
+      { img: "f-conf-det", tit: "Totais", txt: "Total, glosas e valor a pagar, já com os descontos.", alvo: [22.6, 85.2, 34, 4.4] },
+      { img: "f-conf-det", tit: "Devolver ao solicitante", txt: "Se faltar algo que só ele resolve, devolva com o motivo.", alvo: [66.2, 88.4, 13, 4.4] },
+      { img: "f-conf-det", tit: "Lançamento no SIENGE", txt: "Libera quando todos os itens estão resolvidos. Cria o título a pagar com os padrões configurados.", alvo: [80.9, 87.6, 15.8, 5.6] },
+      { img: "f-conf", tit: "Pagamento programado", txt: "Depois do lançamento, o pedido vem para cá. Quando pagar, marque como paga e o solicitante é avisado.", alvo: [60.2, 39.6, 12.1, 13.4] },
+    ] },
+];
+const TRILHAS = {
+  tickets: { nome: "Gestão de Tickets", desc: "Atender, acompanhar e gerir os chamados do seu setor." },
+  fin: { nome: "Solicitações Financeiras", desc: "Quem pede, quem aprova e quem administra: do reembolso ao pagamento." },
+};
+const SETORES = {
+  TI: { nome: "TI - Suporte", pessoa: "Wagner", trilha: "tickets" },
+  ADM: { nome: "Administrativo", pessoa: "Gustavo", trilha: "tickets" },
+  CFTV: { nome: "CFTV", pessoa: "Helena", trilha: "tickets" },
+  FIN: { nome: "Financeiro", pessoa: "Fernanda", trilha: "fin" },
+};
+const PAPEIS = { atendente: "Quem atende", solicitante: "Quem abre / solicita", gestor: "Quem aprova / gere", financeiro: "Quem administra" };
+const PAPEL_CHIP = { solicitante: "chip--info", atendente: "chip--brand", gestor: "chip--violet", financeiro: "chip--ok" };
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const lerSalvo = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } };
+const salvar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* sem armazenamento */ } };
+const prog = lerSalvo("ct-progresso-v2", {});
+MODULOS.forEach((m) => { if (prog[m.id] != null) m.progresso = prog[m.id]; });
+
+// ---------- Navegação do mockup ----------
+function mostrar(tela) {
+  if (tela === "tour") { abrir(SETORES[$("#f-setor").value].trilha === "fin" ? "f1" : "t3"); return; }
+  $$(".tela").forEach((t) => t.classList.toggle("tela--on", t.id === "tela-" + tela));
+  $$(".faixa button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.tela === tela)));
+  $$(".nav--sub").forEach((n) => n.classList.toggle("nav--subon", n.dataset.ir === tela));
+  scrollTo(0, 0);
+}
+$$(".faixa button").forEach((b) => b.addEventListener("click", () => mostrar(b.dataset.tela)));
+$$(".nav--sub").forEach((n) => n.addEventListener("click", () => mostrar(n.dataset.ir)));
+$("#f-setor").addEventListener("change", () => { renderCatalogo(); mostrar("catalogo"); });
+
+// ---------- Meus treinamentos: só a trilha do setor da pessoa ----------
+function renderCatalogo() {
+  const s = SETORES[$("#f-setor").value];
+  const t = TRILHAS[s.trilha];
+  const mods = MODULOS.filter((m) => m.trilha === s.trilha);
+  $("#hero-titulo").textContent = `Olá, ${s.pessoa}. Sua trilha: ${t.nome}`;
+  $("#hero-desc").textContent = `Setor ${s.nome}. ${t.desc}`;
+  $("#st-total").textContent = mods.length;
+  $("#st-feitos").textContent = mods.filter((m) => m.progresso === 100).length;
+  $("#st-min").textContent = mods.reduce((a, m) => a + m.min, 0);
+  $("#catalogo").innerHTML = Object.keys(PAPEIS).map((p) => {
+    const lista = mods.filter((m) => m.papel === p);
+    return lista.length ? `<p class="papel">${PAPEIS[p]}</p><div class="grade">${lista.map(cartao).join("")}</div>` : "";
+  }).join("");
+  $$("#catalogo [data-abrir]").forEach((e) => e.addEventListener("click", () => abrir(e.dataset.abrir)));
+}
+function capa(m) {
+  const q = m.passos[0];
+  if (q.cel) return "object-fit:cover;object-position:center 30%;background:#1b1c20";
+  return "";
+}
+function cartao(m) {
+  const feito = m.progresso === 100;
+  const estado = feito ? `<span class="chip chip--ok">✓ Concluído</span>` : m.progresso > 0 ? `<span>${m.progresso}% feito</span>` : `<span>Não iniciado</span>`;
+  const acao = feito ? "Rever" : m.progresso > 0 ? "Continuar" : "Começar";
+  return `<article class="mod">
+    <div class="mod__capa" data-abrir="${m.id}" role="button" tabindex="0" aria-label="Começar ${m.titulo}">
+      <img src="${IMG + m.passos[0].img}.png" alt="" style="${capa(m)}">
+      <div class="play"><span><svg width="22" height="22" viewBox="0 0 24 24"><path fill="#fff" d="M8 5v14l11-7z"/></svg></span></div>
+      <span class="dur">${m.passos.length} passos · ${m.min} min</span>
+    </div>
+    <div class="mod__corpo">
+      <h4>${m.titulo}</h4>
+      <p>${m.desc}</p>
+      <div class="mod__meta"><span class="chip ${PAPEL_CHIP[m.papel]}">${PAPEIS[m.papel]}</span>${m.celular ? `<span class="chip">Celular</span>` : ""}</div>
+      <div class="barra ${feito ? "barra--ok" : ""}"><i style="width:${m.progresso}%"></i></div>
+      <div class="mod__rodape">${estado}<button class="btn btn--sm ${feito ? "" : "btn--primary"}" data-abrir="${m.id}">${acao}</button></div>
+    </div>
+  </article>`;
+}
+
+// ---------- Tour: balões sobre a tela do sistema ----------
+const P = { mod: null, i: 0, auto: false, timer: null, img: null };
+
+function abrir(id) {
+  P.mod = MODULOS.find((m) => m.id === id);
+  const salvo = P.mod.progresso > 0 && P.mod.progresso < 100 ? Math.floor(P.mod.progresso / 100 * P.mod.passos.length) : 0;
+  P.img = null;
+  $("#pl-titulo").textContent = P.mod.titulo;
+  $("#pl-sub").textContent = `${TRILHAS[P.mod.trilha].nome} · ${PAPEIS[P.mod.papel]} · ${P.mod.passos.length} passos · ${P.mod.min} min`;
+  $("#pl-praticar").title = `Entre com o usuário de demonstração e vá para ${P.mod.rota}`;
+  $("#player").classList.add("player--on");
+  document.body.style.overflow = "hidden";
+  renderCaps();
+  ir(salvo);
+}
+function fechar() { pararAuto(); clearTimeout(P.troca); $("#fim").hidden = true; $("#fim").innerHTML = ""; $("#player").classList.remove("player--on"); document.body.style.overflow = ""; renderCatalogo(); }
+
+/** Encaixa a tela capturada no palco (inteira, sem cortar). */
+function encaixar(q) {
+  const palco = $("#palco"), tela = $("#tela-sis");
+  const [iw, ih] = q.cel ? W.m : W.d;
+  const pw = palco.clientWidth, ph = palco.clientHeight;
+  const margem = q.cel ? 24 : 20;
+  const esc = Math.min((pw - margem * 2) / iw, (ph - margem * 2) / ih);
+  const w = iw * esc, h = ih * esc;
+  // Celular: a tela vai um pouco para a esquerda para sobrar espaço ao balão.
+  const left = q.cel ? Math.max(margem, pw / 2 - w - 20) : (pw - w) / 2;
+  Object.assign(tela.style, { width: w + "px", height: h + "px", left: left + "px", top: (ph - h) / 2 + "px" });
+  return { left, top: (ph - h) / 2, w, h, pw, ph };
+}
+function posicionar(q, lado) {
+  const r = encaixar(q);
+  const [x, y, w, h] = q.alvo;
+  const a = { l: x / 100 * r.w, t: y / 100 * r.h, w: w / 100 * r.w, h: h / 100 * r.h };
+  Object.assign($("#alvo").style, { left: a.l - 4 + "px", top: a.t - 4 + "px", width: a.w + 8 + "px", height: a.h + 8 + "px" });
+  // Balão em coordenadas do palco.
+  const b = $("#balao");
+  const bw = Math.min(320, r.pw - 32);
+  b.style.width = bw + "px";
+  const bh = b.offsetHeight;
+  const ax = r.left + a.l, ay = r.top + a.t;
+  const esp = { direita: r.pw - (ax + a.w), esquerda: ax, abaixo: r.ph - (ay + a.h), acima: ay };
+  let l = lado && lado !== "auto" ? lado : null;
+  if (!l) l = esp.direita >= bw + 24 ? "direita" : esp.esquerda >= bw + 24 ? "esquerda" : esp.abaixo >= bh + 24 ? "abaixo" : esp.acima >= bh + 24 ? "acima" : "dentro";
+  const lim = (v, min, max) => Math.max(min, Math.min(max, v));
+  let bl, bt;
+  if (l === "direita") { bl = ax + a.w + 16; bt = lim(ay + a.h / 2 - bh / 2, 10, r.ph - bh - 10); }
+  else if (l === "esquerda") { bl = ax - bw - 16; bt = lim(ay + a.h / 2 - bh / 2, 10, r.ph - bh - 10); }
+  else if (l === "abaixo") { bt = ay + a.h + 16; bl = lim(ax + a.w / 2 - bw / 2, 10, r.pw - bw - 10); }
+  else if (l === "acima") { bt = ay - bh - 16; bl = lim(ax + a.w / 2 - bw / 2, 10, r.pw - bw - 10); }
+  else { bl = r.pw - bw - 16; bt = r.ph - bh - 16; }
+  b.dataset.lado = l;
+  Object.assign(b.style, { left: bl + "px", top: bt + "px" });
+  const seta = $("#seta");
+  seta.style.display = l === "dentro" ? "none" : "";
+  if (l === "direita" || l === "esquerda") { seta.style.top = lim(ay + a.h / 2 - bt - 8, 14, bh - 30) + "px"; seta.style.left = l === "direita" ? "-9px" : ""; }
+  else if (l !== "dentro") { seta.style.left = lim(ax + a.w / 2 - bl - 8, 14, bw - 30) + "px"; seta.style.top = l === "abaixo" ? "-9px" : ""; }
+}
+
+function ir(i) {
+  const total = P.mod.passos.length;
+  P.i = Math.max(0, Math.min(i, total));
+  clearTimeout(P.timer);
+  const fim = P.i >= total;
+  $("#fim").hidden = !fim;
+  $("#tela-sis").style.display = fim ? "none" : "";
+  $("#balao").style.display = fim ? "none" : "";
+  $("#pl-tempo").textContent = `${Math.min(P.i + 1, total)} / ${total}`;
+  $("#pl-prog").innerHTML = P.mod.passos.map((_, k) => `<i class="${k < P.i ? "f" : k === P.i ? "a" : ""}" data-k="${k}" title="Passo ${k + 1}"></i>`).join("");
+  $$("#pl-prog i").forEach((el) => el.addEventListener("click", () => ir(Number(el.dataset.k))));
+  $$(".cap").forEach((c) => { const k = Number(c.dataset.k); c.classList.toggle("cap--on", k === P.i); c.classList.toggle("cap--feito", k < P.i || P.mod.progresso === 100); });
+  $("#pl-ant").disabled = P.i === 0;
+  $("#pl-prox").textContent = P.i >= total - 1 ? "Concluir ›" : "Próximo ›";
+  if (fim) { renderFim(); pararAuto(); return; }
+  const q = P.mod.passos[P.i];
+  const pct = Math.round(P.i / total * 100);
+  if (P.mod.progresso !== 100 && pct > P.mod.progresso) { P.mod.progresso = pct; prog[P.mod.id] = pct; salvar("ct-progresso-v2", prog); }
+  $("#balao-conteudo").innerHTML = `
+    <div class="balao__passo">Passo ${P.i + 1} de ${total}</div>
+    <h3>${q.tit}</h3><p>${q.txt}</p>
+    <div class="balao__acoes">
+      <span class="pontos">${P.mod.passos.map((_, k) => `<i class="${k === P.i ? "a" : ""}"></i>`).join("")}</span>
+      ${P.i > 0 ? `<button class="btn btn--sm" data-nav="-1">Voltar</button>` : ""}
+      <button class="btn btn--sm btn--primary" data-nav="1">${P.i === total - 1 ? "Concluir" : "Próximo"}</button>
+    </div>`;
+  $$("#balao [data-nav]").forEach((bt) => bt.addEventListener("click", () => ir(P.i + Number(bt.dataset.nav))));
+  const img = $("#tela-img");
+  clearTimeout(P.troca);
+  if (P.img !== q.img) {
+    // Troca de tela: some, troca a imagem e reaparece com o balão no lugar novo (sempre o passo atual, mesmo com cliques rápidos).
+    img.classList.add("troca"); $("#balao").classList.add("balao--some");
+    P.troca = setTimeout(() => {
+      const atual = P.mod.passos[P.i];
+      if (!atual) return;
+      img.src = IMG + atual.img + ".png"; img.alt = "Tela do sistema: " + atual.tit; P.img = atual.img;
+      posicionar(atual); img.classList.remove("troca"); $("#balao").classList.remove("balao--some");
+    }, P.img ? 250 : 0);
+  } else { img.classList.remove("troca"); $("#balao").classList.remove("balao--some"); posicionar(q); }
+  if (P.auto) agendarAuto(q);
+}
+function renderCaps() {
+  $("#pl-caps").innerHTML = P.mod.passos.map((q, k) => `<div class="cap" data-k="${k}"><span class="cap__n">${k + 1}</span><span>${q.tit}</span></div>`).join("")
+    + `<div class="cap" data-k="${P.mod.passos.length}"><span class="cap__n">★</span><span><b>Pergunta e prática</b></span></div>`;
+  $$(".cap").forEach((c) => c.addEventListener("click", () => ir(Number(c.dataset.k))));
+}
+const QUIZ = {
+  t1: ["O cartão vermelho \"SLA vencido\" mostra…", ["Tickets já fora do prazo", "Tickets novos de hoje", "Tickets sem categoria"], 0],
+  t2: ["Para atender um ticket da fila, você…", ["Clica no cartão", "Arrasta para Pré-fechamento", "Liga para o solicitante"], 0],
+  t3: ["O que define a equipe e o prazo de SLA do ticket?", ["A urgência", "O serviço", "As tags"], 1],
+  t4: ["Onde ficam as conversas esperando atendimento?", ["No filtro Na fila", "Em Encerradas", "No Monitor"], 0],
+  t5: ["Quem vê o Monitor de atendimento?", ["Todos os atendentes", "Gestores do setor e a supervisão geral", "Só o solicitante"], 1],
+  t6: ["Antes de abrir um chamado no App do solicitante, o colaborador…", ["Escolhe o setor", "Liga para a TI", "Manda um e-mail"], 0],
+  f1: ["Seu pedido voltou como Devolvida. O que fazer?", ["Abrir outro pedido", "Ler o comentário, corrigir e reenviar", "Esperar o Financeiro"], 1],
+  f2: ["Sem internet no celular, o comprovante…", ["Se perde", "Fica no rascunho e sincroniza depois", "Vai por e-mail"], 1],
+  f3: ["Para devolver ou reprovar, é obrigatório…", ["Escrever o motivo no comentário", "Anexar um PDF", "Avisar o Financeiro"], 0],
+  f4: ["Valor do comprovante menor que o declarado. No item, você pode…", ["Glosar a diferença", "Lançar no SIENGE mesmo assim", "Apagar o item"], 0],
+  f5: ["Depois do Lançamento no SIENGE, o pedido vai para…", ["Rascunho", "Pagamento programado", "Aprovação do gestor"], 1],
+};
+function renderFim() {
+  const [p, ops, certo] = QUIZ[P.mod.id];
+  $("#fim").innerHTML = `<div class="fim__card">
+    <h3>Você chegou ao fim!</h3>
+    <p style="margin:0;color:var(--muted)">Responda para concluir o módulo.</p>
+    <div class="quiz"><p>${p}</p>${ops.map((o, k) => `<label><input type="radio" name="qz" value="${k}"> ${o}</label>`).join("")}<div id="quiz-res" aria-live="polite" style="margin-top:6px"></div></div>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap">
+      <button class="btn" id="fim-rever">⟲ Ver de novo</button>
+      <a class="btn btn--primary" href="https://imobdesk-demo.vercel.app/login" target="_blank" rel="noopener">Praticar na demonstração ↗</a>
+    </div>
+    <p style="font-size:12px;margin:10px 0 0;color:var(--muted)">Na demonstração, entre com o usuário fictício e abra ${P.mod.rota}.</p>
+  </div>`;
+  $$("#fim input").forEach((r) => r.addEventListener("change", () => {
+    const ok = Number(r.value) === certo;
+    $("#quiz-res").innerHTML = ok ? `<span class="ok">✓ Isso mesmo! Módulo concluído.</span>` : `<span class="no">Ainda não. Reveja os passos e tente de novo.</span>`;
+    if (ok) { P.mod.progresso = 100; prog[P.mod.id] = 100; salvar("ct-progresso-v2", prog); $$(".cap").forEach((c) => c.classList.add("cap--feito")); }
+  }));
+  $("#fim-rever").addEventListener("click", () => ir(0));
+}
+
+// Passar sozinho: tempo de leitura do balão.
+function agendarAuto(q) {
+  const ms = Math.max(4000, (q.tit.length + q.txt.length) * 55) * Number($("#pl-ritmo").value);
+  const barra = $("#auto-barra");
+  barra.style.transition = "none"; barra.style.width = "0";
+  requestAnimationFrame(() => { barra.style.transition = `width ${ms}ms linear`; barra.style.width = "100%"; });
+  P.timer = setTimeout(() => ir(P.i + 1), ms);
+}
+function pararAuto() {
+  P.auto = false; clearTimeout(P.timer);
+  $("#auto-barra").style.transition = "none"; $("#auto-barra").style.width = "0";
+  $("#pl-auto").setAttribute("aria-pressed", "false"); $("#pl-auto").textContent = "▶ Passar sozinho";
+}
+$("#pl-auto").addEventListener("click", () => {
+  if (P.auto) { pararAuto(); return; }
+  P.auto = true; $("#pl-auto").setAttribute("aria-pressed", "true"); $("#pl-auto").textContent = "❚❚ Pausar";
+  if (P.i >= P.mod.passos.length) ir(0); else agendarAuto(P.mod.passos[P.i]);
+});
+$("#pl-prox").addEventListener("click", () => ir(P.i + 1));
+$("#pl-ant").addEventListener("click", () => ir(P.i - 1));
+$("#pl-fechar").addEventListener("click", fechar);
+addEventListener("keydown", (e) => {
+  if (!$("#player").classList.contains("player--on")) return;
+  if (e.key === "Escape") fechar();
+  if (e.key === "ArrowRight") ir(P.i + 1);
+  if (e.key === "ArrowLeft") ir(P.i - 1);
+});
+addEventListener("resize", () => { if ($("#player").classList.contains("player--on") && P.i < P.mod.passos.length) posicionar(P.mod.passos[P.i]); });
+
+// ---------- Gerenciar ----------
+const CONCLUIRAM = { t1: "9 de 13", t2: "7 de 13", t3: "5 de 13", t4: "4 de 13", t5: "2 de 4", t6: "6 de 13", f1: "3 de 3", f2: "2 de 3", f3: "2 de 3", f4: "2 de 3", f5: "2 de 3" };
+function renderTabela() {
+  $("#tab-mods").innerHTML = MODULOS.map((m) => `<tr>
+    <td><b>${m.titulo}</b></td>
+    <td>${Object.values(SETORES).filter((s) => s.trilha === m.trilha).map((s) => `<span class="chip">${s.nome}</span>`).join(" ")}</td>
+    <td><span class="chip ${PAPEL_CHIP[m.papel]}">${PAPEIS[m.papel]}</span></td>
+    <td>${m.passos.length}</td><td>${m.min} min</td><td>${CONCLUIRAM[m.id]}</td>
+    <td><span class="chip ${m.id === "f5" ? "chip--warn" : "chip--ok"}">${m.id === "f5" ? "Rascunho" : "Publicado"}</span></td>
+    <td style="white-space:nowrap"><button class="btn btn--sm" data-ed="${m.id}">Editar</button> <button class="btn btn--sm" data-ver="${m.id}">▶</button></td></tr>`).join("");
+  $$("[data-ed]").forEach((b) => b.addEventListener("click", () => editar(b.dataset.ed, 0)));
+  $$("[data-ver]").forEach((b) => b.addEventListener("click", () => abrir(b.dataset.ver)));
+}
+const IMGS = ["t-visao","t-tickets","t-ticket","t-ticket2","t-conversas","t-monitor","f-minhas","f-nova","f-reembolso","f-detalhe","f-aprov","f-aprov-det","f-conf","f-conf-det","app-home","app-fin"];
+let ED = { m: null, k: 0 };
+function editar(id, k) {
+  ED = { m: MODULOS.find((m) => m.id === id), k };
+  const q = ED.m.passos[k];
+  $("#ed-mod").textContent = ED.m.titulo;
+  $("#ed-quadros").innerHTML = ED.m.passos.map((x, j) => `<div class="mini ${j === k ? "mini--on" : ""}" data-k="${j}"><img src="${IMG + x.img}.png" alt=""><span>${j + 1}. ${x.tit}</span></div>`).join("") + `<div class="mini mini--novo">+ Balão</div>`;
+  $$("#ed-quadros [data-k]").forEach((e) => e.addEventListener("click", () => editar(id, Number(e.dataset.k))));
+  $("#ed-img").innerHTML = IMGS.map((s) => `<option ${s === q.img ? "selected" : ""}>${s}</option>`).join("");
+  $("#ed-tit").value = q.tit; $("#ed-txt").value = q.txt; $("#ed-rota").value = ED.m.rota;
+  $("#ed-txt-info").textContent = `${q.txt.length} caracteres · até 220 recomendados para caber no balão`;
+  // Prévia: a tela com o contorno e um balão estático.
+  const [x, y, w, h] = q.alvo;
+  const ar = q.cel ? "390/844" : "16/10";
+  $("#ed-prev").innerHTML = `<div class="tela-sis" style="aspect-ratio:${ar};width:${q.cel ? "40%" : "100%"}"><img src="${IMG + q.img}.png" alt=""><div class="alvo" style="left:${x}%;top:${y}%;width:${w}%;height:${h}%"></div></div>
+    <div class="balao" style="left:auto;right:10px;bottom:10px;top:auto"><div class="balao__passo">Passo ${k + 1}</div><h3>${q.tit}</h3><p>${q.txt}</p></div>`;
+}
+$("#ed-ver").addEventListener("click", () => { abrir(ED.m.id); ir(ED.k); });
+
+renderCatalogo();
+renderTabela();
+editar("t3", 6);
+</script>
+</body>
+</html>

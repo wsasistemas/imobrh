@@ -1,0 +1,258 @@
+/* Design system do dashboard (referência docs: Downloads/02-dashboard.html).
+   Tudo fica sob .ds para não vazar no resto do portal. Cores só por var(--ds-*), definidas em src/index.css. */
+
+.ds {
+  font-family: var(--ds-font);
+  font-size: var(--ds-fs-body);
+  line-height: 1.5;
+  color: var(--ds-ink);
+  background: var(--ds-background);
+}
+
+:where(.ds) :where(button, input, select, textarea) {
+  font: inherit;
+}
+
+/* :where() zera a especificidade: o reset não vence as classes dos componentes. */
+:where(.ds) :where(button, a, select) {
+  touch-action: manipulation;
+}
+
+:where(.ds) :where(button) {
+  color: inherit;
+  cursor: pointer;
+}
+
+:where(.ds) :where(a) {
+  color: var(--ds-primary);
+}
+
+:where(.ds) :where(p) {
+  margin: 0;
+}
+
+.ds :is(button, a, input, select, textarea):focus-visible {
+  outline: 3px solid var(--ds-ring);
+  outline-offset: 3px;
+}
+
+/* ---------- Tipografia ---------- */
+.ds-h1 {
+  font-size: var(--ds-fs-h1);
+  line-height: 1.25;
+  letter-spacing: -1px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.ds-h2 {
+  font-size: var(--ds-fs-h2);
+  letter-spacing: -0.3px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.ds-eyebrow {
+  font-size: var(--ds-fs-eyebrow);
+  letter-spacing: 1.7px;
+  color: var(--ds-primary);
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.ds-muted {
+  color: var(--ds-muted);
+}
+
+.ds-small {
+  font-size: var(--ds-fs-small);
+}
+
+.ds-subtitle {
+  font-size: var(--ds-fs-subtitle);
+  color: var(--ds-muted);
+  margin-top: 4px;
+}
+
+.ds-footnote {
+  font-size: var(--ds-fs-footnote);
+  color: var(--ds-muted);
+}
+
+.ds-mono {
+  font-family: var(--ds-font-mono);
+  font-weight: 500;
+}
+
+.ds-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+/* ---------- Botões ---------- */
+.ds-btn {
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-btn);
+  background: var(--ds-surface);
+  padding: 10px 15px;
+  font-weight: 600;
+  font-size: var(--ds-fs-small);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.ds-btn:hover {
+  background: var(--ds-subtle);
+}
+
+.ds-btn--primary {
+  background: var(--ds-primary);
+  border-color: var(--ds-primary);
+  color: var(--ds-primary-fg);
+  box-shadow: var(--ds-shadow-cta);
+}
+
+.ds .ds-btn--primary {
+  color: var(--ds-primary-fg);
+}
+
+.ds-btn--primary:hover {
+  background: var(--ds-primary-hover);
+}
+
+.ds-linkbtn {
+  border: 0;
+  background: none;
+  color: var(--ds-primary);
+  font-size: var(--ds-fs-small);
+  font-weight: 600;
+  padding: 4px;
+}
+
+.ds .ds-linkbtn {
+  color: var(--ds-primary);
+}
+
+/* ---------- Pills ---------- */
+.ds-pill {
+  font-size: var(--ds-fs-pill);
+  border-radius: var(--ds-radius-pill);
+  padding: 4px 8px;
+  display: inline-block;
+  white-space: nowrap;
+  background: var(--ds-neutral-soft);
+  color: var(--ds-neutral-fg);
+}
+
+.ds-pill--red {
+  color: var(--ds-danger-fg);
+  background: var(--ds-danger-soft);
+}
+
+.ds-pill--amber {
+  color: var(--ds-warning-fg);
+  background: var(--ds-warning-soft);
+}
+
+.ds-pill--green {
+  color: var(--ds-success);
+  background: var(--ds-success-soft);
+}
+
+.ds-pill--blue {
+  color: var(--ds-primary-soft-fg);
+  background: var(--ds-primary-soft);
+}
+
+/* ---------- KPI ---------- */
+.ds-kpi {
+  position: relative;
+  text-align: left;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-kpi);
+  background: var(--ds-surface);
+  padding: 17px;
+  transition:
+    transform 0.18s,
+    box-shadow 0.18s;
+}
+
+.ds-kpi:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ds-shadow-kpi-hover);
+}
+
+.ds-kpi[aria-pressed="true"] {
+  outline: 2px solid var(--ds-primary);
+  outline-offset: 1px;
+}
+
+.ds-kpi__label {
+  font-size: var(--ds-fs-kpi-label);
+  color: var(--ds-muted);
+  display: block;
+  min-height: 32px;
+}
+
+.ds-kpi__value {
+  font-size: var(--ds-fs-kpi);
+  line-height: 1.25;
+  display: block;
+  letter-spacing: -1px;
+  font-weight: 700;
+}
+
+.ds-kpi__hint {
+  font-size: var(--ds-fs-footnote);
+  color: var(--ds-muted);
+  display: block;
+  margin-top: 7px;
+}
+
+.ds-kpi--danger {
+  background: var(--ds-danger-tint);
+  border-color: var(--ds-danger-border);
+}
+
+.ds-kpi--danger .ds-kpi__value {
+  color: var(--ds-danger);
+}
+
+.ds-kpi--warning .ds-kpi__value {
+  color: var(--ds-warning);
+}
+
+.ds-kpi--info .ds-kpi__value {
+  color: var(--ds-ink);
+}
+
+/* ---------- Painel ---------- */
+.ds-panel {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-panel);
+  overflow: hidden;
+  box-shadow: var(--ds-shadow-panel);
+}
+
+.ds-panel__head {
+  padding: 20px 21px 14px;
+}
+
+@media (max-width: 1200px) {
+  .ds-kpi__label {
+    min-height: unset;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds * {
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

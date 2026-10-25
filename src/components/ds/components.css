@@ -1,0 +1,648 @@
+/* Componentes do design system (etapa 2). Mesmas medidas da referência; cores só por var(--ds-*). */
+
+/* ---------- PageHeading ---------- */
+.ds-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.ds-btn__icon {
+  flex-shrink: 0;
+}
+
+/* ---------- ScopeSegmented ---------- */
+.ds-seg {
+  display: flex;
+  gap: 3px;
+  background: var(--ds-seg-track);
+  border-radius: var(--ds-radius-seg);
+  padding: 4px;
+}
+
+.ds-seg button {
+  border: 0;
+  background: none;
+  color: var(--ds-muted);
+  padding: 8px 15px;
+  border-radius: var(--ds-radius-seg-inner);
+  font-size: var(--ds-fs-small);
+  font-weight: 600;
+}
+
+.ds .ds-seg button {
+  color: var(--ds-muted);
+}
+
+.ds .ds-seg button[aria-pressed="true"] {
+  background: var(--ds-surface);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-shadow-seg);
+}
+
+/* ---------- FilterSelect ---------- */
+.ds-select {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-line);
+  padding: 8px 10px;
+  border-radius: var(--ds-radius-select);
+  font-size: var(--ds-fs-small);
+  color: var(--ds-muted);
+}
+
+.ds-select select {
+  border: 0;
+  background: transparent;
+  color: var(--ds-ink);
+  max-width: 100%;
+}
+
+/* ---------- AlertBanner ---------- */
+.ds-alert {
+  display: flex;
+  gap: 13px;
+  align-items: center;
+  border: 1px solid var(--ds-danger-border);
+  background: var(--ds-danger-tint);
+  border-radius: var(--ds-radius-alert);
+  padding: 13px 17px;
+}
+
+.ds-alert__symbol {
+  font-weight: 700;
+  background: var(--ds-danger-soft);
+  color: var(--ds-danger);
+  border-radius: var(--ds-radius-select);
+  padding: 4px 12px;
+}
+
+.ds-alert__title {
+  font-size: var(--ds-fs-small);
+  color: var(--ds-danger-fg);
+}
+
+.ds-alert__text {
+  font-size: var(--ds-fs-subtitle);
+  color: var(--ds-muted);
+}
+
+.ds .ds-alert__action {
+  margin-left: auto;
+  border-color: var(--ds-danger-border);
+  color: var(--ds-danger-fg);
+  background: transparent;
+}
+
+.ds .ds-alert__action:hover {
+  background: var(--ds-danger-soft);
+}
+
+/* ---------- Grade de KPIs (6 → 3 → 2 colunas) ---------- */
+.ds-kpis {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 1200px) {
+  .ds-kpis {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 750px) {
+  .ds-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+}
+
+/* ---------- Painel com padding (rail) ---------- */
+.ds-panel--padded {
+  padding: 20px;
+}
+
+/* ---------- Ferramentas da fila ---------- */
+.ds-queue-tools {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 21px 14px;
+}
+
+.ds-search {
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-field);
+  padding: 8px 11px;
+  width: 260px;
+  max-width: 100%;
+  font-size: var(--ds-fs-small);
+  background: var(--ds-field-bg);
+  color: var(--ds-ink);
+}
+
+/* ---------- QueueTable ---------- */
+.ds-tablewrap {
+  overflow-x: auto;
+}
+
+.ds-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: var(--ds-fs-table);
+  min-width: 670px;
+}
+
+.ds-table th {
+  font-size: var(--ds-fs-th);
+  color: var(--ds-muted);
+  background: var(--ds-table-head);
+  padding: 11px 14px;
+  font-weight: 600;
+  border-block: 1px solid var(--ds-line);
+}
+
+.ds-table td {
+  padding: 14px;
+  border-bottom: 1px solid var(--ds-row-line);
+  vertical-align: middle;
+}
+
+.ds-table td:first-child,
+.ds-table th:first-child {
+  padding-left: 21px;
+}
+
+.ds-table tbody tr:hover td {
+  background: var(--ds-row-hover);
+}
+
+.ds .ds-table td.ds-table__empty {
+  padding: 40px;
+  text-align: center;
+}
+
+.ds-ticketbtn {
+  border: 0;
+  background: none;
+  padding: 0;
+  text-align: left;
+  font-size: var(--ds-fs-table);
+  font-weight: 600;
+  max-width: 260px;
+}
+
+.ds .ds-ticketbtn:hover {
+  color: var(--ds-primary);
+}
+
+.ds-ticket-id {
+  font-size: var(--ds-fs-th);
+  color: var(--ds-muted);
+  margin-bottom: 3px;
+}
+
+.ds-ticket-category {
+  font-size: var(--ds-fs-th);
+  color: var(--ds-muted);
+  margin-top: 4px;
+}
+
+.ds-owner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.ds-miniavatar {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--ds-primary-soft);
+  color: var(--ds-primary);
+  font-size: 9px;
+  flex-shrink: 0;
+}
+
+/* ---------- TablePagination ---------- */
+.ds-tablefoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 21px;
+  color: var(--ds-muted);
+  font-size: var(--ds-fs-foot);
+  gap: 8px;
+}
+
+.ds-tablefoot__nav {
+  display: flex;
+  gap: 4px;
+}
+
+.ds-tablefoot button {
+  border: 1px solid var(--ds-line);
+  background: var(--ds-surface);
+  border-radius: 5px;
+  padding: 4px 9px;
+}
+
+.ds-tablefoot button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ---------- Trilho de barra (triagem e equipes) ---------- */
+.ds-track {
+  height: 6px;
+  background: var(--ds-chart-grid);
+  border-radius: var(--ds-radius-track);
+  overflow: hidden;
+}
+
+.ds-fill {
+  height: 100%;
+  background: var(--ds-ai);
+  border-radius: var(--ds-radius-track);
+}
+
+/* ---------- TriagePanel ---------- */
+.ds-aiicon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  background: var(--ds-ai-soft);
+  color: var(--ds-ai);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.ds-ai-total {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 18px 0;
+}
+
+.ds-ai-total strong {
+  font-size: 30px;
+  letter-spacing: -1px;
+}
+
+.ds-ai-total__of {
+  font-size: 16px;
+}
+
+.ds-ai-total__label {
+  color: var(--ds-muted);
+  font-size: var(--ds-fs-subtitle);
+}
+
+.ds-barrow {
+  margin-top: 13px;
+  font-size: var(--ds-fs-subtitle);
+}
+
+.ds-barrow .ds-row {
+  margin-bottom: 6px;
+}
+
+.ds-review {
+  display: block;
+  text-align: left;
+  width: 100%;
+  margin-top: 19px;
+  border: 1px solid var(--ds-warning-border);
+  background: var(--ds-warning-tint);
+  border-radius: var(--ds-radius-select);
+  padding: 11px;
+  font-size: var(--ds-fs-subtitle);
+}
+
+.ds .ds-review {
+  color: var(--ds-warning-fg);
+}
+
+.ds-review strong {
+  display: block;
+  margin-bottom: 3px;
+}
+
+/* ---------- SlaHealth ---------- */
+.ds-sla-pair {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.ds-sla-pair > div {
+  flex: 1;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-btn);
+  padding: 12px;
+}
+
+.ds-sla-pair strong {
+  font-size: 25px;
+  display: block;
+}
+
+.ds-tone-success {
+  color: var(--ds-success);
+}
+
+.ds-tone-warning {
+  color: var(--ds-warning);
+}
+
+.ds-tone-danger {
+  color: var(--ds-danger);
+}
+
+/* ---------- InboundChart ---------- */
+.ds-chart {
+  padding: 10px 22px 18px;
+}
+
+.ds-bars {
+  height: 150px;
+  display: flex;
+  gap: 14px;
+  align-items: end;
+  border-bottom: 1px solid var(--ds-line);
+  background: repeating-linear-gradient(to top, transparent 0, transparent 36px, var(--ds-chart-grid) 37px);
+}
+
+.ds-barpair {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  align-items: end;
+  justify-content: center;
+  gap: 4px;
+}
+
+.ds-barpair i {
+  display: block;
+  width: 15px;
+  border-radius: 4px 4px 0 0;
+  background: var(--ds-chart-today);
+}
+
+.ds-barpair i + i {
+  background: var(--ds-chart-yesterday);
+}
+
+.ds-hours {
+  display: flex;
+  gap: 14px;
+  margin-top: 8px;
+  font-size: 9px;
+  color: var(--ds-muted);
+  text-align: center;
+}
+
+.ds-hours span {
+  flex: 1;
+}
+
+.ds-legend {
+  display: flex;
+  gap: 14px;
+  font-size: var(--ds-fs-footnote);
+  color: var(--ds-muted);
+}
+
+.ds-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ds-chart-today);
+  margin-right: 4px;
+}
+
+.ds-dot--yesterday {
+  background: var(--ds-chart-yesterday);
+}
+
+.ds-chart__delta {
+  color: var(--ds-chart-today);
+}
+
+/* ---------- TeamDistribution ---------- */
+.ds-teams {
+  padding: 0 21px 18px;
+}
+
+.ds-team {
+  width: 100%;
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--ds-line);
+  padding: 14px 0;
+  text-align: left;
+}
+
+.ds .ds-team:hover {
+  color: var(--ds-primary);
+}
+
+.ds-team strong {
+  font-size: var(--ds-fs-small);
+}
+
+.ds-team .ds-track {
+  margin-top: 10px;
+}
+
+.ds-team__arrow {
+  color: var(--ds-muted);
+}
+
+.ds-team__counts {
+  font-size: var(--ds-fs-footnote);
+  color: var(--ds-muted);
+  margin-top: 3px;
+}
+
+.ds-team__num {
+  font-size: 23px;
+  font-weight: 700;
+}
+
+/* ---------- Diálogos (Radix renderiza fora da página: o conteúdo leva .ds) ---------- */
+.ds-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--ds-backdrop);
+  backdrop-filter: blur(3px);
+  z-index: 50;
+}
+
+.ds.ds-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 51;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-dialog);
+  width: 560px;
+  max-width: calc(100% - 28px);
+  max-height: calc(100dvh - 28px);
+  overflow-y: auto;
+  padding: 25px;
+  box-shadow: var(--ds-shadow-dialog);
+}
+
+.ds-close {
+  border: 0;
+  background: var(--ds-subtle);
+  border-radius: 50%;
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.ds-form {
+  display: grid;
+  gap: 13px;
+  margin-top: 20px;
+}
+
+.ds-form label {
+  font-size: var(--ds-fs-small);
+  font-weight: 600;
+  display: grid;
+  gap: 5px;
+}
+
+.ds-form :is(input, select, textarea) {
+  border: 1px solid var(--ds-field-border);
+  border-radius: var(--ds-radius-field);
+  padding: 10px;
+  background: var(--ds-surface);
+  color: var(--ds-ink);
+  width: 100%;
+  font-weight: 400;
+}
+
+.ds-form textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.ds-formrow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.ds-form__actions {
+  justify-content: flex-end;
+}
+
+.ds-hint {
+  font-size: var(--ds-fs-subtitle);
+  color: var(--ds-primary-soft-fg);
+  background: var(--ds-primary-soft);
+  border-radius: var(--ds-radius-select);
+  padding: 11px;
+}
+
+.ds-detail {
+  margin-top: 15px;
+  display: grid;
+  gap: 14px;
+}
+
+.ds-detail p {
+  font-size: 13px;
+}
+
+.ds-detail__row {
+  border-bottom: 1px solid var(--ds-line);
+  padding-bottom: 10px;
+}
+
+/* ---------- Toast ---------- */
+.ds-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ds-nav);
+  color: var(--ds-nav-fg);
+  padding: 13px 20px;
+  border-radius: var(--ds-radius-alert);
+  box-shadow: var(--ds-shadow-toast);
+  z-index: 60;
+  font-family: var(--ds-font);
+  font-size: var(--ds-fs-small);
+  max-width: 90%;
+}
+
+.ds-toast:empty {
+  display: none;
+}
+
+/* ---------- Responsivo dos componentes ---------- */
+@media (min-width: 1550px) {
+  .ds-table td {
+    padding-block: 18px;
+  }
+}
+
+@media (max-width: 750px) {
+  .ds-heading {
+    align-items: flex-start;
+  }
+
+  .ds-heading .ds-h1 {
+    font-size: 24px;
+  }
+
+  .ds-heading .ds-muted {
+    font-size: var(--ds-fs-small);
+  }
+
+  .ds-heading .ds-btn {
+    padding: 10px;
+  }
+
+  .ds-alert {
+    align-items: flex-start;
+  }
+
+  .ds .ds-alert__action {
+    display: none;
+  }
+
+  .ds-queue-tools {
+    flex-wrap: wrap;
+  }
+
+  .ds-search {
+    width: 100%;
+  }
+
+  .ds-tablefoot {
+    flex-wrap: wrap;
+  }
+
+  .ds-formrow {
+    grid-template-columns: 1fr;
+  }
+}

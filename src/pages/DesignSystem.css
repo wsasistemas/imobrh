@@ -1,0 +1,131 @@
+/* Layout da vitrine /design-system (cores só por token). */
+.ds-showcase {
+  min-height: 100vh;
+  padding: 30px 32px;
+  max-width: var(--ds-main-max);
+  margin: 0 auto;
+}
+
+.ds-showcase__header {
+  margin-bottom: 25px;
+}
+
+.ds-showcase__section {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-panel);
+  box-shadow: var(--ds-shadow-panel);
+  padding: 20px 21px;
+  margin-bottom: 20px;
+}
+
+.ds-showcase__group {
+  margin-top: 14px;
+}
+
+.ds-showcase__swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+  gap: 10px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-showcase__swatch {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 10px;
+  align-items: center;
+  font-size: var(--ds-fs-foot);
+}
+
+.ds-showcase__swatch code {
+  font-family: var(--ds-font-mono);
+  overflow-wrap: anywhere;
+}
+
+.ds-showcase__chip {
+  grid-row: span 2;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--ds-radius-select);
+  border: 1px solid var(--ds-line);
+}
+
+.ds-showcase__type {
+  display: grid;
+  gap: 14px;
+  margin: 14px 0 0;
+}
+
+.ds-showcase__type dd {
+  margin: 2px 0 0;
+}
+
+.ds-showcase__inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.ds-showcase__plus {
+  font-size: 19px;
+  line-height: 1;
+}
+
+.ds-showcase__kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.ds-showcase__section .ds-panel {
+  margin-top: 14px;
+}
+
+.ds-showcase__empty {
+  padding: 40px;
+  text-align: center;
+  border-top: 1px solid var(--ds-line);
+}
+
+@media (max-width: 750px) {
+  .ds-showcase {
+    padding: 22px 15px;
+  }
+
+  .ds-showcase__kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+}
+
+.ds-showcase__title {
+  font-size: var(--ds-fs-h2);
+  letter-spacing: -0.3px;
+  margin: 0 0 4px;
+}
+
+.ds-showcase__stack {
+  display: grid;
+  gap: 20px;
+  margin-top: 14px;
+}
+
+.ds-showcase__two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 14px;
+}
+
+@media (max-width: 1200px) {
+  .ds-showcase__two {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

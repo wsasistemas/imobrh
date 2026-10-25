@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — App Financeiro por perfil</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* App do solicitante › Financeiro por perfil. Tokens do app = src/features/solicitante/solicitante.css; portal = src/index.css. */
+  :root {
+    --brand: #d6293b; --brand-hover: #a91d2c; --brand-soft: #fdecee;
+    --ink: #17181c; --muted: #6b7280; --line: #e9eaee; --page: #f5f6f8; --surface: #fff;
+    --success-bg: #e8f6ed; --success-fg: #166534; --warning-bg: #fff1e3; --warning-fg: #c2410c;
+    --info-bg: #e8effd; --info-fg: #1d4ed8; --violet-bg: #f3e8ff; --violet-fg: #7e22ce; --danger-bg: #fdecee; --danger-fg: #b91c1c;
+    --neutral-bg: #f1f1f3; --neutral-fg: #52525b;
+    /* app */
+    --cd-1: #232429; --cd-2: #17181c; --cd-3: #0f1013;
+    --cd-vidro: rgba(255,255,255,.05); --cd-vidro-h: rgba(255,255,255,.1); --cd-borda: rgba(255,255,255,.1);
+    --cd-txt: rgba(255,255,255,.92); --cd-txt-2: rgba(255,255,255,.72); --cd-txt-3: rgba(255,255,255,.58);
+    --cd-ouro: #f26b78; --cd-ouro-b: rgba(214,41,59,.55); --cd-ouro-bg1: rgba(214,41,59,.16); --cd-ouro-bg2: rgba(214,41,59,.05);
+    --cd-acao: #d6293b; --cd-ok: #34d399; --cd-info: #7dd3fc; --cd-aviso: #fbbf24; --cd-perigo: #fb7185; --cd-roxo: #c4b5fd;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font-family: Inter, system-ui, sans-serif; font-size: 14px; color: var(--ink); background: var(--page); }
+  button, input, select, textarea { font: inherit; color: inherit; }
+
+  /* Faixa do mockup */
+  .faixa { position: sticky; top: 0; z-index: 50; background: #fff7e0; border-bottom: 1px solid #f5e1a4; padding: 8px 16px; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: 12.5px; color: #7a5b00; }
+  .faixa select { font-weight: 700; padding: 4px 6px; border-radius: 6px; border: 1px solid #e3c870; background: #fff; }
+  .faixa button { border: 1px solid #e3c870; background: #fff; border-radius: 999px; padding: 3px 10px; font-weight: 600; cursor: pointer; font-size: 12.5px; }
+  .faixa button[aria-pressed="true"] { background: #7a5b00; color: #fff; border-color: #7a5b00; }
+  .faixa button:disabled { opacity: .4; cursor: not-allowed; text-decoration: line-through; }
+  .faixa__abas { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
+
+  main { padding: 20px 24px 60px; max-width: 1500px; margin: 0 auto; }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 16px; line-height: 1.5; }
+  .tela { display: none; } .tela--on { display: block; }
+  .quem { display: inline-flex; gap: 8px; align-items: center; background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; margin-bottom: 16px; font-size: 13px; }
+  .quem b { font-weight: 700; }
+  .linha { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
+  .fone-wrap { display: grid; gap: 8px; justify-items: center; }
+  .fone-wrap > p { margin: 0; font-size: 12.5px; color: var(--muted); max-width: 330px; text-align: center; line-height: 1.45; }
+  .fone-wrap > p b { color: var(--ink); }
+
+  /* Celular */
+  .fone { width: 340px; height: 700px; border-radius: 38px; padding: 10px; background: #0b0b0d; box-shadow: 0 30px 60px -28px rgba(0,0,0,.55); }
+  .cd { height: 100%; border-radius: 30px; overflow: auto; background: linear-gradient(160deg, var(--cd-1) 0%, var(--cd-2) 40%, var(--cd-3) 100%); color: #fff; font-size: 13.5px; scrollbar-width: thin; position: relative; }
+  .cd-sub { display: flex; align-items: center; gap: 10px; padding: 18px 16px 10px; }
+  .cd-sub .voltar { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--cd-borda); display: grid; place-items: center; flex: none; background: var(--cd-vidro); }
+  .cd-sub h2 { margin: 0; font-size: 18px; }
+  .cd-sub small { display: block; color: var(--cd-txt-3); font-size: 12px; margin-top: 2px; }
+  .cd-sec { padding: 4px 16px 10px; }
+  .cd-rot { display: block; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--cd-txt-3); font-weight: 700; margin: 12px 0 8px; }
+  .tipos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .tipo { display: grid; gap: 3px; justify-items: start; padding: 11px 10px; border-radius: 14px; border: 1px solid var(--cd-borda); background: var(--cd-vidro); text-align: left; min-height: 98px; }
+  .tipo svg { color: var(--cd-ouro); }
+  .tipo b { font-size: 12.5px; }
+  .tipo small { font-size: 10.5px; color: var(--cd-txt-3); line-height: 1.3; }
+  .tipo--gestor { border-color: var(--cd-ouro-b); background: linear-gradient(135deg, var(--cd-ouro-bg1), var(--cd-ouro-bg2)); }
+  .gestao { display: grid; gap: 8px; }
+  .g-item { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 14px; border: 1px solid var(--cd-borda); background: var(--cd-vidro); }
+  .g-item svg { color: var(--cd-ouro); flex: none; }
+  .g-item div { flex: 1; min-width: 0; }
+  .g-item b { display: block; font-size: 13px; }
+  .g-item small { color: var(--cd-txt-3); font-size: 11px; }
+  .badge { min-width: 22px; height: 22px; border-radius: 999px; background: var(--cd-acao); color: #fff; font-size: 11px; font-weight: 700; display: grid; place-items: center; padding: 0 6px; }
+  .card { display: block; border-radius: 14px; border: 1px solid var(--cd-borda); background: var(--cd-vidro); padding: 10px 12px; margin-bottom: 8px; }
+  .card__l1 { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 11px; color: var(--cd-txt-3); }
+  .card h3 { margin: 4px 0 2px; font-size: 14px; }
+  .card p { margin: 0; font-size: 11.5px; color: var(--cd-txt-2); }
+  .st { font-size: 10.5px; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+  .st--aviso { color: var(--cd-aviso); background: rgba(251,191,36,.12); }
+  .st--ok { color: var(--cd-ok); background: rgba(52,211,153,.12); }
+  .st--info { color: var(--cd-info); background: rgba(125,211,252,.12); }
+  .st--roxo { color: var(--cd-roxo); background: rgba(196,181,253,.14); }
+  .st--neutro { color: var(--cd-txt-3); background: rgba(255,255,255,.08); }
+  .st--erro { color: var(--cd-perigo); background: rgba(251,113,133,.12); }
+  .campo { display: grid; gap: 4px; margin-bottom: 10px; }
+  .campo label { font-size: 11.5px; color: var(--cd-txt-2); font-weight: 600; }
+  .inp { height: 42px; border-radius: 12px; border: 1px solid var(--cd-borda); background: rgba(255,255,255,.06); padding: 0 12px; display: flex; align-items: center; font-size: 13px; color: var(--cd-txt); }
+  .inp--ro { background: rgba(255,255,255,.03); color: var(--cd-txt-2); }
+  .inp--ocr { border-color: rgba(125,211,252,.55); background: rgba(125,211,252,.08); color: #d6efff; }
+  .ocr-nota { font-size: 10.5px; color: var(--cd-info); }
+  .duas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .btn { height: 46px; border-radius: 14px; border: 0; background: var(--cd-acao); color: #fff; font-weight: 700; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 10px 24px -10px rgba(214,41,59,.7); }
+  .btn--sec { background: var(--cd-vidro); border: 1px solid var(--cd-borda); box-shadow: none; color: var(--cd-txt); }
+  .btn--ok { background: #15803d; box-shadow: none; }
+  .btn--roxo { background: transparent; border: 1px solid var(--cd-roxo); color: var(--cd-roxo); box-shadow: none; }
+  .btn--perigo { background: transparent; border: 1px solid var(--cd-perigo); color: var(--cd-perigo); box-shadow: none; }
+  .barra-dec { display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 6px; }
+  .barra-dec .btn { height: 44px; font-size: 12.5px; }
+  .passos { display: flex; gap: 4px; margin: 0 16px 6px; }
+  .passos i { flex: 1; height: 4px; border-radius: 99px; background: rgba(255,255,255,.12); }
+  .passos i.f { background: rgba(255,255,255,.5); } .passos i.a { background: var(--cd-acao); }
+  .passo-rot { margin: 0 16px 8px; font-size: 11px; color: var(--cd-txt-3); }
+  .foto { height: 120px; border-radius: 12px; border: 1px dashed rgba(255,255,255,.25); display: grid; place-items: center; color: var(--cd-txt-3); font-size: 12px; text-align: center; gap: 4px; margin-bottom: 10px; }
+  .foto--lida { border-style: solid; border-color: rgba(125,211,252,.4); background: repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 10px, rgba(255,255,255,.07) 10px 11px); color: var(--cd-info); }
+  .resumo { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+  .resumo div { border-radius: 12px; border: 1px solid var(--cd-borda); background: var(--cd-vidro); padding: 8px 10px; }
+  .resumo small { display: block; font-size: 10.5px; color: var(--cd-txt-3); }
+  .resumo b { font-size: 14px; }
+  .resumo .destaque { border-color: var(--cd-ouro-b); background: var(--cd-ouro-bg1); }
+  .check { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--cd-borda); }
+  .check:last-child { border-bottom: 0; }
+  .check i { font-style: normal; font-weight: 700; flex: none; width: 18px; }
+  .ok { color: var(--cd-ok); } .al { color: var(--cd-aviso); } .bl { color: var(--cd-perigo); }
+  .cadeia { display: grid; gap: 6px; }
+  .cadeia div { display: flex; gap: 8px; align-items: center; font-size: 12px; }
+  .cadeia span.n { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 700; border: 1px solid var(--cd-borda); flex: none; }
+  .cadeia .na { opacity: .5; text-decoration: line-through; }
+  .aceite { display: flex; gap: 8px; font-size: 11.5px; color: var(--cd-txt-2); line-height: 1.45; margin: 8px 0 12px; }
+  .aceite span.cx { width: 18px; height: 18px; border-radius: 5px; border: 1px solid var(--cd-ouro-b); background: var(--cd-ouro-bg1); flex: none; display: grid; place-items: center; color: var(--cd-ouro); font-size: 12px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip-cd { font-size: 11px; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--cd-borda); background: var(--cd-vidro); }
+  .chip-cd--on { border-color: var(--cd-ouro-b); background: var(--cd-ouro-bg1); color: var(--cd-ouro); }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .kpis div { border-radius: 12px; border: 1px solid var(--cd-borda); background: var(--cd-vidro); padding: 8px; }
+  .kpis b { display: block; font-size: 18px; }
+  .kpis small { font-size: 10px; color: var(--cd-txt-3); line-height: 1.2; display: block; }
+  .kpis .on { border-color: var(--cd-ouro-b); background: var(--cd-ouro-bg1); }
+  .aviso-cd { border-radius: 12px; padding: 10px 12px; font-size: 12px; line-height: 1.45; background: rgba(251,191,36,.1); border: 1px solid rgba(251,191,36,.3); color: #fde68a; margin-bottom: 10px; }
+  .aviso-cd--info { background: rgba(125,211,252,.08); border-color: rgba(125,211,252,.3); color: #cfeeff; }
+  .bloqueio { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(15,16,19,.86); text-align: center; padding: 30px; z-index: 5; border-radius: 30px; }
+  .bloqueio b { display: block; font-size: 15px; margin-bottom: 6px; }
+  .bloqueio p { margin: 0; font-size: 12.5px; color: var(--cd-txt-2); line-height: 1.5; }
+  .linha-tab { display: flex; gap: 4px; margin: 0 16px 10px; border-radius: 12px; background: rgba(255,255,255,.05); padding: 3px; }
+  .linha-tab span { flex: 1; text-align: center; font-size: 11.5px; padding: 7px 4px; border-radius: 10px; color: var(--cd-txt-2); }
+  .linha-tab span.on { background: var(--cd-acao); color: #fff; font-weight: 600; }
+  .recibo { height: 150px; border-radius: 12px; background: #f6f3ea; color: #333; font-family: "Courier New", monospace; font-size: 10px; padding: 10px 12px; line-height: 1.45; margin-bottom: 10px; overflow: hidden; }
+  .tabela-cd { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-bottom: 10px; }
+  .tabela-cd td { padding: 6px 4px; border-bottom: 1px solid var(--cd-borda); }
+  .tabela-cd td:last-child { text-align: right; }
+
+  /* Painéis do portal (matriz e decisões) */
+  .card-p { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; }
+  .card-p h2 { margin: 0 0 6px; font-size: 17px; }
+  .card-p p { margin: 0 0 10px; color: var(--muted); line-height: 1.5; }
+  table.m { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.m th { text-align: left; font-size: 12px; color: var(--muted); font-weight: 600; background: #fafafa; padding: 9px 10px; border-bottom: 1px solid var(--line); }
+  table.m td { padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.45; }
+  .sim { color: var(--success-fg); font-weight: 700; } .nao { color: var(--muted); }
+  .chip { display: inline-block; border-radius: 999px; padding: 2px 9px; font-size: 11.5px; font-weight: 600; background: var(--neutral-bg); color: var(--neutral-fg); }
+  .chip--novo { background: var(--brand-soft); color: var(--brand-hover); }
+  .chip--muda { background: var(--warning-bg); color: var(--warning-fg); }
+  .dec { border: 1px solid var(--line); background: #fff; border-radius: 12px; padding: 14px 18px; margin-bottom: 10px; display: grid; grid-template-columns: 54px 1fr; gap: 4px 14px; }
+  .dec__id { grid-row: span 3; width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; font-weight: 800; background: var(--warning-bg); color: var(--warning-fg); }
+  .dec h3 { margin: 0; font-size: 15px; }
+  .dec p { margin: 0; color: var(--muted); line-height: 1.5; }
+  .dec .rec { color: var(--ink); }
+  .dec .rec b { color: var(--success-fg); }
+  @media (max-width: 760px) { main { padding: 16px; } .fone { transform: scale(.92); transform-origin: top center; } .dec { grid-template-columns: 1fr; } .dec__id { grid-row: auto; } }
+</style>
+</head>
+<body>
+
+<div class="faixa">
+  <strong>MOCKUP · App do solicitante › Financeiro por perfil</strong>
+  <label>Ver como:
+    <select id="perfil">
+      <option value="colab">Gustavo Reis · colaborador do Administrativo</option>
+      <option value="gestor">Carla Mendes · gestora do Administrativo (aprovadora)</option>
+      <option value="fin">Ana Lima · Financeiro (conferente)</option>
+      <option value="admin">Wagner Antunes · Admin</option>
+    </select>
+  </label>
+  <div class="faixa__abas" id="abas"></div>
+</div>
+
+<main>
+  <!-- ============ 1. INÍCIO ============ -->
+  <section class="tela tela--on" id="t-inicio">
+    <h1>1. Início do Financeiro no app</h1>
+    <p class="sub">Troque o perfil na faixa amarela: o app só mostra o que a pessoa pode usar. Reembolso e Adiantamento para todos; <b>Fundo fixo só para o gestor do setor</b>; <b>Gestão financeira</b> (Aprovações, Conferência, Cadastros) só para quem tem a regra e a permissão do menu.</p>
+    <div class="quem" id="quem-inicio"></div>
+    <div class="linha">
+      <div class="fone-wrap">
+        <div class="fone"><div class="cd" id="fone-home"></div></div>
+        <p><b>Tela inicial do App do solicitante.</b> O quadro passa a dizer "reembolso, adiantamento" (e "fundo fixo" para o gestor).</p>
+      </div>
+      <div class="fone-wrap">
+        <div class="fone"><div class="cd" id="fone-fin"></div></div>
+        <p><b>/app/financeiro.</b> Pedir (cartões), Gestão financeira (só os itens liberados) e Minhas solicitações.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. REEMBOLSO ============ -->
+  <section class="tela" id="t-reembolso">
+    <h1>2. Reembolso de despesas</h1>
+    <p class="sub">Fluxo que já existe no app, mantido: comprovante pela câmera, leitura (campos em azul), motivo sugerido e envio com aceite. Funciona sem rede (rascunho no aparelho).</p>
+    <div class="linha">
+      <div class="fone-wrap"><div class="fone"><div class="cd">
+        <div class="cd-sub"><span class="voltar">‹</span><div><h2>Reembolso</h2><small>SF-2026-0158 · rascunho salvo</small></div></div>
+        <div class="cd-sec">
+          <div class="resumo"><div><small>Comprovantes</small><b>3</b></div><div class="destaque"><small>Total</small><b>R$ 187,40</b></div></div>
+          <span class="cd-rot">Competência</span>
+          <div class="duas"><div class="inp">outubro/2026</div><div class="inp">01/10 a 31/10</div></div>
+          <span class="cd-rot">Comprovantes</span>
+          <div class="card"><div class="card__l1"><span>12/10 · Transporte</span><span class="st st--ok">lido</span></div><h3>Uber · R$ 42,90</h3><p>Uber do Brasil Tecnologia</p></div>
+          <div class="card"><div class="card__l1"><span>15/10 · Estacionamento</span><span class="st st--ok">lido</span></div><h3>Estapar · R$ 32,00</h3><p>Estapar Estacionamentos</p></div>
+          <div class="card"><div class="card__l1"><span>18/10 · Alimentação</span><span class="st st--aviso">conferir valor</span></div><h3>Restaurante Sabor · R$ 112,50</h3><p>Valor do cupom diferente do digitado</p></div>
+          <button class="btn btn--sec" style="margin:6px 0 10px">📷 Novo comprovante</button>
+          <button class="btn">Revisar e enviar</button>
+        </div>
+      </div></div><p><b>Rascunho.</b> Igual ao app atual.</p></div>
+      <div class="fone-wrap"><div class="fone"><div class="cd">
+        <div class="cd-sub"><span class="voltar">‹</span><div><h2>Novo comprovante</h2><small>Reembolso · lido pela foto</small></div></div>
+        <div class="cd-sec">
+          <div class="foto foto--lida">cupom fotografado<br>✓ lido</div>
+          <div class="campo"><label>Data</label><div class="inp inp--ocr">18/10/2026</div><span class="ocr-nota">copiado · legibilidade 96%</span></div>
+          <div class="campo"><label>Valor</label><div class="inp inp--ocr">R$ 112,50</div><span class="ocr-nota">copiado · legibilidade 92%</span></div>
+          <div class="campo"><label>Favorecido</label><div class="inp inp--ocr">Restaurante Sabor Ltda</div></div>
+          <div class="campo"><label>Motivo</label><div class="chips"><span class="chip-cd chip-cd--on">Alimentação</span><span class="chip-cd">Copa/mantimentos</span><span class="chip-cd">Outros</span></div></div>
+          <button class="btn">Adicionar ao reembolso</button>
+        </div>
+      </div></div><p><b>Câmera + leitura.</b> Sem mudança.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 3. FUNDO FIXO ============ -->
+  <section class="tela" id="t-fundo">
+    <h1>3. Fundo fixo de caixa — só gestor de setor</h1>
+    <p class="sub">O cartão "Fundo fixo" só aparece para quem é <b>gestor do setor</b> (Gestão de Atendimento › Setores e números › Gestão do setor). O banco também recusa criar fundo fixo para quem não é gestor, mesmo que alguém chame a função direto. Gestor sem valor de fundo cadastrado vê o cartão desligado com o aviso.</p>
+    <div class="linha">
+      <div class="fone-wrap"><div class="fone"><div class="cd" id="fone-ff"></div></div><p><b>Prestação de contas.</b> Resumo do caixa e os comprovantes do período.</p></div>
+      <div class="fone-wrap"><div class="fone"><div class="cd">
+        <div class="cd-sub"><span class="voltar">‹</span><div><h2>Financeiro</h2><small>Gestor sem fundo cadastrado</small></div></div>
+        <div class="cd-sec">
+          <span class="cd-rot">Pedir</span>
+          <div class="tipos">
+            <div class="tipo"><svg width="22" height="22"><use href="#i-recibo"/></svg><b>Reembolso</b><small>gastos do seu bolso</small></div>
+            <div class="tipo" style="opacity:.5"><svg width="22" height="22"><use href="#i-calc"/></svg><b>Fundo fixo</b><small>sem fundo cadastrado</small></div>
+            <div class="tipo"><svg width="22" height="22"><use href="#i-nota"/></svg><b>Adiantamento</b><small>pagar fornecedor</small></div>
+          </div>
+          <div class="aviso-cd" style="margin-top:12px">Você é gestor do setor, mas ainda não tem valor de fundo fixo. Peça ao Financeiro para cadastrar em Cadastros financeiros › Fundo fixo.</div>
+        </div>
+      </div></div><p><b>Gestor sem valor cadastrado.</b> Cartão desligado e o motivo.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 4. ADIANTAMENTO ============ -->
+  <section class="tela" id="t-adiant">
+    <h1>4. Adiantamento de numerário — novo no app</h1>
+    <p class="sub">Hoje o adiantamento só é preenchido no portal. No app ele vira um passo a passo de 5 telas, com os mesmos campos do formulário da empresa e as mesmas checagens A01–A06. O documento de origem pode ser fotografado (leitura do pedido de compras).</p>
+    <div class="linha" id="linha-adiant"></div>
+  </section>
+
+  <!-- ============ 5. APROVAÇÕES ============ -->
+  <section class="tela" id="t-aprov">
+    <h1>5. Aprovações — só para quem aprova</h1>
+    <p class="sub">Aparece para quem é <b>aprovador ou substituto cadastrado</b> em algum setor (aba Aprovação financeira) <b>e</b> tem a permissão do menu "Aprovações" no perfil. Colaborador comum não vê.</p>
+    <div class="linha">
+      <div class="fone-wrap"><div class="fone"><div class="cd" id="fone-aprov-lista"></div></div><p><b>Fila.</b> Aguardando mim / Aprovadas por mim, com o prazo de cada etapa.</p></div>
+      <div class="fone-wrap"><div class="fone"><div class="cd" id="fone-aprov-det"></div></div><p><b>Decisão.</b> Comentário obrigatório para devolver ou reprovar.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 6. CONFERÊNCIA ============ -->
+  <section class="tela" id="t-conf">
+    <h1>6. Conferência financeira — só setor Financeiro</h1>
+    <p class="sub">Aparece para quem é <b>do setor marcado como financeiro</b> (ou gestor dele) <b>e</b> tem a permissão "Conferência financeira". No celular: fila e conferência item a item (aceitar, pedir ajuste, glosar). <b>Lançamento no SIENGE e programar pagamento ficam no portal</b> (botão "Continuar no portal").</p>
+    <div class="linha">
+      <div class="fone-wrap"><div class="fone"><div class="cd" id="fone-conf-fila"></div></div><p><b>Fila do Financeiro.</b> Contadores por etapa e a lista pelo "pagar até".</p></div>
+      <div class="fone-wrap"><div class="fone"><div class="cd" id="fone-conf-item"></div></div><p><b>Item a item.</b> Comprovante, declarado × comprovante e a decisão.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 7. CADASTROS ============ -->
+  <section class="tela" id="t-cad">
+    <h1>7. Cadastros financeiros — só Admin</h1>
+    <p class="sub">Regra fixa (adminOnly, como no portal). No celular fica só o que é rápido: o <b>valor do fundo fixo de cada gestor</b>. Categorias, regras de aceitação e aprovadores continuam no portal.</p>
+    <div class="linha">
+      <div class="fone-wrap"><div class="fone"><div class="cd" id="fone-cad"></div></div><p><b>Fundo fixo por gestor.</b> Os demais cadastros abrem o portal.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 8. REGRAS ============ -->
+  <section class="tela" id="t-regras">
+    <h1>8. Quem vê o quê</h1>
+    <p class="sub">Mesma regra no app e no portal. Duas condições para a Gestão financeira: o <b>papel</b> (vem do cadastro: aprovador, setor financeiro, admin) e a <b>permissão do menu</b> no perfil (Configurações › Perfis e permissões).</p>
+    <div class="card-p">
+      <h2>App App do solicitante › Financeiro</h2>
+      <table class="m">
+        <thead><tr><th>Item</th><th>Colaborador</th><th>Gestor do setor</th><th>Financeiro</th><th>Admin</th><th>Regra</th></tr></thead>
+        <tbody>
+          <tr><td>Reembolso de despesas</td><td class="sim">Sim</td><td class="sim">Sim</td><td class="sim">Sim</td><td class="sim">Sim</td><td>Todo colaborador com setor em Pessoas.</td></tr>
+          <tr><td>Fundo fixo de caixa <span class="chip chip--muda">muda</span></td><td class="nao">Não</td><td class="sim">Sim</td><td class="nao">Só se for gestor</td><td class="nao">Só se for gestor</td><td>Gestor do setor (<code>at_setor_gestores</code>) + valor de fundo cadastrado. Hoje basta o valor cadastrado.</td></tr>
+          <tr><td>Adiantamento de numerário <span class="chip chip--novo">novo no app</span></td><td class="sim">Sim</td><td class="sim">Sim</td><td class="sim">Sim</td><td class="sim">Sim</td><td>Todo colaborador; bloqueado se tiver comprovação vencida (A06).</td></tr>
+          <tr><td>Aprovações <span class="chip chip--novo">novo no app</span></td><td class="nao">Não</td><td class="sim">Sim</td><td class="nao">Só se aprovar</td><td class="sim">Sim</td><td>Aprovador ou substituto cadastrado + permissão "Aprovações".</td></tr>
+          <tr><td>Conferência financeira <span class="chip chip--novo">novo no app</span></td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim">Sim</td><td>Setor financeiro (ou gestor dele) + permissão "Conferência financeira".</td></tr>
+          <tr><td>Cadastros financeiros <span class="chip chip--novo">novo no app</span></td><td class="nao">Não</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td><td>adminOnly (Admin e Super admin).</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-p">
+      <h2>Portal › Solicitações Financeiras (mesma regra)</h2>
+      <p>Hoje "Aprovações" aparece para todo mundo (fila vazia para quem não aprova). Com a regra nova, o colaborador comum vê só Minhas solicitações e Nova solicitação.</p>
+      <table class="m">
+        <thead><tr><th>Menu</th><th>Hoje</th><th>Proposta</th></tr></thead>
+        <tbody>
+          <tr><td>Minhas solicitações · Nova solicitação</td><td>Todos</td><td>Todos (sem mudança)</td></tr>
+          <tr><td>Aprovações</td><td>Todos (<code>alwaysVisible</code>)</td><td><span class="chip chip--muda">muda</span> Permissão do menu + ser aprovador/substituto. Perfis com a tela marcada hoje continuam; marcar para o perfil dos gestores.</td></tr>
+          <tr><td>Conferência financeira</td><td>Permissão <code>sf_conferencia</code></td><td>Permissão + setor financeiro (o menu some para quem tem a permissão mas não é do Financeiro)</td></tr>
+          <tr><td>Cadastros financeiros</td><td>adminOnly</td><td>adminOnly (sem mudança)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 9. DECISÕES ============ -->
+  <section class="tela" id="t-dec">
+    <h1>9. Decisões para você aprovar</h1>
+    <p class="sub">O que eu fiz no mockup em cada ponto que o pedido deixa em aberto. Responda D1–D5 (ou "sim" para todas as recomendações).</p>
+    <div class="dec"><span class="dec__id">D1</span><h3>Quem é "gestor de setor" para o fundo fixo</h3><p>Opções: (a) quem está em <b>Gestão do setor</b> no cadastro de Setores e números; (b) um perfil novo "Gestor" em Perfis e permissões.</p><p class="rec">Recomendo <b>(a)</b>: o cadastro já existe e é o mesmo que sugere o aprovador. Continua exigindo o valor do fundo cadastrado.</p></div>
+    <div class="dec"><span class="dec__id">D2</span><h3>Aprovações: só setor Financeiro ou quem aprova?</h3><p>O pedido diz que só o setor Financeiro abre Aprovações, Conferência e Cadastros. Mas quem aprova reembolso e adiantamento é o gestor de cada setor (Carla, Paula, Renato…): se só o Financeiro vir Aprovações, os gestores não conseguem aprovar.</p><p class="rec">Recomendo: Aprovações para <b>aprovador/substituto cadastrado + permissão do menu</b>; Conferência só para o <b>setor Financeiro + permissão</b>; Cadastros só <b>Admin</b>.</p></div>
+    <div class="dec"><span class="dec__id">D3</span><h3>Mesma regra no portal</h3><p>Aplicar a regra também no menu do portal (Aprovações deixa de ser "sempre visível").</p><p class="rec">Recomendo <b>sim</b>, para o colaborador não ver menu vazio. Migration aditiva marca a permissão "Aprovações" nos perfis que hoje têm aprovadores, para ninguém perder acesso.</p></div>
+    <div class="dec"><span class="dec__id">D4</span><h3>Conferência no celular: até onde</h3><p>No app: fila e item a item (aceitar, pedir ajuste, glosar). Lançamento no SIENGE, programar pagamento e marcar como paga precisam de tela grande e do diálogo do SIENGE.</p><p class="rec">Recomendo <b>item a item no app</b> e o resto pelo botão "Continuar no portal".</p></div>
+    <div class="dec"><span class="dec__id">D5</span><h3>Adiantamento sem rede</h3><p>O reembolso já funciona sem rede. O adiantamento tem checagens do servidor (pedido, limite, comprovação vencida) e cadeia de aprovação.</p><p class="rec">Recomendo: o adiantamento <b>exige rede</b> (aviso claro); a foto do documento de origem fica guardada no aparelho até enviar.</p></div>
+  </section>
+</main>
+
+<!-- Ícones (Lucide, em linha) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-recibo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></symbol>
+    <symbol id="i-calc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M16 14v4M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01"/></symbol>
+    <symbol id="i-nota" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></symbol>
+    <symbol id="i-aprov" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m16 11 2 2 4-4"/></symbol>
+    <symbol id="i-conf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4M3 7l2 2 4-4M13 6h8M13 12h8M13 18h8"/></symbol>
+    <symbol id="i-cad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/></symbol>
+    <symbol id="i-carteira" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+  </defs>
+</svg>
+
+<script>
+const PERFIS = {
+  colab: { nome: "Gustavo Reis", setor: "Administrativo", papel: "Colaborador", gestor: false, aprovador: false, financeiro: false, admin: false, fundo: 0 },
+  gestor: { nome: "Carla Mendes", setor: "Administrativo", papel: "Gestora do setor e aprovadora", gestor: true, aprovador: true, financeiro: false, admin: false, fundo: 800 },
+  fin: { nome: "Ana Lima", setor: "Financeiro", papel: "Conferente do Financeiro", gestor: false, aprovador: false, financeiro: true, admin: false, fundo: 0 },
+  admin: { nome: "Wagner Antunes", setor: "TI - Suporte", papel: "Admin", gestor: false, aprovador: true, financeiro: true, admin: true, fundo: 0 },
+};
+const ABAS = [
+  ["inicio", "1. Início"], ["reembolso", "2. Reembolso"], ["fundo", "3. Fundo fixo"], ["adiant", "4. Adiantamento"],
+  ["aprov", "5. Aprovações"], ["conf", "6. Conferência"], ["cad", "7. Cadastros"], ["regras", "8. Quem vê o quê"], ["dec", "9. Decisões"],
+];
+const $ = (s) => document.querySelector(s);
+const pode = (p) => ({
+  reembolso: true, adiant: true, fundo: p.gestor, aprov: p.aprovador, conf: p.financeiro, cad: p.admin,
+  inicio: true, regras: true, dec: true,
+});
+let aba = "inicio";
+
+function render() {
+  const p = PERFIS[$("#perfil").value];
+  const acesso = pode(p);
+  $("#abas").innerHTML = ABAS.map(([id, rot]) => `<button data-aba="${id}" aria-pressed="${id === aba}" ${acesso[id] ? "" : "disabled title='Este perfil não vê esta tela'"}>${rot}</button>`).join("");
+  document.querySelectorAll("[data-aba]").forEach((b) => b.addEventListener("click", () => { aba = b.dataset.aba; render(); }));
+  if (!acesso[aba]) aba = "inicio";
+  document.querySelectorAll(".tela").forEach((t) => t.classList.toggle("tela--on", t.id === "t-" + aba));
+  $("#quem-inicio").innerHTML = `<b>${p.nome}</b> · ${p.setor} · ${p.papel}`;
+  $("#fone-home").innerHTML = home(p);
+  $("#fone-fin").innerHTML = inicioFin(p);
+  $("#fone-ff").innerHTML = fundoFixo();
+  $("#linha-adiant").innerHTML = adiantamento();
+  $("#fone-aprov-lista").innerHTML = aprovLista();
+  $("#fone-aprov-det").innerHTML = aprovDet();
+  $("#fone-conf-fila").innerHTML = confFila();
+  $("#fone-conf-item").innerHTML = confItem();
+  $("#fone-cad").innerHTML = cadastros();
+}
+
+function home(p) {
+  const sub = p.gestor ? "reembolso, fundo fixo e adiantamento" : "reembolso e adiantamento";
+  const pend = (p.aprovador ? 3 : 0) + (p.financeiro ? 5 : 0);
+  return `<div class="cd-sub"><div><h2>Bem-vindo</h2><small>Olá, ${p.nome.split(" ")[0]} · Como podemos ajudar?</small></div></div>
+  <div class="cd-sec"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+    ${["Setor", "Abrir chamado", "Meus chamados"].map((t) => `<div class="tipo" style="min-height:92px;justify-items:center;text-align:center;align-content:center"><b style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase">${t}</b></div>`).join("")}
+    <div class="tipo tipo--gestor" style="min-height:92px;justify-items:center;text-align:center;align-content:center;position:relative">
+      ${pend ? `<span class="badge" style="position:absolute;top:6px;right:6px">${pend}</span>` : ""}
+      <svg width="26" height="26"><use href="#i-carteira"/></svg>
+      <b style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase">Financeiro</b><small style="text-align:center">${sub}</small>
+    </div>
+    <div class="tipo" style="min-height:92px;justify-items:center;text-align:center;align-content:center"><b style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase">Meu perfil</b></div>
+  </div>
+  ${pend ? `<div class="aviso-cd aviso-cd--info" style="margin-top:12px">O número no Financeiro soma o que espera por você: ${p.aprovador ? "3 aprovações" : ""}${p.aprovador && p.financeiro ? " e " : ""}${p.financeiro ? "5 para conferir" : ""}.</div>` : ""}
+  </div>`;
+}
+
+function inicioFin(p) {
+  const gestao = [];
+  if (p.aprovador) gestao.push(`<div class="g-item"><svg width="22" height="22"><use href="#i-aprov"/></svg><div><b>Aprovações</b><small>aguardando você · 1 com prazo vencido</small></div><span class="badge">3</span></div>`);
+  if (p.financeiro) gestao.push(`<div class="g-item"><svg width="22" height="22"><use href="#i-conf"/></svg><div><b>Conferência financeira</b><small>5 a conferir · 2 vencem em 3 dias</small></div><span class="badge">5</span></div>`);
+  if (p.admin) gestao.push(`<div class="g-item"><svg width="22" height="22"><use href="#i-cad"/></svg><div><b>Cadastros financeiros</b><small>fundo fixo dos gestores</small></div><span>›</span></div>`);
+  const fundo = p.gestor
+    ? `<div class="tipo tipo--gestor"><svg width="22" height="22"><use href="#i-calc"/></svg><b>Fundo fixo</b><small>caixa de R$ ${p.fundo},00</small></div>`
+    : "";
+  return `<div class="cd-sub"><span class="voltar">‹</span><div><h2>Financeiro</h2><small>${p.setor}${p.gestor ? " · gestor do setor" : ""}</small></div></div>
+  <div class="cd-sec">
+    <span class="cd-rot">Pedir</span>
+    <div class="tipos" style="grid-template-columns:repeat(${p.gestor ? 3 : 2},1fr)">
+      <div class="tipo"><svg width="22" height="22"><use href="#i-recibo"/></svg><b>Reembolso</b><small>gastos pagos do seu bolso</small></div>
+      ${fundo}
+      <div class="tipo"><svg width="22" height="22"><use href="#i-nota"/></svg><b>Adiantamento</b><small>pagar fornecedor antes</small></div>
+    </div>
+    ${gestao.length ? `<span class="cd-rot">Gestão financeira</span><div class="gestao">${gestao.join("")}</div>` : ""}
+    <span class="cd-rot">Minhas solicitações</span>
+    <div class="card"><div class="card__l1"><span>SF-2026-0158</span><span class="st st--neutro">Rascunho</span></div><h3>Reembolso · R$ 187,40</h3><p>Atualizada hoje</p></div>
+    <div class="card"><div class="card__l1"><span>SF-2026-0151</span><span class="st st--aviso">Em aprovação</span></div><h3>Adiantamento · R$ 658,40</h3><p>Gerente · etapa 1 de 1</p></div>
+    <div class="card"><div class="card__l1"><span>SF-2026-0142</span><span class="st st--aviso">Comprovação pendente</span></div><h3>Adiantamento · R$ 1.200,00</h3><p>Comprovar até 05/11 · <b style="color:var(--cd-ouro)">Comprovar</b></p></div>
+  </div>`;
+}
+
+function fundoFixo() {
+  return `<div class="cd-sub"><span class="voltar">‹</span><div><h2>Fundo fixo</h2><small>SF-2026-0160 · Administrativo · outubro</small></div></div>
+  <div class="cd-sec">
+    <div class="resumo">
+      <div><small>Valor do fundo</small><b>R$ 800,00</b></div>
+      <div><small>Saldo inicial</small><b>R$ 800,00</b></div>
+      <div><small>Despesas</small><b>R$ 312,70</b></div>
+      <div class="destaque"><small>Saldo final</small><b>R$ 487,30</b></div>
+    </div>
+    <div class="aviso-cd aviso-cd--info">Reposição solicitada = despesas (R$ 312,70). Saldo inicial = saldo final anterior + reposição recebida.</div>
+    <span class="cd-rot">Comprovantes · 4</span>
+    <div class="card"><div class="card__l1"><span>02/10 · Copa/mantimentos</span><span class="st st--ok">lido</span></div><h3>Atacadão · R$ 148,20</h3></div>
+    <div class="card"><div class="card__l1"><span>09/10 · Material de escritório</span><span class="st st--ok">lido</span></div><h3>Kalunga · R$ 64,50</h3></div>
+    <div class="card"><div class="card__l1"><span>14/10 · Transporte</span><span class="st st--ok">lido</span></div><h3>Motoboy Rápido · R$ 60,00</h3></div>
+    <div class="card"><div class="card__l1"><span>21/10 · Outros</span><span class="st st--erro">ilegível</span></div><h3>Chaveiro · R$ 40,00</h3><p>Digite data e valor</p></div>
+    <button class="btn btn--sec" style="margin:6px 0 10px">📷 Novo comprovante</button>
+    <button class="btn">Revisar e enviar</button>
+  </div>`;
+}
+
+function adiantamento() {
+  const fone = (n, titulo, corpo, nota) => `<div class="fone-wrap"><div class="fone"><div class="cd">
+    <div class="cd-sub"><span class="voltar">‹</span><div><h2>Adiantamento</h2><small>SF-2026-0161 · passo ${n} de 5</small></div></div>
+    <div class="passos">${[1, 2, 3, 4, 5].map((k) => `<i class="${k < n ? "f" : k === n ? "a" : ""}"></i>`).join("")}</div>
+    <p class="passo-rot">${titulo}</p>
+    <div class="cd-sec">${corpo}</div></div></div><p>${nota}</p></div>`;
+  return [
+    fone(1, "Documento de origem", `
+      <div class="campo"><label>Tipo</label><div class="chips"><span class="chip-cd chip-cd--on">Pedido de compras</span><span class="chip-cd">Proposta</span><span class="chip-cd">E-mail</span></div></div>
+      <div class="foto foto--lida">pedido fotografado<br>✓ lido</div>
+      <div class="campo"><label>Pedido nº</label><div class="inp inp--ocr">PC-4471 · 20/10/2026</div></div>
+      <div class="campo"><label>Fornecedor</label><div class="inp inp--ocr">Madeireira São João Ltda</div><span class="ocr-nota">CNPJ 12.345.678/0001-90 · copiado</span></div>
+      <div class="duas"><div class="campo"><label>Total do pedido</label><div class="inp inp--ocr">R$ 2.400,00</div></div><div class="campo"><label>Condição</label><div class="inp inp--ocr">50% sinal</div></div></div>
+      <button class="btn">Continuar</button>`, "<b>1. Documento de origem.</b> Foto do pedido; o sistema calcula o valor = total × percentual."),
+    fone(2, "Obra e apropriação", `
+      <div class="campo"><label>Obra (empresa pagadora)</label><div class="inp">Obra - Arte Wave</div></div>
+      <div class="campo"><label>Centro de custo</label><div class="inp">00.00114 · Arte Wave</div></div>
+      <div class="campo"><label>Centro de apuração</label><div class="inp">Estrutura</div></div>
+      <div class="campo"><label>Conta caixa</label><div class="inp">Caixa obra</div></div>
+      <span class="cd-rot">Rateio por tarefa</span>
+      <table class="tabela-cd"><tr><td>Formas e escoramento</td><td>60%</td></tr><tr><td>Andaimes</td><td>40%</td></tr><tr><td><b>Total</b></td><td class="ok"><b>100% ✓</b></td></tr></table>
+      <button class="btn btn--sec" style="margin-bottom:8px">+ Tarefa</button>
+      <button class="btn">Continuar</button>`, "<b>2. Obra e apropriação.</b> Rateio precisa somar 100% (A05)."),
+    fone(3, "Valor e favorecido", `
+      <div class="resumo"><div class="destaque" style="grid-column:1/-1"><small>Valor do adiantamento (50% de R$ 2.400,00)</small><b>R$ 1.200,00</b><small style="margin-top:2px">mil e duzentos reais</small></div></div>
+      <div class="campo"><label>Favorecido</label><div class="inp inp--ocr">Madeireira São João Ltda</div></div>
+      <div class="campo"><label>CPF/CNPJ</label><div class="inp inp--ocr">12.345.678/0001-90</div></div>
+      <div class="campo"><label>Finalidade</label><div class="inp" style="height:64px;align-items:flex-start;padding-top:10px">Sinal das formas de madeira para a laje do 3º pavimento</div></div>
+      <button class="btn">Continuar</button>`, "<b>3. Valor e favorecido.</b> Valor por extenso gerado; favorecido = fornecedor do pedido (A03)."),
+    fone(4, "Pagamento e prazos", `
+      <div class="campo"><label>Forma de pagamento</label><div class="chips"><span class="chip-cd chip-cd--on">Depósito</span><span class="chip-cd">Boleto</span><span class="chip-cd">Cheque</span><span class="chip-cd">Dinheiro</span></div></div>
+      <div class="duas"><div class="campo"><label>Banco</label><div class="inp">341 · Itaú</div></div><div class="campo"><label>Agência</label><div class="inp">1234</div></div></div>
+      <div class="duas"><div class="campo"><label>Conta</label><div class="inp">56789-0</div></div><div class="campo"><label>Tipo</label><div class="inp">Corrente</div></div></div>
+      <div class="campo"><label>Vencimento</label><div class="inp">30/10/2026</div></div>
+      <div class="campo"><label>Prazo para comprovar</label><div class="inp inp--ro">29/11/2026 · vencimento + 30 dias do setor</div></div>
+      <button class="btn">Continuar</button>`, "<b>4. Pagamento e prazos.</b> Prazo de comprovação calculado pelo setor."),
+    fone(5, "Revisar e enviar", `
+      <span class="cd-rot" style="margin-top:0">Checagens</span>
+      <div class="check"><i class="ok">✓</i>A01 Documento de origem anexado</div>
+      <div class="check"><i class="ok">✓</i>A02 Valor ≤ pedido × 50%</div>
+      <div class="check"><i class="ok">✓</i>A03 Favorecido = fornecedor do pedido</div>
+      <div class="check"><i class="ok">✓</i>A05 Rateio soma 100%</div>
+      <div class="check"><i class="ok">✓</i>A06 Sem adiantamento em aberto no pedido e sem comprovação vencida</div>
+      <span class="cd-rot">Quem vai aprovar</span>
+      <div class="cadeia"><div class="na"><span class="n">1</span>Planejamento · não exigido (setor não é de obra)</div><div><span class="n">2</span>Gerente · Carla Mendes</div><div class="na"><span class="n">3</span>Diretor · não exigido para este valor</div></div>
+      <div class="aceite"><span class="cx">✓</span>Declaro que as informações são verdadeiras e me responsabilizo por comprovar o adiantamento até 29/11/2026.</div>
+      <button class="btn">Enviar para aprovação</button>`, "<b>5. Revisão.</b> Checagens A01–A06, cadeia de alçadas e o termo de responsabilidade."),
+  ].join("") + `<div class="fone-wrap"><div class="fone"><div class="cd">
+    <div class="cd-sub"><span class="voltar">‹</span><div><h2>Comprovar</h2><small>SF-2026-0142 · adiantado R$ 1.200,00</small></div></div>
+    <div class="cd-sec">
+      <div class="foto foto--lida">nota fiscal fotografada<br>✓ lida</div>
+      <div class="campo"><label>Emitente</label><div class="inp inp--ocr">Madeireira São João Ltda</div></div>
+      <div class="duas"><div class="campo"><label>NF nº</label><div class="inp inp--ocr">88.231</div></div><div class="campo"><label>Valor</label><div class="inp inp--ocr">R$ 2.400,00</div></div></div>
+      <span class="cd-rot">Checagens A07</span>
+      <div class="check"><i class="ok">✓</i>Emitente = favorecido</div>
+      <div class="check"><i class="ok">✓</i>Emitida depois do pagamento e no prazo</div>
+      <div class="check"><i class="ok">✓</i>Valor ≥ adiantado · saldo do pedido R$ 1.200,00 vai para o Financeiro lançar</div>
+      <button class="btn" style="margin-top:10px">Enviar comprovação</button>
+    </div></div></div><p><b>Comprovação (depois de pago).</b> Também no app, pelo card "Comprovação pendente".</p></div>`;
+}
+
+function aprovLista() {
+  return `<div class="cd-sub"><span class="voltar">‹</span><div><h2>Aprovações</h2><small>Administrativo</small></div></div>
+  <div class="linha-tab"><span class="on">Aguardando mim · 3</span><span>Aprovadas por mim</span></div>
+  <div class="cd-sec">
+    <div class="card"><div class="card__l1"><span>SF-2026-0150 · Gustavo Reis</span><span class="st st--erro">venceu há 2 h</span></div><h3>Reembolso · R$ 486,30</h3><p>Gestor · etapa 1 de 1 · 6 comprovantes · 1 alerta</p></div>
+    <div class="card"><div class="card__l1"><span>SF-2026-0159 · Carla Nunes</span><span class="st st--aviso">vence em 20 h</span></div><h3>Adiantamento · R$ 1.200,00</h3><p>Gerente · etapa 2 de 2 · Madeireira São João</p></div>
+    <div class="card"><div class="card__l1"><span>SF-2026-0157 · Gustavo Reis</span><span class="st st--ok">vence em 40 h</span></div><h3>Reembolso · R$ 92,00</h3><p>Gestor · etapa 1 de 1</p></div>
+    <button class="btn btn--sec" style="margin-top:6px">Definir substituto (férias)</button>
+  </div>`;
+}
+function aprovDet() {
+  return `<div class="cd-sub"><span class="voltar">‹</span><div><h2>SF-2026-0150</h2><small>Reembolso · Gustavo Reis · Administrativo</small></div></div>
+  <div class="cd-sec">
+    <div class="resumo"><div><small>Comprovantes</small><b>6</b></div><div class="destaque"><small>Total</small><b>R$ 486,30</b></div></div>
+    <span class="cd-rot">Checagens</span>
+    <div class="check"><i class="ok">✓</i>R01 Todos com comprovante</div>
+    <div class="check"><i class="al">!</i>R04 Item 3: cupom R$ 180,40 × digitado R$ 186,40</div>
+    <div class="check"><i class="ok">✓</i>R06 Sem duplicidade</div>
+    <span class="cd-rot">Itens</span>
+    <table class="tabela-cd"><tr><td>Posto Shell · Combustível</td><td>R$ 210,00</td></tr><tr><td>Supermercado · Copa</td><td>R$ 128,90</td></tr><tr><td>Casa do Construtor · Material</td><td>R$ 186,40</td></tr><tr><td>+ 3 itens</td><td>ver</td></tr></table>
+    <div class="campo"><label>Comentário (obrigatório para devolver ou reprovar)</label><div class="inp" style="height:56px"></div></div>
+    <div class="barra-dec"><button class="btn btn--perigo">Reprovar</button><button class="btn btn--roxo">Devolver</button><button class="btn btn--ok">Aprovar</button></div>
+  </div>`;
+}
+function confFila() {
+  return `<div class="cd-sub"><span class="voltar">‹</span><div><h2>Conferência</h2><small>Fila do Financeiro</small></div></div>
+  <div class="cd-sec">
+    <div class="kpis"><div class="on"><b>5</b><small>a conferir</small></div><div><b>1</b><small>pendência do solicitante</small></div><div><b>2</b><small>a comprovar</small></div></div>
+    <span class="cd-rot">A conferir · pela aprovação mais antiga</span>
+    <div class="card"><div class="card__l1"><span>SF-2026-0145 · Carla Nunes</span><span class="st st--erro">pagar até 25/10</span></div><h3>Fundo fixo · R$ 932,10</h3><p>6 itens · 1 com alerta</p></div>
+    <div class="card"><div class="card__l1"><span>SF-2026-0148 · Paula Nunes</span><span class="st st--aviso">pagar até 28/10</span></div><h3>Reembolso · R$ 312,00</h3><p>4 itens</p></div>
+    <div class="card"><div class="card__l1"><span>SF-2026-0153 · Renato Lopes</span><span class="st st--aviso">pagar até 30/10</span></div><h3>Adiantamento · R$ 1.200,00</h3><p>Conferir titularidade bancária (A04)</p></div>
+    <div class="aviso-cd aviso-cd--info">Lançamento no SIENGE, programar pagamento e marcar como paga: no portal.</div>
+  </div>`;
+}
+function confItem() {
+  return `<div class="cd-sub"><span class="voltar">‹</span><div><h2>SF-2026-0145</h2><small>Item 3 de 6 · Fundo fixo</small></div></div>
+  <div class="cd-sec">
+    <div class="recibo">CASA DO CONSTRUTOR LTDA<br>CNPJ 98.765.432/0001-10<br>CUPOM FISCAL ELETRÔNICO<br>------------------------------<br>CIMENTO CP-II 50KG   2 x 45,20<br>ARGAMASSA AC-III     1 x 90,00<br>------------------------------<br>TOTAL R$            180,40<br>12/10/2026 10:14</div>
+    <table class="tabela-cd"><tr><td></td><td style="text-align:left;color:var(--cd-txt-3)">Declarado</td><td>Comprovante</td></tr><tr><td>Valor</td><td style="text-align:left" class="al">R$ 186,40</td><td>R$ 180,40</td></tr><tr><td>Data</td><td style="text-align:left">12/10</td><td>12/10</td></tr><tr><td>Favorecido</td><td style="text-align:left">Casa do Constr.</td><td>Casa do Constr.</td></tr></table>
+    <div class="campo"><label>Observação (obrigatória com alerta, ajuste ou glosa)</label><div class="inp">Glosa da diferença de R$ 6,00</div></div>
+    <div class="barra-dec"><button class="btn btn--sec">Ajuste</button><button class="btn btn--roxo">Glosar</button><button class="btn btn--ok">Aceitar</button></div>
+    <button class="btn btn--sec" style="margin-top:10px">Continuar no portal ↗</button>
+  </div>`;
+}
+function cadastros() {
+  return `<div class="cd-sub"><span class="voltar">‹</span><div><h2>Cadastros financeiros</h2><small>Só Admin</small></div></div>
+  <div class="cd-sec">
+    <span class="cd-rot" style="margin-top:0">Fundo fixo dos gestores</span>
+    <div class="g-item"><div><b>Carla Mendes</b><small>Administrativo · vigente desde 01/09</small></div><b>R$ 800,00</b></div>
+    <div class="g-item" style="margin-top:8px"><div><b>Paula Nunes</b><small>TI - Suporte · vigente desde 01/09</small></div><b>R$ 500,00</b></div>
+    <div class="g-item" style="margin-top:8px"><div><b>Renato Lopes</b><small>CFTV · sem fundo</small></div><span class="st st--neutro">cadastrar</span></div>
+    <div class="g-item" style="margin-top:8px"><div><b>Fernanda Dias</b><small>Financeiro · vigente desde 01/09</small></div><b>R$ 1.000,00</b></div>
+    <div class="aviso-cd aviso-cd--info" style="margin-top:12px">A lista mostra só os gestores de setor (quem pode pedir fundo fixo).</div>
+    <span class="cd-rot">No portal</span>
+    <div class="g-item"><div><b>Categorias de motivo</b><small>10 ativas</small></div><span>↗</span></div>
+    <div class="g-item" style="margin-top:8px"><div><b>Regras de aceitação</b><small>R01–R10 · A01–A07</small></div><span>↗</span></div>
+    <div class="g-item" style="margin-top:8px"><div><b>Aprovadores por setor</b><small>Setores e números › Aprovação financeira</small></div><span>↗</span></div>
+  </div>`;
+}
+
+$("#perfil").addEventListener("change", render);
+render();
+</script>
+</body>
+</html>

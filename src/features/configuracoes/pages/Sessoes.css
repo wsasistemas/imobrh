@@ -1,0 +1,42 @@
+.sessions {
+  overflow: hidden;
+}
+
+/* A tabela começa colada no topo do card: o cabeçalho não precisa da borda superior. */
+.sessions .data-table th {
+  border-top: none;
+}
+
+.sessions__identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sessions__name {
+  font-weight: 600;
+}
+
+.sessions__muted {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.sessions__nowrap {
+  white-space: nowrap;
+}
+
+.sessions__activity {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.sessions__online {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--online);
+  box-shadow: 0 0 0 3px var(--success-bg);
+}

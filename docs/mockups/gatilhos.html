@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mockup · Gatilhos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--brand:#d6293b;--brand-soft:#fdecee;--ink:#17181c;--sidebar:#17181c;--sidebar-text:#9a9ba3;--muted:#6b7280;--line:#e9eaee;--page:#f5f6f8;--surface:#fff;--table-head:#fafafa;
+--success-bg:#e8f6ed;--success-fg:#166534;--neutral-bg:#f1f1f3;--neutral-fg:#52525b;--warning-bg:#fff1e3;--warning-strong:#9a3412;--danger-bg:#fdecee;--danger-fg:#b91c1c;--info-bg:#e8effd;--info-fg:#1d4ed8;--info-border:#c7d7fb}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,-apple-system,"Segoe UI",sans-serif;font-size:14px;line-height:1.5;color:var(--ink);background:#dfe1e6}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+[hidden]{display:none!important}
+.note{max-width:1440px;margin:16px auto 0;padding:10px 14px;background:#fff8d6;border:1px solid #f1df8a;border-radius:8px;font-size:13px}
+.frame{margin:16px auto 32px;max-width:1440px;background:var(--page);border-radius:10px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.18)}
+.top{height:64px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 22px;gap:14px}
+.logo{display:flex;align-items:center;gap:6px;font-weight:700;font-size:22px}.logo i{width:30px;height:30px;border-radius:50%;border:5px solid var(--brand)}
+.sysname{border-left:1px solid var(--line);padding-left:14px;font-weight:600}
+.body{display:flex;min-height:900px}
+.side{width:236px;flex:none;background:var(--sidebar);padding:24px 12px;color:var(--sidebar-text)}
+.side .cap{font-size:11px;letter-spacing:1.2px;font-weight:700;padding:0 12px 10px}
+.side a{display:block;padding:8px 12px;border-radius:8px;color:#d6d7dc;text-decoration:none;margin-bottom:2px;font-size:14px}
+.side a.on{background:var(--brand);color:#fff}.side a.sub{padding-left:34px;font-size:13px}.side a.sub.on{background:#2a2b31;color:#fff}
+main{flex:1;min-width:0;padding:24px 32px 48px}
+.crumb{font-size:13px;color:var(--muted);margin-bottom:12px}.crumb b{color:var(--ink)}
+h1{margin:0 0 4px;font-size:22px}.desc{margin:0 0 16px;color:var(--muted);font-size:13px}
+.secnav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.secnav span{border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 13px;font-weight:600;font-size:13px;color:var(--muted)}
+.secnav span.on{border-color:var(--brand);color:var(--brand);background:var(--brand-soft)}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px}
+.head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--line)}
+.head h2{margin:0;font-size:16px}.head small{display:block;color:var(--muted);font-size:12px;font-weight:400}
+.spacer{flex:1}
+.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 12px;font-weight:600;font-size:13px;display:inline-flex;gap:6px;align-items:center}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.ghost{border-color:transparent;color:var(--brand);background:none;padding:4px 6px}
+.icon{border:1px solid var(--line);background:#fff;border-radius:7px;width:32px;height:32px;display:grid;place-items:center;color:var(--muted)}
+.icon:hover{color:var(--danger-fg);border-color:var(--danger-fg)}
+.input,.sel{border:1px solid var(--line);border-radius:7px;padding:7px 10px;background:#fff;font-size:13px;width:100%}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--table-head);text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);padding:9px 14px;border-bottom:1px solid var(--line)}
+td{padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tr.click:hover td{background:#fafafb;cursor:pointer}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600;background:var(--neutral-bg);color:var(--neutral-fg);white-space:nowrap}
+.badge.ok{background:var(--success-bg);color:var(--success-fg)}.badge.warn{background:var(--warning-bg);color:var(--warning-strong)}.badge.danger{background:var(--danger-bg);color:var(--danger-fg)}.badge.info{background:var(--info-bg);color:var(--info-fg)}
+.muted{color:var(--muted)}
+.drag{color:#b4b7bf;width:20px}
+/* editor */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);padding:0 18px}
+.tabs button{border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:12px 10px;background:none;font-weight:600;font-size:13px;color:var(--muted)}
+.tabs button[aria-selected=true]{border-color:var(--brand);color:var(--ink)}
+.sec{padding:18px;border-bottom:1px solid var(--line)}
+.sec h3{margin:0;font-size:15px}.sec>p{margin:2px 0 14px;color:var(--muted);font-size:13px}
+.field{display:grid;gap:4px;margin-bottom:12px}.field>span{font-size:12px;font-weight:600}.field small{font-size:11px;color:var(--muted)}
+.grp{margin-bottom:16px}.grp b{font-size:13px}.grp>small{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}
+.cond{display:grid;grid-template-columns:28px minmax(0,1.2fr) minmax(0,.9fr) minmax(0,1.4fr) 32px;gap:8px;align-items:center;margin-bottom:8px}
+.cond>.se{font-weight:700;font-size:12px;color:var(--muted)}
+.acao{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr) 32px;gap:8px;align-items:center;margin-bottom:8px}
+.disparo{display:flex;gap:8px;flex-wrap:wrap}
+.disparo label{display:flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-size:13px;background:#fff}
+.disparo label:has(input:checked){border-color:var(--brand);background:var(--brand-soft)}
+.disparo .tempo{display:flex;gap:6px;align-items:center}
+.disparo .tempo input.input{width:70px}
+.foot{display:flex;gap:8px;justify-content:flex-end;align-items:center;padding:12px 18px;background:var(--table-head);border-radius:0 0 12px 12px}
+.foot .left{margin-right:auto}
+.aviso{padding:10px 12px;border-radius:9px;background:var(--info-bg);color:var(--info-fg);font-size:12px;border:1px solid var(--info-border)}
+.sim{display:grid;gap:6px;font-size:13px}
+.sim .l{display:flex;gap:8px;align-items:center}
+.ok{color:var(--success-fg)}.no{color:var(--danger-fg)}
+.chk{display:flex;gap:7px;align-items:center;font-size:13px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.log td{font-size:12px}
+@media (max-width:1000px){.layout{grid-template-columns:1fr}.cond{grid-template-columns:24px 1fr 32px}.cond>select:nth-of-type(2),.cond>.v{grid-column:2}.acao{grid-template-columns:1fr 32px}.acao>.v{grid-column:1}.side{display:none}}
+</style>
+</head>
+<body>
+<div class="note"><b>Mockup para aprovação · Administração › Gatilhos.</b> Clique em um gatilho da lista para abrir o editor (abas Principal, Condições e Ações, como na Movidesk). Os botões + e lixeira adicionam e removem linhas; "Simular em um ticket" mostra o que aconteceria. Os dados são de exemplo.</div>
+<div class="frame">
+  <div class="top"><div class="logo"><i></i>imobdesk</div><div class="sysname">PORTAL ATENDIMENTO</div></div>
+  <div class="body">
+    <nav class="side">
+      <div class="cap">MENU PRINCIPAL</div>
+      <a href="#">Página Inicial</a>
+      <a href="#">Gestão de Chamados</a>
+      <a href="#" class="on">Administração</a>
+      <a href="#" class="sub">Serviços</a><a href="#" class="sub">Urgências</a><a href="#" class="sub">Categorias</a>
+      <a href="#" class="sub">Campos adicionais</a><a href="#" class="sub">Regras para exibição</a>
+      <a href="#" class="sub on">Gatilhos</a>
+      <a href="#">Configurações</a>
+    </nav>
+    <main>
+      <div class="crumb">Início / Administração / <b>Gatilhos</b></div>
+      <h1>Administração</h1>
+      <p class="desc">Contas, filas, equipes e os cadastros dos tickets.</p>
+      <div class="secnav"><span>Serviços</span><span>Urgências</span><span>Categorias</span><span>Campos adicionais</span><span>Regras para exibição</span><span class="on">Gatilhos</span></div>
+
+      <!-- ===================== LISTA ===================== -->
+      <section id="lista">
+        <div class="card">
+          <div class="head">
+            <div><h2>Gatilhos</h2><small>Automações que agem sozinhas no ticket quando as condições batem. Rodam na ordem da lista, uma vez por evento.</small></div>
+            <span class="spacer"></span>
+            <button class="btn" onclick="ver('log')">Execuções</button>
+            <button class="btn primary" onclick="abrir(true)">+ Novo gatilho</button>
+          </div>
+          <table>
+            <thead><tr><th></th><th>Nome</th><th>Quando dispara</th><th>Faz</th><th>Últimos 7 dias</th><th>Situação</th></tr></thead>
+            <tbody>
+              <tr class="click" onclick="abrir()"><td class="drag">⋮⋮</td><td><b>Cliente respondeu → volta para Em atendimento</b></td><td>Ação do solicitante recebida</td><td>Status → Em atendimento · avisa o responsável</td><td>23</td><td><span class="badge ok">Ativo</span></td></tr>
+              <tr class="click" onclick="abrir()"><td class="drag">⋮⋮</td><td><b>Sem retorno do cliente em 48 h úteis → Resolvido</b></td><td>Tempo no status ≥ 48 h úteis</td><td>Resposta pública (macro "Encerramento por falta de retorno") · Status → Resolvido</td><td>6</td><td><span class="badge ok">Ativo</span></td></tr>
+              <tr class="click" onclick="abrir()"><td class="drag">⋮⋮</td><td><b>Urgência crítica → avisar a equipe</b></td><td>Ticket criado · ticket alterado</td><td>Tag "critico" · nota interna · avisa a equipe</td><td>2</td><td><span class="badge ok">Ativo</span></td></tr>
+              <tr class="click" onclick="abrir()"><td class="drag">⋮⋮</td><td><b>SLA vence em 2 h sem responsável</b></td><td>SLA de solução vence em ≤ 2 h</td><td>Avisa o líder da equipe · seguidor: líder</td><td>4</td><td><span class="badge ok">Ativo</span></td></tr>
+              <tr class="click" onclick="abrir()"><td class="drag">⋮⋮</td><td><b>WhatsApp do CFTV → equipe CFTV</b></td><td>Ticket criado</td><td>Equipe → CFTV · serviço → CFTV › Câmeras</td><td>0</td><td><span class="badge">Inativo</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===================== EDITOR ===================== -->
+      <section id="editor" hidden>
+        <div class="layout">
+        <div class="card">
+          <div class="head"><div><h2 id="titEd">Cliente respondeu → volta para Em atendimento</h2><small>Gatilho #1 · alterado por Wagner Antunes em 07/10/2026</small></div><span class="spacer"></span><label class="chk"><input type="checkbox" checked> Ativo</label></div>
+          <div class="tabs" role="tablist">
+            <button role="tab" aria-selected="true" onclick="aba(this,'s-principal')">Principal</button>
+            <button role="tab" aria-selected="false" onclick="aba(this,'s-cond')">Condições</button>
+            <button role="tab" aria-selected="false" onclick="aba(this,'s-acoes')">Ações</button>
+          </div>
+
+          <div class="sec" id="s-principal">
+            <h3>Principal</h3>
+            <p>Os gatilhos executam ações quando as condições são cumpridas. Elas podem ser acionadas por algo que aconteceu no ticket ou por tempo dentro de um status.</p>
+            <label class="field"><span>Nome</span><input class="input" id="nome" value="Cliente respondeu → volta para Em atendimento"></label>
+            <label class="field" style="max-width:420px"><span>Gatilho para</span><select class="sel"><option>Tickets</option></select><small>ⓘ Define quais condições e ações estão disponíveis. Por enquanto, só Tickets.</small></label>
+            <label class="field" style="max-width:420px"><span>Executar no máximo</span><select class="sel"><option>Uma vez por evento (padrão)</option><option>Uma vez por ticket</option></select><small>"Uma vez por ticket" evita repetir, por exemplo, o aviso de SLA.</small></label>
+          </div>
+
+          <div class="sec" id="s-cond">
+            <h3>Condições</h3>
+            <p>O gatilho precisa de pelo menos um <b>disparo</b>. Depois, as condições filtram em quais tickets ele age.</p>
+            <div class="grp"><b>Dispara quando</b><small>Marque um ou mais acontecimentos.</small>
+              <div class="disparo">
+                <label><input type="checkbox"> Ticket criado</label>
+                <label><input type="checkbox"> Ticket alterado</label>
+                <label><input type="checkbox" checked> Ação do solicitante recebida</label>
+                <label><input type="checkbox"> Ação do agente adicionada</label>
+                <label><input type="checkbox"> Status alterado</label>
+                <label class="tempo"><input type="checkbox"> Tempo no status ≥ <input class="input" value="48"> h úteis</label>
+                <label class="tempo"><input type="checkbox"> SLA vence em ≤ <input class="input" value="2"> h</label>
+                <label><input type="checkbox"> SLA vencido</label>
+              </div>
+            </div>
+            <div class="grp"><b>Atende TODAS as condições a seguir</b><small>Só executa se todas forem verdadeiras.</small>
+              <div id="todas"></div>
+              <button class="btn ghost" onclick="addCond('todas')">+ Adicionar condição</button>
+            </div>
+            <div class="grp" style="margin-bottom:0"><b>Atende QUALQUER condição a seguir</b><small>Executa se uma ou mais forem verdadeiras (vazio = não filtra).</small>
+              <div id="qualquer"></div>
+              <button class="btn ghost" onclick="addCond('qualquer')">+ Adicionar condição</button>
+            </div>
+          </div>
+
+          <div class="sec" id="s-acoes" style="border-bottom:0">
+            <h3>Ações</h3>
+            <p>O que é feito no ticket quando as condições batem, nesta ordem.</p>
+            <div id="acoes"></div>
+            <button class="btn ghost" onclick="addAcao()">+ Adicionar ação</button>
+          </div>
+
+          <div class="foot">
+            <button class="btn left" onclick="ver('lista')">Cancelar</button>
+            <button class="btn" onclick="salvo(true)">Salvar e criar um novo</button>
+            <button class="btn primary" onclick="salvo()">Salvar</button>
+          </div>
+        </div>
+
+        <aside class="card">
+          <div class="head"><div><h2>Simular em um ticket</h2><small>Não altera nada: só mostra o resultado.</small></div></div>
+          <div style="padding:14px 18px;display:grid;gap:10px">
+            <div style="display:flex;gap:8px"><input class="input" value="48213" aria-label="Número do ticket"><button class="btn" onclick="document.getElementById('sim').hidden=false">Simular</button></div>
+            <div class="sim" id="sim" hidden>
+              <div class="l"><span class="ok">✔</span> Disparo: ação do solicitante recebida (simulada)</div>
+              <div class="l"><span class="ok">✔</span> Status é <b>Aguardando</b></div>
+              <div class="l"><span class="ok">✔</span> Origem é um de E-mail, WhatsApp</div>
+              <div class="l"><span class="no">✘</span> Responsável está preenchido <span class="muted">(vazio)</span></div>
+              <div class="aviso">Resultado: <b>não executaria</b>, porque uma condição de TODAS falhou.</div>
+            </div>
+            <div class="aviso">Ações feitas por um gatilho <b>não disparam outros gatilhos</b>. Isso evita repetição infinita. Cada execução fica no histórico do ticket ("Gatilho: …").</div>
+          </div>
+        </aside>
+        </div>
+      </section>
+
+      <!-- ===================== EXECUÇÕES ===================== -->
+      <section id="log" hidden>
+        <div class="card">
+          <div class="head"><div><h2>Execuções dos gatilhos</h2><small>Últimos 30 dias. Erros aparecem aqui e não travam o ticket.</small></div><span class="spacer"></span><button class="btn" onclick="ver('lista')">← Gatilhos</button></div>
+          <table class="log">
+            <thead><tr><th>Quando</th><th>Gatilho</th><th>Ticket</th><th>Disparo</th><th>Resultado</th></tr></thead>
+            <tbody>
+              <tr><td>07/10 16:52</td><td>Cliente respondeu → volta para Em atendimento</td><td>#48213</td><td>Ação do solicitante</td><td><span class="badge ok">Executado</span> status → Em atendimento</td></tr>
+              <tr><td>07/10 16:40</td><td>SLA vence em 2 h sem responsável</td><td>#48231</td><td>Tempo (verificação a cada 5 min)</td><td><span class="badge ok">Executado</span> aviso ao líder</td></tr>
+              <tr><td>07/10 15:10</td><td>Sem retorno do cliente em 48 h úteis → Resolvido</td><td>#48190</td><td>Tempo no status</td><td><span class="badge danger">Erro</span> falta "Solução aplicada" para resolver</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+<script>
+const CAMPOS={"Status":["é","não é"],"Urgência":["é","não é"],"Categoria":["é","não é"],"Serviço":["é","não é","está dentro de"],"Equipe":["é","não é"],"Responsável":["é","não é","está preenchido","está vazio"],"Origem":["é um de","não é um de"],"Setor":["é","não é"],"Tags":["contém","não contém"],"Assunto ou texto":["contém","não contém"],"Campo adicional: Protocolo":["está preenchido","está vazio","é"],"Horário":["dentro do expediente","fora do expediente"],"Ação feita por":["solicitante","agente","IA"]};
+const VALORES={"Status":"Aguardando","Origem":"E-mail, WhatsApp","Responsável":"","Urgência":"Crítica","Serviço":"TI › Sistemas","Equipe":"Sistemas","Tags":"vip","Assunto ou texto":"urgente","Categoria":"Problema","Setor":"TI"};
+const ACOES={"Alterar status":"Em atendimento","Alterar equipe":"Infraestrutura","Alterar responsável":"Responsável anterior / Para mim / Líder da equipe","Alterar urgência":"Alta","Alterar categoria":"Problema","Alterar serviço":"TI › Infraestrutura › Rede / VPN","Adicionar tags":"critico","Remover tags":"aguardando","Preencher campo adicional":"Forma de atendimento = E-mail","Adicionar nota interna":"Cliente respondeu, retomar atendimento.","Responder ao solicitante (macro)":"Encerramento por falta de retorno","Avisar pessoas":"Responsável","Avisar equipe":"Membros da equipe do ticket","Adicionar seguidor":"Líder da equipe"};
+const sel=(opts,v)=>`<select class="sel">${opts.map(o=>`<option${o===v?" selected":""}>${o}</option>`).join("")}</select>`;
+function addCond(id,campo,op,val){
+  const d=document.createElement("div");d.className="cond";
+  campo=campo||"Status";
+  d.innerHTML=`<span class="se">Se</span>${sel(Object.keys(CAMPOS),campo)}<span class="opw">${sel(CAMPOS[campo],op)}</span><input class="input v" value="${val??VALORES[campo]??""}"><button class="icon" title="Remover" onclick="this.parentNode.remove()">🗑</button>`;
+  d.querySelector("select").onchange=e=>{d.querySelector(".opw").innerHTML=sel(CAMPOS[e.target.value]);d.querySelector(".v").value=VALORES[e.target.value]??""};
+  document.getElementById(id).appendChild(d);
+}
+function addAcao(a,v){
+  const d=document.createElement("div");d.className="acao";a=a||"Alterar status";
+  d.innerHTML=`${sel(Object.keys(ACOES),a)}<input class="input v" value="${v??ACOES[a]}"><button class="icon" title="Remover" onclick="this.parentNode.remove()">🗑</button>`;
+  d.querySelector("select").onchange=e=>d.querySelector(".v").value=ACOES[e.target.value];
+  document.getElementById("acoes").appendChild(d);
+}
+function ver(id){for(const s of ["lista","editor","log"])document.getElementById(s).hidden=s!==id;scrollTo(0,0)}
+function abrir(novo){
+  for(const id of ["todas","qualquer","acoes"])document.getElementById(id).innerHTML="";
+  if(novo){document.getElementById("titEd").textContent="Novo gatilho";document.getElementById("nome").value="";addCond("todas");addCond("qualquer");addAcao();}
+  else{document.getElementById("titEd").textContent="Cliente respondeu → volta para Em atendimento";document.getElementById("nome").value="Cliente respondeu → volta para Em atendimento";
+    addCond("todas","Status","é","Aguardando");addCond("todas","Responsável","está preenchido","");addCond("qualquer","Origem","é um de","E-mail, WhatsApp");
+    addAcao("Alterar status","Em atendimento");addAcao("Avisar pessoas","Responsável");}
+  document.getElementById("sim").hidden=true;ver("editor");
+}
+function aba(b,id){document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",x===b));document.getElementById(id).scrollIntoView({behavior:"smooth",block:"start"})}
+function salvo(novo){alert("Gatilho salvo (mockup)."+(novo?" Abrindo um novo.":""));novo?abrir(true):ver("lista")}
+</script>
+</body>
+</html>

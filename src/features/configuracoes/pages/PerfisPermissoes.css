@@ -1,0 +1,216 @@
+.perms {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+/* ---------- Lista de perfis ---------- */
+
+.perms__roles {
+  padding: 16px 12px;
+}
+
+.perms__roles-title {
+  margin: 0 8px 10px;
+}
+
+.perms__roles-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.perms__role-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.perms__role-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.perms__role-protected {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+.perms__role {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  text-align: left;
+  color: var(--ink);
+}
+
+.perms__role:hover {
+  background: var(--page);
+}
+
+.perms__role--active,
+.perms__role--active:hover {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+}
+
+.perms__role-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.perms__role-meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.perms__new-role {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 12px 8px 0;
+  border-top: 1px solid var(--line);
+}
+
+/* ---------- Matriz ---------- */
+
+.perms__matrix {
+  overflow: hidden;
+}
+
+.perms__matrix-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px;
+}
+
+.perms__matrix-header h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+
+.perms__matrix-header p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.perms__filter {
+  position: relative;
+  width: 260px;
+  color: var(--muted);
+}
+
+.perms__filter svg {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+
+.perms__filter .input {
+  width: 100%;
+  padding-left: 36px;
+}
+
+.perms__matrix-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 20px 20px;
+}
+
+.perms__group-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--line);
+  background: var(--table-head);
+}
+
+.perms__group-header .section-title {
+  margin: 0;
+}
+
+.perms__group-count {
+  flex: 1;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.perms__release-all {
+  border: none;
+  background: none;
+  padding: 4px 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.perms__release-all:disabled {
+  color: var(--muted);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ---------- Barra de alterações pendentes ---------- */
+
+/* bottom e margens negativas compensam o padding de .app-main (32px nas laterais, 48px embaixo),
+   para a barra encostar no rodapé da área de conteúdo. */
+.save-bar {
+  position: sticky;
+  bottom: -48px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 -32px -48px;
+  padding: 14px 32px;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.save-bar__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.save-bar .btn--outline {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: transparent;
+  color: #ffffff;
+}
+
+.save-bar .btn--outline:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 1100px) {
+  .perms {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

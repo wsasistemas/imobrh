@@ -1,0 +1,123 @@
+/* Telas fora do layout (login, redefinir e trocar senha): card centralizado de 460px. */
+
+.auth-page {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--page);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px;
+  text-align: center;
+}
+
+.auth-card__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--brand-soft);
+  color: var(--brand-hover); /* contraste AA sobre --brand-soft */
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.auth-card h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.auth-card > p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.auth-card__form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+  text-align: left;
+}
+
+.auth-card__submit {
+  width: 100%;
+}
+
+.auth-card__link {
+  border: none;
+  background: none;
+  padding: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: underline;
+}
+
+.auth-card__link:hover:not(:disabled) {
+  color: var(--ink);
+}
+
+.auth-card__alert {
+  width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.auth-card__alert--error {
+  background: var(--danger-bg);
+  color: var(--danger-fg);
+}
+
+.auth-card__alert--success {
+  background: var(--success-bg);
+  color: var(--success-fg);
+}
+
+/* ---------- Checklist de senha ---------- */
+
+.password-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--page);
+}
+
+.password-rules__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.password-rules__item--pending {
+  color: var(--muted);
+}
+
+.password-rules__item--ok {
+  color: var(--success-fg);
+}
+
+.password-rules__item--fail {
+  color: var(--danger-fg);
+}
