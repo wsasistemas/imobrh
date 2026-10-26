@@ -1,62 +1,26 @@
-# Configuração local do Supabase CLI do Imobdesk (WSA Sistemas).
+# Configuração local do Supabase CLI do ImobRH (WSA Sistemas).
 #
-# ATENÇÃO: o projeto remoto (ikvjaowvpvxojvcfwnct) é COMPARTILHADO com os outros sistemas da WSA.
+# ATENÇÃO: o projeto remoto (ikvjaowvpvxojvcfwnct) é COMPARTILHADO com o imobdesk e os outros sistemas da WSA.
 # Nunca rode `supabase config push` nem `supabase db push` a partir daqui: sobrescreveria Auth/API de todos.
-# As migrations vão pelo SQL Editor. Este arquivo existe só para o deploy das Edge Functions, com o token
-# da conta WSA só na janela do terminal:
+# As migrations (supabase/migrations) vão pelo SQL Editor. Este arquivo existe só para o deploy das Edge Functions:
 #   $env:SUPABASE_ACCESS_TOKEN = "<token da conta WSA>"
 #   npx supabase functions deploy <nome> --project-ref ikvjaowvpvxojvcfwnct --use-api
-project_id = "wsa-imobdesk"
+# Variáveis das funções (Edge Functions › Secrets): RM_MODO = mock | real.
+project_id = "wsa-imobrh"
 
-[functions.imobdesk-usuarios]
-# Exige JWT válido; a função ainda confere o usuário e a permissão (a chave anon também é um JWT).
+# Todas exigem JWT válido; a função ainda confere o usuário, a sessão do gateway imobdesk-auth e a permissão
+# (a chave anon também é um JWT). rm-token aceita também a service role (chamada entre funções).
+[functions.rh-me]
 verify_jwt = true
 
-[functions.imobdesk-integracao-teste]
+[functions.rm-token]
 verify_jwt = true
 
-[functions.imobdesk-totvs]
+[functions.rm-funcionario]
 verify_jwt = true
 
-[functions.imobdesk-zenvia]
+[functions.rm-hierarquia]
 verify_jwt = true
 
-# Chamado pela Zenvia (sem JWT): a função confere o cabeçalho x-atendimento-chave (chave no Vault).
-[functions.imobdesk-zenvia-webhook]
-verify_jwt = false
-
-[functions.imobdesk-email]
+[functions.rm-consultas]
 verify_jwt = true
-
-# Security Gateway do login: chamado ANTES de existir sessão, então sem JWT. A função valida
-# origem, payload, limites e bloqueio antes de chamar o Supabase Auth (docs/SEGURANCA-LOGIN.md).
-[functions.imobdesk-auth]
-verify_jwt = false
-
-# Leitura das caixas e envio das respostas (Etapa 4): quem chama é o pg_cron, com x-atendimento-chave (chave no Vault).
-# Um usuário logado da supervisão geral também pode chamar ("Ler agora"); a função confere o token.
-[functions.imobdesk-email-sync]
-verify_jwt = false
-
-# Triagem por IA (pg_cron, 1 min) com x-atendimento-chave; a supervisão geral logada também pode chamar.
-[functions.imobdesk-ia]
-verify_jwt = false
-
-# Retorno do "Autorizar com Gmail": quem chama é o Google (sem JWT); a segurança é o state de uso único.
-[functions.imobdesk-google-oauth]
-verify_jwt = false
-
-# WhatsApp (Zenvia + OpenWA): ciclo do pg_cron (x-atendimento-chave) e "enviar agora"/administração do OpenWA
-# por pessoa logada (a função confere o token e a permissão).
-[functions.imobdesk-whatsapp]
-verify_jwt = false
-
-# Chamado pelo OpenWA (sem JWT): a função confere a assinatura X-OpenWA-Signature (segredo no Vault).
-[functions.imobdesk-openwa-webhook]
-verify_jwt = false
-
-
-
-# Solicitações Financeiras: envio da fila de e-mail (pg_cron, 5 min) com x-atendimento-chave (chave no Vault).
-[functions.imobdesk-sf-email]
-verify_jwt = false

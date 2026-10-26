@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://imobrh.wsa/schemas/rh-me.schema.json",
+  "title": "GET /rh/me",
+  "description": "Resposta do GET /rh/me: vínculo do login com o TOTVS RM, papéis e itens do menu RH do app. Espelha o tipo RhMe de supabase/functions/_shared/contrato.ts.",
+  "type": "object",
+  "required": ["data", "error"],
+  "properties": {
+    "data": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["usuario", "vinculo", "papeis", "menu", "modoRm"],
+          "additionalProperties": false,
+          "properties": {
+            "usuario": {
+              "type": "object",
+              "required": ["id", "email", "nome"],
+              "additionalProperties": false,
+              "properties": {
+                "id": { "type": "string", "format": "uuid" },
+                "email": { "type": "string" },
+                "nome": { "type": "string" }
+              }
+            },
+            "vinculo": {
+              "oneOf": [
+                { "type": "null" },
+                {
+                  "type": "object",
+                  "required": ["status", "coligada", "chapa", "nome", "situacao", "secao", "funcao", "gestorChapa", "mock"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "status": { "enum": ["vinculado", "pendente", "divergente"] },
+                    "coligada": { "type": ["integer", "null"] },
+                    "chapa": { "type": ["string", "null"] },
+                    "nome": { "type": ["string", "null"] },
+                    "situacao": { "type": ["string", "null"] },
+                    "secao": {
+                      "type": "object",
+                      "required": ["codigo", "nome"],
+                      "properties": { "codigo": { "type": ["string", "null"] }, "nome": { "type": ["string", "null"] } }
+                    },
+                    "funcao": { "type": ["string", "null"] },
+                    "gestorChapa": { "type": ["string", "null"] },
+                    "mock": { "type": "boolean" }
+                  }
+                }
+              ]
+            },
+            "papeis": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": { "enum": ["admin", "rh_dp", "rh_dp_restrita", "recrutamento", "compliance", "diretoria", "gestor", "colaborador"] }
+            },
+            "menu": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": { "enum": ["rh_novo_pedido", "rh_meus_pedidos", "rh_aprovacoes", "rh_requisicao_pessoal", "rh_canal_confidencial", "rh_console"] }
+            },
+            "modoRm": { "enum": ["mock", "real"] }
+          }
+        }
+      ]
+    },
+    "error": { "oneOf": [{ "type": "null" }, { "$ref": "erro-api.schema.json" }] }
+  }
+}

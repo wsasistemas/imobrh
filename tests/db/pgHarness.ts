@@ -1,5 +1,5 @@
 // Postgres 17 de verdade (embedded-postgres) com o mínimo do Supabase para aplicar TODAS as
-// migrations do portal: papéis, auth.users/sessions, auth.uid()/jwt(), vault e storage.
+// migrations do ImobRH: papéis, auth.users/sessions, auth.uid()/jwt(), vault e storage.
 // Usado só pelos testes de banco (npm run test:db). Não toca no Supabase compartilhado.
 import EmbeddedPostgres from "embedded-postgres";
 import { readdirSync, readFileSync, rmSync } from "node:fs";
@@ -24,7 +24,8 @@ grant usage on schema auth, extensions, storage to anon, authenticated, service_
 
 create table auth.users (
   id uuid primary key default gen_random_uuid(),
-  email text,
+  -- Mesmo tipo do Supabase (varchar, não text): RETURN QUERY exige o tipo exato.
+  email character varying(255),
   raw_user_meta_data jsonb not null default '{}'::jsonb,
   email_confirmed_at timestamptz,
   last_sign_in_at timestamptz,
@@ -106,55 +107,42 @@ create function net.http_post(url text, body jsonb default '{}'::jsonb, params j
 `;
 
 export interface TestDb {
-  /** Conexão "postgres" (dono das funções), como o SQL editor do Supabase. */
+  /** Conexão "postgres" (como o SQL Editor do Supabase). */
   admin: pg.Client;
-  /** Abre uma conexão nova (para testes de concorrência). */
+  /** Abre uma conexão nova. */
   connect(): Promise<pg.Client>;
   stop(): Promise<void>;
 }
 
-/** Empresa Modelo do Imobdesk (imobdesk.empresas). */
-export const EMPRESA_MODELO = "00000000-0000-0000-0000-000000000001";
-
 /**
- * `empresa`: contexto fixo (imobdesk.empresa_id) em todas as conexões, para os testes de um módulo rodarem numa
- * empresa só, sem montar empresas e cadastros. Padrão: a Modelo. `null` deixa sem contexto (teste de multiempresa).
- * `sqlEditor`: aplica as partes de supabase/sql-editor (1_estrutura_parte*.sql), como no ikvj, em vez das migrations.
+ * Sobe o Postgres, aplica o stub do Supabase, o stub do imobdesk (tests/db/imobdesk-stub.sql) e todas as
+ * migrations de supabase/migrations em ordem. A empresa de cada usuário sai do cadastro em imobdesk.usuarios,
+ * como no ikvj.
  */
-export async function startTestDb(port: number, opcoes: { empresa?: string | null; sqlEditor?: boolean } = {}): Promise<TestDb> {
-  const empresa = opcoes.empresa === undefined ? EMPRESA_MODELO : opcoes.empresa;
-  const dir = join(tmpdir(), `portal-sec-db-${port}-${Date.now()}`);
+export async function startTestDb(port: number): Promise<TestDb> {
+  const dir = join(tmpdir(), `imobrh-db-${port}-${Date.now()}`);
   const server = new EmbeddedPostgres({ databaseDir: dir, user: "postgres", password: "postgres", port, persistent: false, initdbFlags: ["--encoding=UTF8", "--locale=C"], onLog: () => {}, onError: () => {} });
   await server.initialise();
   await server.start();
-  await server.createDatabase("portal");
+  await server.createDatabase("imobrh");
 
-  const conectar = async () => {
-    const client = new pg.Client({ host: "localhost", port, user: "postgres", password: "postgres", database: "portal" });
+  const connect = async () => {
+    const client = new pg.Client({ host: "localhost", port, user: "postgres", password: "postgres", database: "imobrh" });
     await client.connect();
     return client;
   };
-  const connect = async () => {
-    const client = await conectar();
-    if (empresa) await client.query("select set_config('imobdesk.empresa_id', $1, false)", [empresa]);
-    return client;
-  };
 
-  const admin = await conectar();
+  const admin = await connect();
   await admin.query(SUPABASE_STUB);
-  const migrationsDir = join(process.cwd(), "supabase", opcoes.sqlEditor ? "sql-editor" : "migrations");
-  const ordem = (nome: string) => Number(nome.match(/parte(\d+)/)?.[1] ?? 0);
-  const arquivos = opcoes.sqlEditor
-    ? readdirSync(migrationsDir).filter((name) => /^1_estrutura_parte\d+\.sql$/.test(name)).sort((a, b) => ordem(a) - ordem(b))
-    : readdirSync(migrationsDir).filter((name) => name.endsWith(".sql")).sort();
-  for (const file of arquivos) {
+  await admin.query(readFileSync(join(process.cwd(), "tests", "db", "imobdesk-stub.sql"), "utf8"));
+  const migrationsDir = join(process.cwd(), "supabase", "migrations");
+  for (const file of readdirSync(migrationsDir).filter((name) => name.endsWith(".sql")).sort()) {
     try {
       await admin.query(readFileSync(join(migrationsDir, file), "utf8"));
     } catch (error) {
       throw new Error(`Migration ${file} falhou: ${(error as Error).message}`);
     }
   }
-  if (empresa) await admin.query("select set_config('imobdesk.empresa_id', $1, false)", [empresa]);
 
   return {
     admin,
@@ -168,13 +156,19 @@ export async function startTestDb(port: number, opcoes: { empresa?: string | nul
 }
 
 /**
- * Executa `fn` como o PostgREST faria para um usuário logado: papel `authenticated` e claims do JWT
- * em request.jwt.claims, dentro de uma transação desfeita no fim.
+ * Executa `fn` como o PostgREST faria: papel do JWT e claims em request.jwt.claims (e cabeçalhos em
+ * request.headers, para a service_role informar x-empresa-id), dentro de uma transação desfeita no fim.
  */
-export async function asUser<T>(client: pg.Client, claims: Record<string, unknown>, fn: (c: pg.Client) => Promise<T>): Promise<T> {
+export async function asUser<T>(
+  client: pg.Client,
+  claims: Record<string, unknown>,
+  fn: (c: pg.Client) => Promise<T>,
+  headers: Record<string, string> = {},
+): Promise<T> {
   await client.query("begin");
   try {
     await client.query("select set_config('request.jwt.claims', $1, true)", [JSON.stringify(claims)]);
+    await client.query("select set_config('request.headers', $1, true)", [JSON.stringify(headers)]);
     await client.query(`set local role ${claims.role === "service_role" ? "service_role" : claims.role === "anon" ? "anon" : "authenticated"}`);
     return await fn(client);
   } finally {

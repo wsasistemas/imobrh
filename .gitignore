@@ -36,3 +36,6 @@ supabase/.temp/
 
 # Gerado pelo deno check local
 deno.lock
+
+# Capturas do Playwright MCP
+.playwright-mcp/

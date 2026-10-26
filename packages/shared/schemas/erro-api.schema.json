@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://imobrh.wsa/schemas/erro-api.schema.json",
+  "title": "Erro da API do ImobRH",
+  "type": "object",
+  "required": ["code", "message"],
+  "additionalProperties": false,
+  "properties": {
+    "code": { "enum": ["VALIDACAO", "SEM_PERMISSAO", "RM_INDISPONIVEL", "ESTADO_INVALIDO", "NAO_AUTENTICADO", "INTERNO"] },
+    "message": { "type": "string" },
+    "fields": { "type": "object", "additionalProperties": { "type": "string" } }
+  }
+}

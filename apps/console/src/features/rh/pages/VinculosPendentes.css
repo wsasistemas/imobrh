@@ -1,0 +1,83 @@
+/* Vínculos pendentes: mesmo padrão de lista de Usuários (só tokens do index.css). */
+
+.vinculos {
+  overflow: hidden;
+  margin-top: 16px;
+}
+
+.vinculos__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.vinculos__header h2 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.vinculos__header p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.vinculos__search {
+  position: relative;
+  flex: 1;
+  max-width: 360px;
+  color: var(--muted);
+}
+
+.vinculos__search svg {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+
+.vinculos__search .input {
+  width: 100%;
+  padding-left: 36px;
+}
+
+.vinculos__identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vinculos__name {
+  font-weight: 600;
+}
+
+.vinculos__email,
+.vinculos__muted {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.vinculos__email {
+  margin-top: 2px;
+}
+
+.vinculos__status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.vinculos__status small {
+  max-width: 320px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.vinculos__action {
+  min-height: 36px;
+}

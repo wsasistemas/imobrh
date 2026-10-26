@@ -1,0 +1,202 @@
+/* Componentes do Console do RH (stepper, timeline, prazos). Só tokens --ds-* de src/index.css (claro e escuro). */
+
+/* ---------- Stepper de etapas ---------- */
+.rh-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rh-stepper__item {
+  position: relative;
+}
+
+/* Trilho entre as marcas. */
+.rh-stepper__item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 40px;
+  bottom: -8px;
+  left: 25px;
+  width: 2px;
+  background: var(--ds-line);
+}
+
+.rh-stepper__botao {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-field);
+  background: none;
+  color: var(--ds-ink);
+  text-align: left;
+  font: inherit;
+}
+
+button.rh-stepper__botao:hover {
+  background: var(--ds-row-hover);
+}
+
+.rh-stepper__item--atual .rh-stepper__botao {
+  border-color: var(--ds-primary);
+  background: var(--ds-primary-soft);
+}
+
+.rh-stepper__marca {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--ds-line);
+  border-radius: 999px;
+  background: var(--ds-surface);
+  font-size: var(--ds-fs-small);
+  font-weight: 700;
+  color: var(--ds-muted);
+}
+
+.rh-stepper__marca--aberta,
+.rh-stepper__marca--em_andamento {
+  border-color: var(--ds-primary);
+  color: var(--ds-primary);
+}
+
+.rh-stepper__marca--concluida {
+  border-color: var(--ds-success);
+  background: var(--ds-success-soft);
+  color: var(--ds-success);
+}
+
+.rh-stepper__marca--atrasada,
+.rh-stepper__marca--erro_rm {
+  border-color: var(--ds-danger-border);
+  background: var(--ds-danger-soft);
+  color: var(--ds-danger);
+}
+
+.rh-stepper__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.rh-stepper__texto small {
+  font-size: var(--ds-fs-small);
+  color: var(--ds-muted);
+}
+
+.rh-stepper__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+/* ---------- Timeline do caso ---------- */
+.rh-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rh-timeline__item {
+  display: flex;
+  gap: 12px;
+}
+
+.rh-timeline__icone {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--ds-neutral-soft);
+  color: var(--ds-neutral-fg);
+}
+
+.rh-timeline__icone--pessoa {
+  background: var(--ds-primary-soft);
+  color: var(--ds-primary-soft-fg);
+}
+
+.rh-timeline__icone--rm {
+  background: var(--ds-warning-soft);
+  color: var(--ds-warning-fg);
+}
+
+.rh-timeline__icone--ia {
+  background: var(--ds-ai-soft);
+  color: var(--ds-ai);
+}
+
+.rh-timeline__corpo {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ds-row-line);
+}
+
+.rh-timeline__topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.rh-timeline__topo .ds-small {
+  color: var(--ds-muted);
+}
+
+.rh-timeline__corpo p {
+  margin: 4px 0 0;
+}
+
+/* ---------- Painel de prazos legais ---------- */
+.rh-prazos {
+  margin: 0;
+  padding: 0 20px 12px;
+  list-style: none;
+}
+
+.rh-prazos__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--ds-row-line);
+}
+
+.rh-prazos__item:last-child {
+  border-bottom: none;
+}
+
+.rh-prazos__item div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.rh-prazos__item small {
+  font-size: var(--ds-fs-small);
+  color: var(--ds-muted);
+}
